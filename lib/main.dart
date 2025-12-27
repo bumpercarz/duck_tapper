@@ -42,7 +42,7 @@ class DuckTapper extends StatelessWidget {
       ),
       
       // Landing Page
-      home: const LoginScreen(),
+      home: const DuckScreen(),
 
       // Pages
       routes: {

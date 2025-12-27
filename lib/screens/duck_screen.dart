@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:drop_shadow_image/drop_shadow_image.dart';
 
 /// Screen for when you tap the glowy ducky
 /// 
@@ -22,7 +23,44 @@ class DuckScreen extends StatefulWidget {
 class _DuckState extends State<DuckScreen> {
   
   int _selectedDuckIndex = 0;
-  int _counter = 0;
+  int _totalQuacks = 0;
+  int _currentQuacks = 0;
+  int _duckTaps = 0;
+
+    // The current scale of the image (1.0 is original size)
+  double _scale = 1.0;
+  // The desired size when the image is "pressed"
+  final double _pressedScale = 0.8; 
+  // The duration for the animation
+  final Duration _duration = const Duration(milliseconds: 300);
+
+  // Function to handle the tap event
+  void _onTap() {
+    setState(() {
+      _scale = _pressedScale; // Scale down on tap
+    });
+    // Use Future.delayed to return to the original size after the animation
+    Future.delayed(_duration, () {
+      if (mounted) { // Check if the widget is still in the tree
+        setState(() {
+          _scale = 1.0; // Return to normal size
+        });
+      }
+    });
+    _totalQuacks++;
+    _currentQuacks++;
+    _duckTaps++;
+    debugPrint("Quacked!");
+  }
+
+  // Optional: Add hover functionality for desktop/web
+  void _onHover(bool isHovering) {
+    setState(() {
+      // Scale down slightly on hover, or keep original size if not hovering
+      _scale = isHovering ? 0.9 : 1.0;
+    });
+  }
+
 
   void _incrementCounter() {
     setState(() {
@@ -31,7 +69,9 @@ class _DuckState extends State<DuckScreen> {
       // so that the display can reflect the updated values. If we changed
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
-      _counter++;
+      _totalQuacks++;
+      _currentQuacks++;
+      _duckTaps++;
     });
   }
 
@@ -44,6 +84,28 @@ class _DuckState extends State<DuckScreen> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
+      backgroundColor: Color(0xFF2B1F14),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(134.0),
+        child: AppBar(
+          titleSpacing: 0,
+          title: const Padding(
+            padding: EdgeInsets.only(top:100,bottom:75),
+            child: Text(
+              "Ducky Quacker", 
+              style: TextStyle(
+                fontSize:39, 
+                color: Colors.white))),
+          centerTitle: true,
+          backgroundColor: Color(0xFF265490),
+          shape: Border(
+            bottom: BorderSide(
+              color: Color(0xFF734014),
+              width: 28,
+            ),
+          ),
+          )
+        ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
@@ -63,19 +125,59 @@ class _DuckState extends State<DuckScreen> {
           // wireframe for each widget.
           mainAxisAlignment: .center,
           children: [
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
+              // Use MouseRegion to detect hover events 
+              Container(
+                padding: EdgeInsets.only(bottom: 110),
+                child:MouseRegion(
+                  onEnter: (_) => _onHover(true),
+                  onExit: (_) => _onHover(false),
+                  child: GestureDetector(
+                    onTap: _onTap, 
+                    child: AnimatedScale(
+                      scale: _scale,
+                      duration: _duration,
+                      // Use a bouncy curve for the animation
+                      curve: Curves.bounceOut, 
+                      child:  DropShadowImage(
+                            image: Image.asset(
+                              'assets/images/DUCK PNG.png', 
+                              width: 253,
+                              height: 259,
+                            ),
+                            offset: Offset(0, 4),
+                            blurRadius: 150,
+                            scale: 1,
+                          )
+                        )
+                    ),
+                ),
+              ),
+
+            Container(
+              margin: EdgeInsets.only(bottom: 110),
+              width: MediaQuery.of(context).size.width,
+              height: 100,
+              decoration: BoxDecoration(color: Color(0x24947257)),
+              child: Center(
+                child: _currentQuacks == 1
+                
+                ?Text(
+                  '$_currentQuacks Quack', 
+                   style: TextStyle(
+                    fontSize:32, 
+                    color: Colors.white)
+                )
+                :Text(
+                  '$_currentQuacks Quacks', 
+                   style: TextStyle(
+                    fontSize:32, 
+                    color: Colors.white)
+                )
+              ),
+            )
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
+      )
     );
   }
 }
