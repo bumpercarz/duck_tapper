@@ -75,7 +75,7 @@ class AppDatabase extends _$AppDatabase {
 
     // Seed accounts
     final accountId1 = await into(accounts).insert(
-      AuthorsCompanion.insert(
+      AccountsCompanion.insert(
         account_id: 1,
         username: 'test',
         password: 'password',
@@ -85,7 +85,7 @@ class AppDatabase extends _$AppDatabase {
 
     // Seed ducks
     await into(ducks).insert(
-      duckAssigned.insert(
+      DucksCompanion.insert(
         duck_id: 1,
         account_id: accountId1,
         totalQuack: 100,

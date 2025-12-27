@@ -32,12 +32,12 @@ class CreateAccountData {
 // ============================================================
 
 /// Type class for account responses
-class AccountResponse {
+class AccountsResponse {
   final int account_id;
   final String username;
   final String password;
 
-  AccountResponse({
+  AccountsResponse({
     required this.account_id,
     required this.username,
     required this.password
