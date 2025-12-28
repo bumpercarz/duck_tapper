@@ -38,6 +38,28 @@ class _DetailState extends State<DetailsScreen> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
+      backgroundColor: Color(0xFF2B1F14),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(134.0),
+        child: AppBar(
+          titleSpacing: 0,
+          title: const Padding(
+            padding: EdgeInsets.only(top:100,bottom:75),
+            child: Text(
+              "Ducky Quacker", 
+              style: TextStyle(
+                fontSize:39, 
+                color: Colors.white))),
+          centerTitle: true,
+          backgroundColor: Color(0xFF265490),
+          shape: Border(
+            bottom: BorderSide(
+              color: Color(0xFF734014),
+              width: 28,
+            ),
+          ),
+          )
+        ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
@@ -56,20 +78,9 @@ class _DetailState extends State<DetailsScreen> {
           // action in the IDE, or press "p" in the console), to see the
           // wireframe for each widget.
           mainAxisAlignment: .center,
-          children: [
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
+
+          )
+        )
     );
   }
 }

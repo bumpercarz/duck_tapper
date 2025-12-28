@@ -13,34 +13,75 @@ class DuckService {
   // ============================================================
 
   /// Validate book creation data
-  Future<void> validateNewDuck(NewDuckData data) async {
-    // Foreign key validation - Account must exist and be active
-    final account = await (_db.select(_db.accounts)
-          ..where((t) => t.id.equals(data.account_id) & t.isActive.equals(true)))
+  Future<void> validateCreateBook(CreateBookData data) async {
+    // Title validation
+    if (data.title.trim().isEmpty) {
+      throw ValidationException('Book title is required');
+    }
+    if (data.title.length < 2) {
+      throw ValidationException('Title must be at least 2 characters');
+    }
+
+    // ISBN validation
+    if (data.isbn.trim().isEmpty) {
+      throw ValidationException('ISBN is required');
+    }
+    if (!_isValidISBN(data.isbn)) {
+      throw ValidationException(
+        'Invalid ISBN format. Must be ISBN-10 (10 digits) or ISBN-13 (13 digits)',
+      );
+    }
+
+    // Check ISBN uniqueness
+    final existing = await (_db.select(_db.books)
+          ..where((t) => t.isbn.equals(data.isbn) & t.isActive.equals(true)))
         .getSingleOrNull();
 
-    if (account == null) {
+    if (existing != null) {
+      throw ValidationException('ISBN already exists');
+    }
+
+    // Published year validation
+    final currentYear = DateTime.now().year;
+    if (data.publishedYear < 1450 || data.publishedYear > currentYear) {
       throw ValidationException(
-        'Account ${data.account_id} does not exist or is inactive',
+        'Published year must be between 1450 (printing press invention) and $currentYear',
+      );
+    }
+
+    // Pages validation
+    if (data.pages <= 0) {
+      throw ValidationException('Number of pages must be a positive number');
+    }
+
+    // Foreign key validation - Author must exist and be active
+    final author = await (_db.select(_db.authors)
+          ..where((t) => t.id.equals(data.authorId) & t.isActive.equals(true)))
+        .getSingleOrNull();
+
+    if (author == null) {
+      throw ValidationException(
+        'Author ID ${data.authorId} does not exist or is inactive',
       );
     }
   }
 
-  /// Create a new duck
-  Future<int> createDuck(NewDuckData data) async {
+  /// Create a new book (assumes data is validated)
+  Future<int> createBook(CreateBookData data) async {
+    final now = DateTime.now();
 
-    final id = await _db.into(_db.ducks).insert(
-          DucksCompanion.insert(
-            duck_id: data.duck_id,
-            account_id: data.account_id,
-            totalQuack: data.totalQuack,
-            currentQuack: data.currentQuack,
-            duckTaps: data.duckTaps,
-            moreDucks: data.moreDucks,
-            fish: data.fish,
-            watermelon: data.watermelon,
-            ponds: data.ponds,
-            isActive: true
+    final id = await _db.into(_db.books).insert(
+          BooksCompanion.insert(
+            title: data.title.trim(),
+            isbn: data.isbn.replaceAll(RegExp(r'[-\s]'), ''),  // Remove hyphens/spaces
+            publishedYear: data.publishedYear,
+            pages: data.pages,
+            authorId: data.authorId,
+            createdAt: now,
+            updatedAt: now,
+            isActive: true,
+            createdBy: data.createdBy,
+            updatedBy: data.createdBy,
           ),
         );
 
@@ -52,14 +93,16 @@ class DuckService {
   // ============================================================
 
   /// Get all active books with author names (JOIN)
-  Future<List<BookResponse>> getDuck() async {
+  Future<List<BookResponse>> getAllBooks() async {
     // Query: SELECT books.*, authors.name as author_name
     //        FROM books
     //        LEFT JOIN authors ON books.author_id = authors.id
     //        WHERE books.is_active = true AND authors.is_active = true
 
-    final query = _db.select(_db.ducks)
-      ..where(_db.ducks.accountid == _db.accounts.accountid);
+    final query = _db.select(_db.books).join([
+      leftOuterJoin(_db.authors, _db.authors.id.equalsExp(_db.books.authorId)),
+    ])
+      ..where(_db.books.isActive.equals(true) & _db.authors.isActive.equals(true));
 
     final rows = await query.get();
 

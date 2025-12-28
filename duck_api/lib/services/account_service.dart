@@ -56,7 +56,7 @@ class AccountService {
   /// Validate account deletion
   Future<void> validateDeleteAccount(int account_id) async {
     final account = await (_db.select(_db.accounts)
-          ..where((t) => t.account_id.equals(account_id) & t.isActive.equals(true)))
+          ..where((t) => t.id.equals(account_id) & t.isActive.equals(true)))
         .getSingleOrNull();
 
     if (account == null) {
@@ -67,7 +67,7 @@ class AccountService {
   /// Soft delete an account (set isActive = false)
   Future<void> deleteAccount(int id, {String deletedBy = 'system'}) async {
 
-    await (_db.update(_db.accounts)..where((t) => t.account_id.equals(account_id))).write(
+    await (_db.update(_db.accounts)..where((t) => t.id.equals(account_id))).write(
       AccountsCompanion(
         isActive: const Value(false)
       ),
