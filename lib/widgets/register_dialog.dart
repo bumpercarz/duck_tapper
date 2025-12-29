@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../screens/login_screen.dart';
 
 /// Pop Up Dialog box for Registering a new account
 /// - CREATEs an account and directs the new account to Duck Screen (UNIMPLEMENTED)

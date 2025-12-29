@@ -1,5 +1,5 @@
+import 'package:duck_tapper/screens/nav_screen.dart';
 import 'package:flutter/material.dart';
-import 'screens/duck_screen.dart';
 import 'screens/login_screen.dart';
 
 void main() {
@@ -42,11 +42,11 @@ class DuckTapper extends StatelessWidget {
       ),
       
       // Landing Page
-      home: const DuckScreen(),
+      home: const NavScreen(),
 
       // Pages
       routes: {
-        '/game': (context) => DuckScreen()
+        '/game': (context) => NavScreen()
       },
     );
   }

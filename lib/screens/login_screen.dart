@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/register_dialog.dart';
+import '../services/login_check.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -23,6 +24,7 @@ class _LoginScreenState extends State<LoginScreen>{
   }
 
 
+
   // Function to toggle the password visibility state.
   void _togglePasswordVisibility() {
     setState(() {
@@ -30,11 +32,7 @@ class _LoginScreenState extends State<LoginScreen>{
     });
   }
 
-  // Test area WILL BE REMOVED
-  int test = 0;
-  void testNumber() async {
-    test++;
-  }
+    
 
   // Show Register Dialog on tap
   void _showRegisterDialog(BuildContext context) {
@@ -129,14 +127,19 @@ class _LoginScreenState extends State<LoginScreen>{
               Container(
                 margin: EdgeInsets.only(top:50),
                 child:ElevatedButton(
-                  onPressed: testNumber,
-                  style: ElevatedButton.styleFrom(
-                    fixedSize: Size(240, 50),
-                    backgroundColor: Color(0xFFCA8C35),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18),
-                    ),
-                  ),
+
+                  // Login Checker (CHANGE URL LATER IN login_check.dart WHEN API IS FIXED)
+                  onPressed:() async {
+                    bool isAuthenticated = await checkInput(_usernameController.text, _passwordController.text);
+                    if (isAuthenticated) {
+                      Navigator.pushReplacementNamed(context, '/home'); 
+                    } else {
+                      // Show an error message (e.g., using a SnackBar or an AlertDialog)
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Invalid username or password')),
+                      );
+                    }
+                  },
                   child: Text(
                     'Login',
                     style: TextStyle(fontSize: 24, color: Colors.black),
@@ -144,6 +147,7 @@ class _LoginScreenState extends State<LoginScreen>{
                 )
               ),
 
+              // Register Button - Shows a dialog box that prompts the user for registration. (UNIMPLEMENTED)
               Container(
                 margin: EdgeInsets.only(top:20),
                 child:ElevatedButton(

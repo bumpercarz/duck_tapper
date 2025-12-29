@@ -1,3 +1,6 @@
+import '../screens/details_screen.dart';
+import '../screens/upgrade_screen.dart';
+import '../services/quack_logic.dart';
 import 'package:flutter/material.dart';
 import 'package:drop_shadow_image/drop_shadow_image.dart';
 
@@ -21,24 +24,33 @@ class DuckScreen extends StatefulWidget {
 }
 
 class _DuckState extends State<DuckScreen> {
+  int _selectedDuckIndex = 1;
+
+  List<Widget> screens = [
+    DuckScreen(),
+    UpgradesScreen(),
+    DetailsScreen(),
+  ];
   
-  int _selectedDuckIndex = 0;
-  int _totalQuacks = 0;
-  int _currentQuacks = 0;
-  int _duckTaps = 0;
+  int totalQuacks = 0;
+  int currentQuacks = 0;
+  int duckTaps = 0;
 
     // The current scale of the image (1.0 is original size)
   double _scale = 1.0;
   // The desired size when the image is "pressed"
   final double _pressedScale = 0.8; 
   // The duration for the animation
-  final Duration _duration = const Duration(milliseconds: 300);
+  final Duration _duration = const Duration(milliseconds: 200);
 
   // Function to handle the tap event
-  void _onTap() {
+  void _incrementQuacks() {
     setState(() {
       _scale = _pressedScale; // Scale down on tap
     });
+      totalQuacks = addQuacks(totalQuacks);
+      currentQuacks = addQuacks(currentQuacks);
+      duckTaps++;
     // Use Future.delayed to return to the original size after the animation
     Future.delayed(_duration, () {
       if (mounted) { // Check if the widget is still in the tree
@@ -47,9 +59,8 @@ class _DuckState extends State<DuckScreen> {
         });
       }
     });
-    _totalQuacks++;
-    _currentQuacks++;
-    _duckTaps++;
+      // CHANGE QUACK LOGIC
+    
     debugPrint("Quacked!");
   }
 
@@ -62,27 +73,8 @@ class _DuckState extends State<DuckScreen> {
   }
 
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _totalQuacks++;
-      _currentQuacks++;
-      _duckTaps++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       backgroundColor: Color(0xFF2B1F14),
       appBar: PreferredSize(
@@ -107,22 +99,7 @@ class _DuckState extends State<DuckScreen> {
           )
         ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
           mainAxisAlignment: .center,
           children: [
               // Use MouseRegion to detect hover events 
@@ -132,7 +109,7 @@ class _DuckState extends State<DuckScreen> {
                   onEnter: (_) => _onHover(true),
                   onExit: (_) => _onHover(false),
                   child: GestureDetector(
-                    onTap: _onTap, 
+                    onTap: _incrementQuacks, 
                     child: AnimatedScale(
                       scale: _scale,
                       duration: _duration,
@@ -155,20 +132,20 @@ class _DuckState extends State<DuckScreen> {
 
             Container(
               margin: EdgeInsets.only(bottom: 110),
-              width: MediaQuery.of(context).size.width,
+              width: double.infinity,
               height: 100,
               decoration: BoxDecoration(color: Color(0x24947257)),
               child: Center(
-                child: _currentQuacks == 1
+                child: currentQuacks == 1
                 
                 ?Text(
-                  '$_currentQuacks Quack', 
+                  '$currentQuacks Quack', 
                    style: TextStyle(
                     fontSize:32, 
                     color: Colors.white)
                 )
                 :Text(
-                  '$_currentQuacks Quacks', 
+                  '$currentQuacks Quacks \n$totalQuacks $currentQuacks $duckTaps', 
                    style: TextStyle(
                     fontSize:32, 
                     color: Colors.white)
@@ -177,6 +154,25 @@ class _DuckState extends State<DuckScreen> {
             )
           ],
         ),
+      ),
+      bottomNavigationBar: Container(
+        height: 195,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Color(0xFFCA8C35),
+          border: Border(
+            top: BorderSide(color: Color(0xFF734014), width: 28.0), 
+          ),
+          borderRadius: BorderRadius.circular(15), // Rounded corners with a radius of 20
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Image.asset('assets/images/Duck.png', width: 90, height: 90,),
+            Image.asset('assets/images/Buy Upgrade.png', width: 90, height: 90,),
+            Image.asset('assets/images/Analytics.png', width: 90, height: 90,),
+          ],
+        )
       )
     );
   }

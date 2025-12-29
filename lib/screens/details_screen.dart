@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../screens/duck_screen.dart';
+import '../screens/upgrade_screen.dart';
 
 class DetailsScreen extends StatefulWidget {
   const DetailsScreen({super.key});
@@ -16,18 +18,7 @@ class DetailsScreen extends StatefulWidget {
 }
 
 class _DetailState extends State<DetailsScreen> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+  int _selectedDuckIndex = 2;
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +71,8 @@ class _DetailState extends State<DetailsScreen> {
           mainAxisAlignment: .center,
 
           )
-        )
+        ),
+        
     );
   }
 }
