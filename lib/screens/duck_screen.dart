@@ -131,7 +131,6 @@ class _DuckState extends State<DuckScreen> {
               ),
 
             Container(
-              margin: EdgeInsets.only(bottom: 110),
               width: double.infinity,
               height: 100,
               decoration: BoxDecoration(color: Color(0x24947257)),
@@ -155,25 +154,6 @@ class _DuckState extends State<DuckScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: Container(
-        height: 195,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: Color(0xFFCA8C35),
-          border: Border(
-            top: BorderSide(color: Color(0xFF734014), width: 28.0), 
-          ),
-          borderRadius: BorderRadius.circular(15), // Rounded corners with a radius of 20
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Image.asset('assets/images/Duck.png', width: 90, height: 90,),
-            Image.asset('assets/images/Buy Upgrade.png', width: 90, height: 90,),
-            Image.asset('assets/images/Analytics.png', width: 90, height: 90,),
-          ],
-        )
-      )
     );
   }
 }
