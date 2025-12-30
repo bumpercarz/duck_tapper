@@ -28,16 +28,16 @@ class Ducks extends Table {
   IntColumn get duck_id => integer().autoIncrement()();
 
   // Business fields
-  TextColumn get totalQuack => integer()();
-  TextColumn get currentQuack => integer()();
-  TextColumn get duckTaps => integer()();
-  TextColumn get moreDucks => integer()();
-  TextColumn get fish => integer()();
-  TextColumn get watermelon => integer()();
-  TextColumn get ponds => integer()();
+  IntColumn get totalQuack => integer()();
+  IntColumn get currentQuack => integer()();
+  IntColumn get duckTaps => integer()();
+  IntColumn get moreDucks => integer()();
+  IntColumn get fish => integer()();
+  IntColumn get watermelon => integer()();
+  IntColumn get ponds => integer()();
 
   // Foreign key - References Accounts.account_id
-  IntColumn get account_id => integer().references(Account, #account_id)();
+  IntColumn get account_id => integer().references(Accounts, #account_id)();
 
   BoolColumn get isActive => boolean()();
 }
@@ -76,7 +76,6 @@ class AppDatabase extends _$AppDatabase {
     // Seed accounts
     final accountId1 = await into(accounts).insert(
       AccountsCompanion.insert(
-        account_id: 1,
         username: 'test',
         password: 'password',
         isActive: true,
@@ -86,7 +85,6 @@ class AppDatabase extends _$AppDatabase {
     // Seed ducks
     await into(ducks).insert(
       DucksCompanion.insert(
-        duck_id: 1,
         account_id: accountId1,
         totalQuack: 100,
         currentQuack: 100,
