@@ -1,8 +1,8 @@
+import 'dart:math' as math;
 import 'package:duck_tapper/providers/duck_provider.dart';
 import 'package:duck_tapper/screens/details_screen.dart';
 import 'package:duck_tapper/screens/duck_screen.dart';
 import 'package:provider/provider.dart';
-import '../screens/details_screen.dart';
 import 'package:flutter/material.dart';
 
 class UpgradesScreen extends StatefulWidget {
@@ -28,6 +28,22 @@ class _UpgradeState extends State<UpgradesScreen> {
     UpgradesScreen(),
     DetailsScreen(),
   ];
+  
+  void _buyMoreDucks(price) {
+    Provider.of<DuckModel>(context, listen: false).buyMoreDucks(price);
+  }
+  
+  void _buyFish(int price) {
+    Provider.of<DuckModel>(context, listen: false).buyFish(price);
+  }
+  
+  void _buyWatermelon(int price) {
+    Provider.of<DuckModel>(context, listen: false).buyWatermelon(price);
+  }
+  
+  void _buyPond(price) {
+    Provider.of<DuckModel>(context, listen: false).buyPond(price);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,10 +55,21 @@ class _UpgradeState extends State<UpgradesScreen> {
     int watermelon = Provider.of<DuckModel>(context).watermelon;
     int pond = Provider.of<DuckModel>(context).pond;
     
+    List<int> priceList = [
+      (10*math.pow(1.3,moreDucks)).toInt(),
+      (250*math.pow(1.3,fish)).toInt(),
+      (5000*math.pow(1.3,watermelon)).toInt(),
+      (12500*math.pow(1.3,pond)).toInt()
+    ];
+    
+    String exponentPrice (int price){ 
+      return 'For ${price.toStringAsExponential(3)} Quacks';
+    }
+
     return Scaffold(
       backgroundColor: Color(0xFF2B1F14),
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(134.0),
+        preferredSize: Size.fromHeight(83.0),
         child: AppBar(
           titleSpacing: 0,
           title: const Padding(
@@ -54,43 +81,388 @@ class _UpgradeState extends State<UpgradesScreen> {
                 color: Colors.white))),
           centerTitle: true,
           backgroundColor: Color(0xFF265490),
-          shape: Border(
-            bottom: BorderSide(
-              color: Color(0xFF734014),
-              width: 51,
-            ),
-          ),
           )
         ),
       body: Column(
           mainAxisAlignment: .start,
           children: [
             Container(
-              height: 128,
+              color: Color(0xFF734014),
+              height:51,
+              width: .infinity,
               alignment: .center,
-              child:Card(
-                color: Color(0xFF66A2B8),
-                margin: EdgeInsets.only(top:10),
-                elevation: 0.0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.zero
-                  ),
-                child: Row(
-                  children: [
-                    ListTile(
-                      leading: Image.asset('assets/images/Flying Duck.png', width: 90, height: 90,),
-                      title: Text("Card Title", style: TextStyle(color: Colors.black)),
-                      subtitle: Text("This card spans the screen width."),
-                    ),
-                    Column(
-                      children:[
-
-                      ]
-                    ),
-                  ]
+              child:Text(
+                  '$currentQuacks Quacks',
+                  style: TextStyle(fontSize:20)
                 )
               ),
-            )
+            Card(
+              color: Color(0xFF66A2B8),
+              margin: EdgeInsets.only(top:10),
+              elevation: 0.0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: .zero
+                ),
+              child:  Container(
+                height: 135,
+                alignment: .center,
+                child: Padding(
+                  padding: EdgeInsets.only(left: 20, right: 10,top: 10,bottom: 10),
+                  child:Row(
+                    crossAxisAlignment: .start,
+                    spacing: 20,
+                    children: [
+                      Center(
+                        child: SizedBox(
+                        width: 90,
+                        height: 90,
+                        child: Image.asset('assets/images/Flying Duck.png')
+                            )
+                      ),
+                      SizedBox(
+                        width: 195,
+                        height: 128,
+                        child:  Column(
+                          crossAxisAlignment:  .start,
+                          children:[
+                            Text(
+                              'More Ducks', 
+                              style: TextStyle(
+                                fontSize: 24)
+                            ),
+                            Column(
+                              mainAxisAlignment: .start,
+                              crossAxisAlignment: .start,
+                              children:[
+                                Text(
+                                  priceList[0] < 9999
+                                    ? 'for ${priceList[0]} Quacks'
+                                    : exponentPrice(priceList[0]),
+                                  style: TextStyle(
+                                    color: Color(0xFFFFD940),
+                                    fontSize: 15)
+                                ),
+                                SizedBox(height:5),
+                                Text(
+                                  'Adds 1 Quack/s per tap per duck',
+                                  style: TextStyle(
+                                    color: Color(0xFF77EC25),
+                                    fontSize: 15)
+                                ),
+                              ]
+                            )
+                          ],
+                        )
+                      ),
+                      Column(
+                        crossAxisAlignment: .end,
+                        children: [
+                          Container(
+                            alignment: .topRight,
+                            width: 90,
+                            child: Text(
+                              'x$moreDucks',
+                              style: TextStyle(fontSize:32)  
+                            )
+                          ),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: currentQuacks >= priceList[0] 
+                                ?Color(0xFF7BFF00)
+                                : Colors.grey,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              fixedSize: Size(91,68),
+                            ),
+                            onPressed: currentQuacks >= priceList[0] 
+                            ? () => _buyMoreDucks(priceList[0])
+                            : null,
+                            child: Image.asset('assets/images/Shopping Cart.png'),
+                          )
+                        ],
+                      )
+                    ],
+                  )
+                )
+              ),
+            ),
+            moreDucks > 0 ?
+            Card(
+              color: Color(0xFF66A2B8),
+              margin: EdgeInsets.only(top:10),
+              elevation: 0.0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: .zero
+                ),
+              child:  Container(
+                height: 135,
+                alignment: .center,
+                child: Padding(
+                  padding: EdgeInsets.only(left: 20, right: 10,top: 10,bottom: 10),
+                  child:Row(
+                    crossAxisAlignment: .start,
+                    spacing: 20,
+                    children: [
+                      Center(
+                        child: SizedBox(
+                        width: 90,
+                        height: 90,
+                        child: Image.asset('assets/images/Fish Food.png')
+                            )
+                      ),
+                      SizedBox(
+                        width:195,
+                        height: 128,
+                        child:  Column(
+                          crossAxisAlignment:  .start,
+                          children:[
+                            Text(
+                              'Fish', 
+                              style: TextStyle(
+                                fontSize: 24)
+                            ),
+                            Column(
+                              mainAxisAlignment: .start,
+                              crossAxisAlignment: .start,
+                              children:[
+                                Text(
+                                  priceList[1] < 9999
+                                    ? 'for ${priceList[1]} Quacks'
+                                    : exponentPrice(priceList[1]),
+                                  style: TextStyle(
+                                    color: Color(0xFFFFD940),
+                                    fontSize: 15)
+                                ),
+                                SizedBox(height:5),
+                                Text(
+                                  'Adds 10 Quack/s per tap per duck',
+                                  style: TextStyle(
+                                    color: Color(0xFF77EC25),
+                                    fontSize: 15)
+                                ),
+                              ]
+                            )
+                          ],
+                        )
+                      ),
+                      Column(
+                        crossAxisAlignment: .end,
+                        children: [
+                          Container(
+                            alignment: .topRight,
+                            width: 90,
+                            child: Text(
+                              'x$fish',
+                              style: TextStyle(fontSize:32)  
+                            )
+                          ),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: currentQuacks >= priceList[1] 
+                                ?Color(0xFF7BFF00)
+                                : Colors.grey,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              fixedSize: Size(91,68),
+                            ),
+                            onPressed: currentQuacks >= priceList[1] 
+                            ? () => _buyFish(priceList[1])
+                            : null,
+                            child: Image.asset('assets/images/Shopping Cart.png'),
+                          )
+                        ],
+                      )
+                    ],
+                  )
+                )
+              ),
+            ) : SizedBox(height: 0),
+            fish > 0?
+            Card(
+              color: Color(0xFF66A2B8),
+              margin: EdgeInsets.only(top:10),
+              elevation: 0.0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: .zero
+                ),
+              child:  Container(
+                height: 135,
+                alignment: .center,
+                child: Padding(
+                  padding: EdgeInsets.only(left: 20, right: 10,top: 10,bottom: 10),
+                  child:Row(
+                    crossAxisAlignment: .start,
+                    spacing: 20,
+                    children: [
+                      Center(
+                        child: SizedBox(
+                        width: 90,
+                        height: 90,
+                        child: Image.asset('assets/images/Watermelon.png')
+                            )
+                      ),
+                      SizedBox(
+                        width:195,
+                        height: 128,
+                        child:  Column(
+                          crossAxisAlignment:  .start,
+                          children:[
+                            Text(
+                              'Watermelon', 
+                              style: TextStyle(
+                                fontSize: 24)
+                            ),
+                            Column(
+                              mainAxisAlignment: .start,
+                              crossAxisAlignment: .start,
+                              children:[
+                                Text(
+                                  priceList[2] < 9999
+                                    ? 'for ${priceList[2]} Quacks'
+                                    : exponentPrice(priceList[2]),
+                                  style: TextStyle(
+                                    color: Color(0xFFFFD940),
+                                    fontSize: 15)
+                                ),
+                                SizedBox(height:5),
+                                Text(
+                                  'Adds 25 Quack/s per tap per duck',
+                                  style: TextStyle(
+                                    color: Color(0xFF77EC25),
+                                    fontSize: 15)
+                                ),
+                              ]
+                            )
+                          ],
+                        )
+                      ),
+                      Column(
+                        crossAxisAlignment: .end,
+                        children: [
+                          Container(
+                            alignment: .topRight,
+                            width: 90,
+                            child: Text(
+                              'x$watermelon',
+                              style: TextStyle(fontSize:32)  
+                            )
+                          ),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: currentQuacks >= priceList[2] 
+                                ?Color(0xFF7BFF00)
+                                : Colors.grey,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              fixedSize: Size(91,68),
+                            ),
+                            onPressed: currentQuacks >= priceList[2] 
+                            ? () => _buyWatermelon(priceList[2])
+                            : null,
+                            child: Image.asset('assets/images/Shopping Cart.png'),
+                          )
+                        ],
+                      )
+                    ],
+                  )
+                )
+              ),
+            ) : SizedBox(height: 0),
+            watermelon > 0?
+            Card(
+              color: Color(0xFF66A2B8),
+              margin: EdgeInsets.only(top:10),
+              elevation: 0.0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: .zero
+                ),
+              child:  Container(
+                height: 135,
+                alignment: .center,
+                child: Padding(
+                  padding: EdgeInsets.only(left: 20, right: 10,top: 10,bottom: 10),
+                  child:Row(
+                    crossAxisAlignment: .start,
+                    spacing: 20,
+                    children: [
+                      Center(
+                        child: SizedBox(
+                        width: 90,
+                        height: 90,
+                        child: Image.asset('assets/images/Lake.png')
+                            )
+                      ),
+                      SizedBox(
+                        width:195,
+                        height: 128,
+                        child:  Column(
+                          crossAxisAlignment:  .start,
+                          children:[
+                            Text(
+                              'Pond', 
+                              style: TextStyle(
+                                fontSize: 24)
+                            ),
+                            Column(
+                              mainAxisAlignment: .start,
+                              crossAxisAlignment: .start,
+                              children:[
+                                Text(
+                                  priceList[3] < 9999
+                                    ? 'for ${priceList[3]} Quacks'
+                                    : exponentPrice(priceList[3]),
+                                  style: TextStyle(
+                                    color: Color(0xFFFFD940),
+                                    fontSize: 15)
+                                ),
+                                SizedBox(height:5),
+                                Text(
+                                  'Adds 75 Quack/s per tap per duck',
+                                  style: TextStyle(
+                                    color: Color(0xFF77EC25),
+                                    fontSize: 15)
+                                ),
+                              ]
+                            )
+                          ],
+                        )
+                      ),
+                      Column(
+                        crossAxisAlignment: .end,
+                        children: [
+                          Container(
+                            alignment: .topRight,
+                            width: 90,
+                            child: Text(
+                              'x$pond',
+                              style: TextStyle(fontSize:32)  
+                            )
+                          ),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: currentQuacks >= priceList[3] 
+                                ?Color(0xFF7BFF00)
+                                : Colors.grey,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              fixedSize: Size(91,68),
+                            ),
+                            onPressed: currentQuacks >= priceList[3] 
+                            ? () => _buyPond(priceList[3])
+                            : null,
+                            child: Image.asset('assets/images/Shopping Cart.png'),
+                          )
+                        ],
+                      )
+                    ],
+                  )
+                )
+              ),
+            ) : SizedBox(height: 0),
           ],
         ),
     );

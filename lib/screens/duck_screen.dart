@@ -120,7 +120,43 @@ class _DuckState extends State<DuckScreen> {
                       // Use a bouncy curve for the animation
                       curve: Curves.bounceOut, 
                       child:  DropShadowImage(
-                            image: Image.asset(
+                            image: 
+                            pond > 0?
+                            Image.asset(
+                              'assets/images/DUCK LAKE.png', 
+                              width: 390,
+                              height: 376,
+                            )
+                            : 
+                            watermelon > 0?
+                            Image.asset(
+                              'assets/images/DUCK MELON.png', 
+                              width: 374,
+                              height: 325,
+                            )
+                            : 
+                            fish > 0?
+                            Image.asset(
+                              'assets/images/DUCK FISH.png', 
+                              width: 374,
+                              height: 324,
+                            )
+                            : 
+                            moreDucks > 1 ? 
+                            Image.asset(
+                              'assets/images/DUCK GROUP.png', 
+                              width: 382,
+                              height: 270,
+                            )
+                            : 
+                            moreDucks == 1 ? 
+                            Image.asset(
+                              'assets/images/DUCK 2.png', 
+                              width: 382,
+                              height: 270,
+                            )
+                            : 
+                            Image.asset(
                               'assets/images/DUCK PNG.png', 
                               width: 253,
                               height: 259,
