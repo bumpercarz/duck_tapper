@@ -12,7 +12,7 @@ class DuckService {
   // CREATE OPERATIONS
   // ============================================================
 
-  Future<void> validateCreateDuck(CreateDuckData data) async {
+  Future<void> validateCreateDuck(CreateDuck data) async {
     // Foreign key validation - Author must exist and be active
     final account = await (_db.select(_db.accounts)
           ..where((t) => t.account_id.equals(data.account_id) & t.isActive.equals(true)
@@ -27,7 +27,7 @@ class DuckService {
   }
 
   /// Create a new duck
-  Future<int> createDuck(CreateDuckData data) async {
+  Future<int> createDuck(CreateDuck data) async {
     final id = await _db.into(_db.ducks).insert(
           DucksCompanion.insert(
             account_id: data.account_id,
@@ -38,7 +38,7 @@ class DuckService {
             fish: data.fish,
             watermelon: data.watermelon,
             ponds: data.ponds,
-            // isActive: true
+            isActive: true
           ),
         );
 
@@ -118,7 +118,7 @@ class DuckService {
   // ============================================================
 
   /// Validate book update data
-  Future<void> validateUpdateDuck(int id, UpdateDuckData data) async {
+  Future<void> validateUpdateDuck(int id, UpdateDuck data) async {
     // Check book exists
     final duck = await (_db.select(_db.ducks)
           ..where((t) => t.duck_id.equals(id) & t.isActive.equals(true)))
@@ -135,25 +135,18 @@ class DuckService {
 
 
   /// Update duck
-  Future<void> updateDuck(int id, UpdateDuckData data) async {
+  Future<void> updateDuck(int id, UpdateDuck data) async {
     final now = DateTime.now();
 
     await (_db.update(_db.ducks)..where((t) => t.duck_id.equals(id))).write(
       DucksCompanion(
-
-        // left off here !!
-
-        title: data.title != null ? Value(data.title!.trim()) : const Value.absent(),
-        isbn: data.isbn != null
-            ? Value(data.isbn!.replaceAll(RegExp(r'[-\s]'), ''))
-            : const Value.absent(),
-        publishedYear: data.publishedYear != null
-            ? Value(data.publishedYear!)
-            : const Value.absent(),
-        pages: data.pages != null ? Value(data.pages!) : const Value.absent(),
-        authorId: data.authorId != null ? Value(data.authorId!) : const Value.absent(),
-        updatedAt: Value(now),
-        updatedBy: Value(data.updatedBy),
+        totalQuack: data.totalQuack != 0 ? Value(data.totalQuack) : const Value(0),
+        currentQuack: data.currentQuack != 0 ? Value(data.currentQuack) : const Value(0),
+        duckTaps: data.duckTaps != 0 ? Value(data.duckTaps) : const Value(0),
+        moreDucks: data.moreDucks != 0 ? Value(data.moreDucks) : const Value(0),
+        fish: data.fish != 0 ? Value(data.fish) : const Value(0),
+        watermelon: data.watermelon != 0 ? Value(data.watermelon) : const Value(0),
+        ponds: data.ponds != 0 ? Value(data.ponds) : const Value(0)
       ),
     );
   }
@@ -162,37 +155,25 @@ class DuckService {
   // DELETE OPERATIONS (Soft Delete)
   // ============================================================
 
-  /// Validate book deletion
-  Future<void> validateDeleteBook(int id) async {
-    final book = await (_db.select(_db.books)
-          ..where((t) => t.id.equals(id) & t.isActive.equals(true)))
+  /// Validate duck deletion
+  Future<void> validateEraseDuck(int id) async {
+    final book = await (_db.select(_db.ducks)
+          ..where((t) => t.duck_id.equals(id) & t.isActive.equals(true)))
         .getSingleOrNull();
 
-    if (book == null) {
-      throw ValidationException('Book ID $id does not exist or is already deleted');
+    if (duck == null) {
+      throw ValidationException('Duck does not exist or is already deleted');
     }
   }
 
-  /// Soft delete a book
-  Future<void> deleteBook(int id, {String deletedBy = 'system'}) async {
-    final now = DateTime.now();
-
-    await (_db.update(_db.books)..where((t) => t.id.equals(id))).write(
-      BooksCompanion(
-        isActive: const Value(false),
-        updatedAt: Value(now),
-        updatedBy: Value(deletedBy),
+  /// Soft delete a duck - erases duck data
+  Future<void> eraseDuck(int id, {String deletedBy = 'system'}) async {
+    await (_db.update(_db.ducks)..where((t) => t.duck_id.equals(id))).write(
+      DucksCompanion(
+        isActive: const Value(false)
       ),
     );
   }
-
-  // ============================================================
-  // HELPER METHODS
-  // ============================================================
-
-  /// Validate ISBN-10 or ISBN-13 format
-  bool _isValidISBN(String isbn) {
-    final cleaned = isbn.replaceAll(RegExp(r'[-\s]'), '');
-    return RegExp(r'^\d{10}$|^\d{13}$').hasMatch(cleaned);
+  
   }
 }

@@ -44,36 +44,46 @@ class CreateDuck {
 
 /// Type class for updating a Duck
 class UpdateDuck {
-  final int? totalQuack;
-  final int? currentQuack;
-  final int? duckTaps;
-  final int? moreDucks;
-  final int? fish;
-  final int? watermelon;
-  final int? ponds;
+  final int totalQuack;
+  final int currentQuack;
+  final int duckTaps;
+  final int moreDucks;
+  final int fish;
+  final int watermelon;
+  final int ponds;
 
   UpdateDuck({
-    this.totalQuack,
-    this.currentQuack,
-    this.duckTaps,
-    this.moreDucks,
-    this.fish,
-    this.watermelon,
-    this.ponds
+    required this.totalQuack,
+    required this.currentQuack,
+    required this.duckTaps,
+    required this.moreDucks,
+    required this.fish,
+    required this.watermelon,
+    required this.ponds
   });
 
   factory UpdateDuck.fromJson(Map<String, dynamic> json) {
     return UpdateDuck(
-      totalQuack: json['totalQuack'] as int?,
-      currentQuack: json['currentQuack'] as int?,
-      duckTaps: json['duckTaps'] as int?,
-      moreDucks: json['moreDucks'] as int?,
-      fish: json['fish'] as int?,
-      watermelon: json['watermelon'] as int?,
-      ponds: json['ponds'] as int?,
+      totalQuack: json['totalQuack'] as int? ?? 0,
+      currentQuack: json['currentQuack'] as int? ?? 0,
+      duckTaps: json['duckTaps'] as int? ?? 0,
+      moreDucks: json['moreDucks'] as int? ?? 0,
+      fish: json['fish'] as int? ?? 0,
+      watermelon: json['watermelon'] as int? ?? 0,
+      ponds: json['ponds'] as int? ?? 0,
     );
   }
 
+// just need to specify the change in condition ig because it can't be null by default
+
+  bool get hasUpdates =>
+  totalQuack != null ||
+  currentQuack != null ||
+  duckTaps != null ||
+  moreDucks != null ||
+  fish != null ||
+  watermelon != null ||
+  ponds != null;
 }
 
 // ============================================================
