@@ -1,9 +1,15 @@
+import 'package:duck_tapper/providers/duck_provider.dart';
 import 'package:duck_tapper/screens/nav_screen.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'screens/login_screen.dart';
 
 void main() {
-  runApp(const DuckTapper());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => DuckModel(),
+      child: const DuckTapper())
+    );
 }
 
 class DuckTapper extends StatelessWidget {

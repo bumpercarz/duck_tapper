@@ -1,22 +1,12 @@
 import '../screens/details_screen.dart';
 import '../screens/upgrade_screen.dart';
 import '../screens/duck_screen.dart';
-import '../services/quack_logic.dart';
 import 'package:flutter/material.dart';
 /// Screen for when you tap the glowy ducky
 /// 
 
 class NavScreen extends StatefulWidget {
   const NavScreen({super.key});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
 
   @override
   _NavState createState() => _NavState();
@@ -32,11 +22,6 @@ class _NavState extends State<NavScreen> {
     UpgradesScreen(),
     DetailsScreen(),
   ];
-  
-  int totalQuacks = 0;
-  int currentQuacks = 0;
-  int duckTaps = 0;
-
   
   Color _getBgColor(int index) => _selectedDuckIndex == index
       ? _selectedBackGroundColor
@@ -74,6 +59,7 @@ class _NavState extends State<NavScreen> {
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       backgroundColor: Color(0xFF2B1F14),
       body: screens[_selectedDuckIndex],

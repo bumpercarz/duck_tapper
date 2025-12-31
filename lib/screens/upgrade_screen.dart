@@ -1,5 +1,7 @@
+import 'package:duck_tapper/providers/duck_provider.dart';
 import 'package:duck_tapper/screens/details_screen.dart';
 import 'package:duck_tapper/screens/duck_screen.dart';
+import 'package:provider/provider.dart';
 import '../screens/details_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -29,6 +31,14 @@ class _UpgradeState extends State<UpgradesScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    
+    int currentQuacks = Provider.of<DuckModel>(context).currentQuacks;
+    int moreDucks = Provider.of<DuckModel>(context).moreDucks;
+    int fish = Provider.of<DuckModel>(context).fish;
+    int watermelon = Provider.of<DuckModel>(context).watermelon;
+    int pond = Provider.of<DuckModel>(context).pond;
+    
     return Scaffold(
       backgroundColor: Color(0xFF2B1F14),
       appBar: PreferredSize(
@@ -52,14 +62,37 @@ class _UpgradeState extends State<UpgradesScreen> {
           ),
           )
         ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: .center,
+      body: Column(
+          mainAxisAlignment: .start,
           children: [
+            Container(
+              height: 128,
+              alignment: .center,
+              child:Card(
+                color: Color(0xFF66A2B8),
+                margin: EdgeInsets.only(top:10),
+                elevation: 0.0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.zero
+                  ),
+                child: Row(
+                  children: [
+                    ListTile(
+                      leading: Image.asset('assets/images/Flying Duck.png', width: 90, height: 90,),
+                      title: Text("Card Title", style: TextStyle(color: Colors.black)),
+                      subtitle: Text("This card spans the screen width."),
+                    ),
+                    Column(
+                      children:[
 
+                      ]
+                    ),
+                  ]
+                )
+              ),
+            )
           ],
         ),
-      ),
     );
   }
 }
