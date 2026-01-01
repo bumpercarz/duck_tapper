@@ -4,7 +4,6 @@ import '../services/login_check.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
-
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
@@ -140,6 +139,13 @@ class _LoginScreenState extends State<LoginScreen>{
                       );
                     }
                   },
+                  style: ElevatedButton.styleFrom(
+                    fixedSize: Size(240, 50),
+                    backgroundColor: Color(0xFFCA8C35),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18),
+                    ),
+                  ),
                   child: Text(
                     'Login',
                     style: TextStyle(fontSize: 24, color: Colors.black),

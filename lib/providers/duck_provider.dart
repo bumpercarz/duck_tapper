@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class DuckModel with ChangeNotifier {
   int _totalQuacks = 0;
-  int _currentQuacks = 100000;
+  int _currentQuacks = 0;
   int _duckTaps = 0;
   int _moreDucks = 0;
   int _fish = 0;

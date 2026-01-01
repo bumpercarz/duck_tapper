@@ -178,13 +178,13 @@ class _DuckState extends State<DuckScreen> {
                 child: currentQuacks == 1
                 
                 ?Text(
-                  '$currentQuacks Quack \n$totalQuacks $currentQuacks $duckTaps', 
+                  '$currentQuacks Quack', 
                    style: TextStyle(
                     fontSize:32, 
                     color: Colors.white)
                 )
                 :Text(
-                  '$currentQuacks Quacks \n$totalQuacks $currentQuacks $duckTaps', 
+                  '$currentQuacks Quacks', 
                    style: TextStyle(
                     fontSize:32, 
                     color: Colors.white)

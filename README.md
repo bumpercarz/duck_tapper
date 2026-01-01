@@ -22,7 +22,7 @@ dart_frog dev
 **Note:** The server runs on `localhost:8080` by default.
 
 ### 2. Configure the App
-Create a `.env` file in the root directory of your Flutter project:
+Modify the `.env.development` file in the root directory of your Flutter project:
 ```env
 BASE_URL=http://10.0.2.2:8080
 ```
@@ -39,30 +39,50 @@ flutter run
 ## 📱 Features
 * **Ducks**: An unassuming duck that you can tap to quack.
 * **Duck Upgrades**: Treat your duck right and give it the love it deserves. Feed your duck with upgrades and it might just give you more quacks.
-* **Duck Sync**: Every owner has their own ducks saved in the duck server. If the owner disappears, do does the duck!
+* **Dynamic Duck**: Every upgrade you buy gives the duck you quack some friends and food. Buy unique upgrades to make it happier!
+* **Duck Sync**: Every owner has their own ducks saved in the duck server. If the owner disappears, so does the duck tied to it!
 
 ## 📸 Screenshots
 
 ### Login Screen
-![Home Screen](screenshots/home_screen.png)
-*Main task list view showing active todos*
+![Login Screen](screenshots/login_screen.png)
+
+*Login screen with a working password visibility toggle on password*
+
+### Login Screen
+![Register Screen](screenshots/register_dialog.png)
+
+*Register Dialog Box*
 
 ### Duck Screen
-![Add Task Screen](https://github.com/yourusername/quicktask/blob/main/screenshots/add_task.png?raw=true)
-*Task creation interface*
+![Duck Screen](screenshots/duck_screen.png)
+
+*Screen where you quack the duck*
 
 ### Duck Upgrade Screen
-![Completed Task](screenshots/task_complete.png)
-*Swipe gesture to mark tasks as complete*
+![Upgrades Screen](screenshots/upgrades_screen.png)
+
+*Screen to show upgrades that you can buy with quacks to get more quacks from duck tapping*
+
+## Duck Upgrade Screen: Dynamic Display
+![Dynamic Upgrade Display](screenshots/upgrades_screen_more.png)
+
+*Next available upgrade becomes available once you buy the previous upgrade once*
+
+## Duck Upgrade Screen: Dynamic Duck
+![Dynamic Upgrade Display](screenshots/dynamic_duck.png)
+
+*The Duck you quack reflects the upgrades you bought*
 
 ### Duck Details Screen
-![Completed Task](screenshots/task_complete.png)
-*Swipe gesture to mark tasks as complete*
+![Details Screen](screenshots/task_complete.png)
 
-**Screenshot Guidelines:**
+*Specific list of details in actions the user has done with the duck. Includes duck mood*
+
+<!-- **Screenshot Guidelines:**
 - **Local Reference**: `![Alt Text](screenshots/image.png)` - Store images in a `screenshots` folder in your repo
 - **GitHub URL**: `![Alt Text](https://github.com/username/repo/blob/main/path/image.png?raw=true)` - Use full GitHub URL with `?raw=true`
-- **External Hosting**: `![Alt Text](https://imgur.com/your-image.png)` - Upload to Imgur, Cloudinary, or similar services
+- **External Hosting**: `![Alt Text](https://imgur.com/your-image.png)` - Upload to Imgur, Cloudinary, or similar services -->
 
 
 ## 🔗 API Reference
@@ -80,17 +100,49 @@ Here are the endpoints available on the Dart Frog server:
 duck_tapper/
 ├── duck_api/
 | ├── 
+├── assets/
+│ ├── fonts/
+│ │ └── ChelseaMarket-Regular.ttf
+│ ├── images/
+│ │ ├── Analytics.png
+│ │ ├── Buy Upgrade.png
+│ │ ├── DUCK 2.png
+│ │ ├── DUCK FISH.png
+│ │ ├── DUCK GROUP.png
+│ │ ├── DUCK LAKE.png
+│ │ ├── DUCK MELON.png
+│ │ ├── DUCK PNG.png
+│ │ ├── Duck.png
+│ │ ├── Fish Food.png
+│ │ ├── Flying Duck.png
+│ │ ├── Lake.png
+│ │ ├── Shopping Cart.png
+│ │ └── Watermelon.png
 ├── lib/
-│ ├── config/
-│ │ └── env_config.dart
+│ ├── models/
+│ ├── providers/
+│ │ └── duck_provider.dart
+│ ├── repositories/
 │ ├── screens/
+│ │ ├── details_screen.dart
+│ │ ├── duck_screen.dart
+│ │ ├── login_screen.dart
+│ │ ├── nav_screen.dart
+│ │ └── upgrade_screen.dart
 │ └── main.dart
-├── server/
-│ └── routes/
+│ ├── screens/
+│ │ ├── api_service.dart
+│ │ └── login_check.dart
+│ ├── widgets/
+│ │ └── register_dialog.dart
 ├── screenshots/
 │ ├── home_screen.png
 │ ├── add_task.png
 │ └── task_complete.png
+├── test/
+│ ├── unit_test.dart
+│ ├── widget_test.dart
+│ └── http_test.http
 ├── .env
 └── README.md
 ```
