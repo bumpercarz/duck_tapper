@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'screens/login_screen.dart';
 
+// Provider for duck data
 void main() {
   runApp(
     ChangeNotifierProvider(
