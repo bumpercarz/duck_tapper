@@ -49,6 +49,51 @@ class AccountService {
     return id;
   }
 
+  
+  // ============================================================
+  // READ OPERATIONS
+  // ============================================================
+
+  /// Get all active accounts with ducks
+  /// Uses JOIN with books table to count books per author
+  Future<List<AccountsResponse>> getAllAccounts() async {
+    // Query: SELECT authors.*, COUNT(books.id) as book_count
+    //        FROM authors
+    //        LEFT JOIN books ON authors.id = books.author_id
+    //        WHERE authors.is_active = true
+    //        GROUP BY authors.id
+
+    final query = _db.select(_db.accounts).join([
+      leftOuterJoin(_db.ducks, _db.ducks.account_id.equalsExp(_db.accounts.account_id)),
+    ])
+      ..where(_db.accounts.isActive.equals(true));
+
+    final rows = await query.get();
+
+    final Map<int, AccountsResponse> accountsMap = {};
+
+    for (final row in rows) {
+      final account = row.readTable(_db.accounts);
+      final duck = row.readTableOrNull(_db.ducks);
+
+      if (!accountsMap.containsKey(account.account_id)) {
+        accountsMap[account.account_id] = AccountsResponse(
+          account_id: account.account_id,
+          username: account.username,
+          password: account.password
+        );
+      }
+    }
+
+    return accountsMap.values.toList();
+  }
+
+  /// Get single account by ID
+  Future<AccountsResponse?> getAccountById(int id) async {
+    final authors = await getAllAccounts();
+    return authors.where((a) => a.account_id == id).firstOrNull;
+  }
+
   // ============================================================
   // DELETE OPERATIONS (Soft Delete)
   // ============================================================

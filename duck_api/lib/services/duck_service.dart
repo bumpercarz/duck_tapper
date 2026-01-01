@@ -49,12 +49,12 @@ class DuckService {
   // READ OPERATIONS
   // ============================================================
 
-  /// Get all active ducks with accounts names (JOIN)
+  /// Get all active ducks (JOIN)
   Future<List<DuckResponse>> getAllDucks() async {
-    // Query: SELECT books.*, authors.name as author_name
-    //        FROM books
-    //        LEFT JOIN authors ON books.author_id = authors.id
-    //        WHERE books.is_active = true AND authors.is_active = true
+    // Query: SELECT ducks.*
+    //        FROM ducks
+    //        LEFT JOIN accounts ON ducks.account_id = accounts.id
+    //        WHERE ducks.is_active = true AND accounts.is_active = true
 
     final query = _db.select(_db.ducks).join([
       leftOuterJoin(_db.accounts, _db.accounts.account_id.equalsExp(_db.ducks.account_id)),
@@ -132,12 +132,11 @@ class DuckService {
     if (!data.hasUpdates) {
       throw ValidationException('No updates identifed');
     }
+  }
 
 
   /// Update duck
   Future<void> updateDuck(int id, UpdateDuck data) async {
-    final now = DateTime.now();
-
     await (_db.update(_db.ducks)..where((t) => t.duck_id.equals(id))).write(
       DucksCompanion(
         totalQuack: data.totalQuack != 0 ? Value(data.totalQuack) : const Value(0),
@@ -157,7 +156,7 @@ class DuckService {
 
   /// Validate duck deletion
   Future<void> validateEraseDuck(int id) async {
-    final book = await (_db.select(_db.ducks)
+    final duck = await (_db.select(_db.ducks)
           ..where((t) => t.duck_id.equals(id) & t.isActive.equals(true)))
         .getSingleOrNull();
 
@@ -169,11 +168,10 @@ class DuckService {
   /// Soft delete a duck - erases duck data
   Future<void> eraseDuck(int id, {String deletedBy = 'system'}) async {
     await (_db.update(_db.ducks)..where((t) => t.duck_id.equals(id))).write(
-      DucksCompanion(
-        isActive: const Value(false)
+      const DucksCompanion(
+        isActive: Value(false)
       ),
     );
   }
   
-  }
 }

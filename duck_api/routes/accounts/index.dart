@@ -4,19 +4,17 @@ import '../../lib/types/account_types.dart';
 import '../../lib/exceptions/validation_exception.dart';
 
 
-// unedited vvv
-
 // ============================================================
 // ROUTE HANDLER - Acts as a "highway" that routes to functions
 // ============================================================
 
 Future<Response> onRequest(RequestContext context) async {
-  final service = context.read<AuthorService>();
+  final service = context.read<AccountService>();
 
   // Route to appropriate handler function based on HTTP method
   return switch (context.request.method) {
-    HttpMethod.get => _fetchAuthors(service),
-    HttpMethod.post => _addAuthor(context, service),
+    HttpMethod.get => _fetchAccounts(service),
+    HttpMethod.post => _addAccount(context, service),
     _ => Future.value(Response(statusCode: 405)), // Method not allowed
   };
 }
@@ -25,16 +23,16 @@ Future<Response> onRequest(RequestContext context) async {
 // GET - Fetch all authors
 // ============================================================
 
-Future<Response> _fetchAuthors(AuthorService service) async {
+Future<Response> _fetchAccounts(AccountService service) async {
   try {
-    final authors = await service.getAllAuthors();
+    final accounts = await service.getAllAccounts();
     return Response.json(
-      body: authors.map((a) => a.toJson()).toList(),
+      body: accounts.map((a) => a.toJson()).toList(),
     );
   } catch (e) {
     return Response.json(
       statusCode: 500,
-      body: {'error': 'Failed to fetch authors: ${e.toString()}'},
+      body: {'error': 'Failed to fetch accounts: ${e.toString()}'},
     );
   }
 }
@@ -44,26 +42,26 @@ Future<Response> _fetchAuthors(AuthorService service) async {
 // Pattern: Parse → Validate → Execute
 // ============================================================
 
-Future<Response> _addAuthor(
+Future<Response> _addAccount(
   RequestContext context,
-  AuthorService service,
+  AccountService service,
 ) async {
   try {
     // Step 1: Parse JSON to type class (type casting only)
     final body = await context.request.json() as Map<String, dynamic>;
-    final data = CreateAuthorData.fromJson(body);
+    final data = CreateAccountData.fromJson(body);
 
     // Step 2: Validate (service method)
-    await service.validateCreateAuthor(data);
+    await service.validateCreateAccount(data);
 
     // Step 3: Execute (service method)
-    final id = await service.createAuthor(data);
+    final id = await service.createAccount(data);
 
     // Step 4: Return success response
     return Response.json(
       statusCode: 201,
       body: {
-        'message': 'Author created successfully',
+        'message': 'Account created successfully',
         'id': id,
       },
     );
@@ -77,7 +75,7 @@ Future<Response> _addAuthor(
     // Unexpected errors → HTTP 500
     return Response.json(
       statusCode: 500,
-      body: {'error': 'Failed to create author: ${e.toString()}'},
+      body: {'error': 'Failed to create account: ${e.toString()}'},
     );
   }
 }

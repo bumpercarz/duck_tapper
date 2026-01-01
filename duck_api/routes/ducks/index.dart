@@ -4,39 +4,18 @@ import '../../lib/types/duck_types.dart';
 import '../../lib/exceptions/validation_exception.dart';
 
 
-// unedited vvv
-
 // ============================================================
 // ROUTE HANDLER - Acts as a "highway" that routes to functions
 // ============================================================
 
 Future<Response> onRequest(RequestContext context) async {
-  final service = context.read<BookService>();
+  final service = context.read<DuckService>();
 
   // Route to appropriate handler function based on HTTP method
   return switch (context.request.method) {
-    HttpMethod.get => _fetchBooks(service),
-    HttpMethod.post => _addBook(context, service),
+    HttpMethod.post => _addDuck(context, service),
     _ => Future.value(Response(statusCode: 405)), // Method not allowed
   };
-}
-
-// ============================================================
-// GET - Fetch all books
-// ============================================================
-
-Future<Response> _fetchBooks(BookService service) async {
-  try {
-    final books = await service.getAllBooks();
-    return Response.json(
-      body: books.map((b) => b.toJson()).toList(),
-    );
-  } catch (e) {
-    return Response.json(
-      statusCode: 500,
-      body: {'error': 'Failed to fetch books: ${e.toString()}'},
-    );
-  }
 }
 
 // ============================================================
@@ -44,26 +23,26 @@ Future<Response> _fetchBooks(BookService service) async {
 // Pattern: Parse → Validate → Execute
 // ============================================================
 
-Future<Response> _addBook(
+Future<Response> _addDuck(
   RequestContext context,
-  BookService service,
+  DuckService service,
 ) async {
   try {
     // Step 1: Parse JSON to type class (type casting only)
     final body = await context.request.json() as Map<String, dynamic>;
-    final data = CreateBookData.fromJson(body);
+    final data = CreateDuck.fromJson(body);
 
     // Step 2: Validate (service method)
-    await service.validateCreateBook(data);
+    await service.validateCreateDuck(data);
 
     // Step 3: Execute (service method)
-    final id = await service.createBook(data);
+    final id = await service.createDuck(data);
 
     // Step 4: Return success response
     return Response.json(
       statusCode: 201,
       body: {
-        'message': 'Book created successfully',
+        'message': 'New duck has arrived. Quack quack.',
         'id': id,
       },
     );
@@ -77,7 +56,7 @@ Future<Response> _addBook(
     // Unexpected errors → HTTP 500
     return Response.json(
       statusCode: 500,
-      body: {'error': 'Failed to create book: ${e.toString()}'},
+      body: {'error': 'Failed to create duck: ${e.toString()}'},
     );
   }
 }
