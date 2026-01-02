@@ -52,6 +52,47 @@ Future<Response> _fetchAccount(AccountService service, int account_id) async {
 }
 
 // ============================================================
+// PUT - Update account
+// Pattern: Parse → Validate → Execute
+// ============================================================
+
+Future<Response> _updateAccount(
+  RequestContext context,
+  AccountService service,
+  int account_id,
+) async {
+  try {
+    // Step 1: Parse JSON to type class (type casting only)
+    final body = await context.request.json() as Map<String, dynamic>;
+    final data = UpdateAccountData.fromJson(body);
+
+    // Step 2: Validate (service method)
+    await service.validateUpdateAccount(account_id, data);
+
+    // Step 3: Execute (service method)
+    await service.updateAccount(account_id, data);
+
+    // Step 4: Return success response
+    return Response.json(
+      body: {'message': 'Account updated successfully'},
+    );
+  } on ValidationException catch (e) {
+    // Validation errors → HTTP 400
+    return Response.json(
+      statusCode: 400,
+      body: {'error': e.message},
+    );
+  } catch (e) {
+    // Unexpected errors → HTTP 500
+    return Response.json(
+      statusCode: 500,
+      body: {'error': 'Failed to update account: ${e.toString()}'},
+    );
+  }
+}
+
+
+// ============================================================
 // DELETE - Soft delete author
 // Pattern: Validate → Execute
 // ============================================================

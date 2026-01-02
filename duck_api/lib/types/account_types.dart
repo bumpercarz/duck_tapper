@@ -23,8 +23,32 @@ class CreateAccountData {
   }
 }
 
-/// You cannot change your username & password after account creation ;p
+/// Type class for updating an account
+/// All fields optional (partial updates)
 
+/// users are unable to update accounts
+class UpdateAccountData {
+  final String? username;
+  final String? password;
+
+  UpdateAccountData({
+    this.username,
+    this.password
+  });
+
+  /// Factory constructor - Type casting only
+  factory UpdateAccountData.fromJson(Map<String, dynamic> json) {
+    return UpdateAccountData(
+      username: json['username']?.toString(),
+      password: json['password']?.toString()
+    );
+  }
+
+  /// Helper: Check if any field is provided
+  bool get hasUpdates =>
+      username != null ||
+      password != null;
+}
 
 
 // ============================================================
