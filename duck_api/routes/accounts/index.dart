@@ -20,7 +20,7 @@ Future<Response> onRequest(RequestContext context) async {
 }
 
 // ============================================================
-// GET - Fetch all authors
+// GET - Fetch all accounts
 // ============================================================
 
 Future<Response> _fetchAccounts(AccountService service) async {
@@ -38,7 +38,7 @@ Future<Response> _fetchAccounts(AccountService service) async {
 }
 
 // ============================================================
-// POST - Create new author
+// POST - Create new account
 // Pattern: Parse → Validate → Execute
 // ============================================================
 

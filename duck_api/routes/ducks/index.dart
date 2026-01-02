@@ -13,13 +13,32 @@ Future<Response> onRequest(RequestContext context) async {
 
   // Route to appropriate handler function based on HTTP method
   return switch (context.request.method) {
+    HttpMethod.get => _fetchDucks(service),
     HttpMethod.post => _addDuck(context, service),
     _ => Future.value(Response(statusCode: 405)), // Method not allowed
   };
 }
 
 // ============================================================
-// POST - Create new book
+// GET - Fetch all books
+// ============================================================
+
+Future<Response> _fetchDucks(DuckService service) async {
+  try {
+    final ducks = await service.getAllDucks();
+    return Response.json(
+      body: ducks.map((d) => d.toJson()).toList(),
+    );
+  } catch (e) {
+    return Response.json(
+      statusCode: 500,
+      body: {'error': 'Failed to fetch ducks: ${e.toString()}'},
+    );
+  }
+}
+
+// ============================================================
+// POST - Create new duck
 // Pattern: Parse → Validate → Execute
 // ============================================================
 

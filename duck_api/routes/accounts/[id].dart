@@ -46,7 +46,7 @@ Future<Response> _fetchAccount(AccountService service, int account_id) async {
   } catch (e) {
     return Response.json(
       statusCode: 500,
-      body: {'error': 'Failed to fetch author: ${e.toString()}'},
+      body: {'error': 'Failed to fetch account: ${e.toString()}'},
     );
   }
 }

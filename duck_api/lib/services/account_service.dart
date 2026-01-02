@@ -55,13 +55,11 @@ class AccountService {
   // ============================================================
 
   /// Get all active accounts with ducks
-  /// Uses JOIN with books table to count books per author
   Future<List<AccountsResponse>> getAllAccounts() async {
-    // Query: SELECT authors.*, COUNT(books.id) as book_count
-    //        FROM authors
-    //        LEFT JOIN books ON authors.id = books.author_id
-    //        WHERE authors.is_active = true
-    //        GROUP BY authors.id
+    // Query: SELECT accounts.*
+    //        FROM accounts
+    //        LEFT JOIN ducks ON accounts.id = books.account_id
+    //        WHERE accounts.is_active = true
 
     final query = _db.select(_db.accounts).join([
       leftOuterJoin(_db.ducks, _db.ducks.account_id.equalsExp(_db.accounts.account_id)),
@@ -74,7 +72,7 @@ class AccountService {
 
     for (final row in rows) {
       final account = row.readTable(_db.accounts);
-      final duck = row.readTableOrNull(_db.ducks);
+      // final duck = row.readTableOrNull(_db.ducks);
 
       if (!accountsMap.containsKey(account.account_id)) {
         accountsMap[account.account_id] = AccountsResponse(
