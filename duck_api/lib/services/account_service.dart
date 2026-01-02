@@ -15,7 +15,7 @@ class AccountService {
   /// Validate account creation data
   /// Throws ValidationException if invalid
   Future<void> validateCreateAccount(CreateAccountData data) async {
-    // Name validation
+    // Username validation
     if (data.username.trim().isEmpty) {
       throw ValidationException('Username is required');
     }
@@ -26,12 +26,12 @@ class AccountService {
         .getSingleOrNull();
 
     if (existing != null) {
-      throw ValidationException('Username already exists');
+      throw ValidationException('Username already exists.');
     }
 
     // Password validation
     if (data.password.trim().isEmpty) {
-      throw ValidationException('Password is empty');
+      throw ValidationException('Please input a password.');
     }
   }
 
@@ -91,6 +91,66 @@ class AccountService {
     final authors = await getAllAccounts();
     return authors.where((a) => a.account_id == id).firstOrNull;
   }
+
+
+  // ============================================================
+  // UPDATE OPERATIONS
+  // ============================================================
+
+  /// Validate author update data
+  Future<void> validateUpdateAccount(int id, UpdateAccountData data) async {
+    // Check author exists
+    final account = await (_db.select(_db.accounts)
+          ..where((t) => t.account_id.equals(id) & t.isActive.equals(true)))
+        .getSingleOrNull();
+
+    if (account == null) {
+      throw ValidationException('Account ID $id does not exist or is inactive');
+    }
+
+    // Check if any updates provided
+    if (!data.hasUpdates) {
+      throw ValidationException('No update fields provided');
+    }
+
+    // Validate provided fields
+    if (data.username != null) {
+      if (data.username!.trim().isEmpty) {
+        throw ValidationException('Username cannot be empty');
+      }
+
+      // Check username uniqueness (excluding current account)
+      final existing = await (_db.select(_db.accounts)
+            ..where((t) =>
+                t.username.equals(data.username!) &
+                t.account_id.equals(id).not() &
+                t.isActive.equals(true)))
+          .getSingleOrNull();
+
+      if (existing != null) {
+        throw ValidationException('Username already exists');
+      }
+    }
+
+    if (data.password != null) {
+      if (data.password!.trim().isEmpty) {
+        throw ValidationException('Password cannot be empty');
+      }
+    }
+  }
+
+  /// Update an author (assumes data is already validated)
+  Future<void> updateAccount(int id, UpdateAccountData data) async {
+    final now = DateTime.now();
+
+    await (_db.update(_db.accounts)..where((t) => t.account_id.equals(id))).write(
+      AccountsCompanion(
+        username: data.username != null ? Value(data.username!.trim()) : const Value.absent(),
+        password: data.password != null ? Value(data.password!.trim()) : const Value.absent(),
+      ),
+    );
+  }
+
 
   // ============================================================
   // DELETE OPERATIONS (Soft Delete)
