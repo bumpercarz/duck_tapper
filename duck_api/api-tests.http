@@ -128,150 +128,34 @@ Content-Type: application/json
 # PHASE 2: UPDATE & DELETE
 # ============================================================
 
-### 17. GET single author by ID
-GET {{baseUrl}}/authors/1
+### 17. GET single account by ID
+GET {{baseUrl}}/accounts/1
 
-### 18. UPDATE author - Change biography
-PUT {{baseUrl}}/authors/1
+### 18. UPDATE account - Change username
+PUT {{baseUrl}}/accounts/1
 Content-Type: application/json
 
 {
-  "biography": "British author and philanthropist, creator of the Harry Potter fantasy series",
-  "updatedBy": "editor"
+  "username": "updatedUsername"
 }
 
-### 19. UPDATE author - Change email
-PUT {{baseUrl}}/authors/1
+### 19. UPDATE account - Change password
+PUT {{baseUrl}}/accounts/1
 Content-Type: application/json
 
 {
-  "email": "jk.rowling.updated@example.com",
-  "updatedBy": "admin"
+  "email": "updatedPassword"
 }
 
-### 20. UPDATE author - Change multiple fields
-PUT {{baseUrl}}/authors/2
+### 20. UPDATE account - Change multiple fields
+PUT {{baseUrl}}/accounts/2
 Content-Type: application/json
 
 {
-  "name": "George Orwell (Eric Blair)",
-  "biography": "English novelist, essayist, journalist, and critic. His pen name was George Orwell.",
-  "updatedBy": "editor"
+  "username": "username2",
+  "password": "password2"
 }
 
-### 21. GET author again to verify updates
-GET {{baseUrl}}/authors/1
+### 21. GET accounts to verify updates
+GET {{baseUrl}}/accounts
 
-### 22. GET single book by ID
-GET {{baseUrl}}/books/1
-
-### 23. UPDATE book - Change title
-PUT {{baseUrl}}/books/1
-Content-Type: application/json
-
-{
-  "title": "Harry Potter and the Sorcerer's Stone",
-  "updatedBy": "editor"
-}
-
-### 24. UPDATE book - Change author (reassign book)
-PUT {{baseUrl}}/books/1
-Content-Type: application/json
-
-{
-  "authorId": 2,
-  "updatedBy": "admin"
-}
-
-### 25. UPDATE book - Change multiple fields
-PUT {{baseUrl}}/books/3
-Content-Type: application/json
-
-{
-  "title": "Norwegian Wood (Remastered Edition)",
-  "pages": 320,
-  "updatedBy": "editor"
-}
-
-### 26. GET book again to verify updates
-GET {{baseUrl}}/books/1
-
-### 27. DELETE book (soft delete)
-DELETE {{baseUrl}}/books/3
-
-### 28. GET all books (book 3 should not appear)
-GET {{baseUrl}}/books
-
-### 29. TRY to delete author with books (should fail)
-DELETE {{baseUrl}}/authors/1
-
-### 30. DELETE author without books
-DELETE {{baseUrl}}/authors/3
-
-### 31. GET all authors (author 3 should not appear)
-GET {{baseUrl}}/authors
-
-
-# ============================================================
-# VALIDATION TESTS - UPDATE
-# ============================================================
-
-### 32. UPDATE author - Invalid email format
-PUT {{baseUrl}}/authors/1
-Content-Type: application/json
-
-{
-  "email": "not-an-email"
-}
-
-### 33. UPDATE author - Duplicate email
-PUT {{baseUrl}}/authors/1
-Content-Type: application/json
-
-{
-  "email": "george.orwell@example.com"
-}
-
-### 34. UPDATE author - No fields provided
-PUT {{baseUrl}}/authors/1
-Content-Type: application/json
-
-{}
-
-### 35. UPDATE book - Invalid ISBN
-PUT {{baseUrl}}/books/1
-Content-Type: application/json
-
-{
-  "isbn": "123"
-}
-
-### 36. UPDATE book - Invalid author ID
-PUT {{baseUrl}}/books/1
-Content-Type: application/json
-
-{
-  "authorId": 999
-}
-
-### 37. UPDATE book - Invalid year
-PUT {{baseUrl}}/books/1
-Content-Type: application/json
-
-{
-  "publishedYear": 1200
-}
-
-
-# ============================================================
-# VALIDATION TESTS - DELETE
-# ============================================================
-
-### 38. DELETE non-existent author
-DELETE {{baseUrl}}/authors/999
-
-### 39. DELETE already deleted author
-DELETE {{baseUrl}}/authors/3
-
-### 40. DELETE non-existent book
-DELETE {{baseUrl}}/books/999
