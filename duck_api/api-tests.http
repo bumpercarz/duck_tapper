@@ -159,3 +159,28 @@ Content-Type: application/json
 ### 21. GET accounts to verify updates
 GET {{baseUrl}}/accounts
 
+### 22. GET single duck by ID
+GET {{baseUrl}}/ducks/1
+
+### 23. UPDATE duck ID 1 - Change totalQuack
+PUT {{baseUrl}}/ducks
+Content-Type: application/json
+
+{
+  "totalQuack": 12000
+}
+
+### 23. GET ducks to verify update
+GET {{baseUrl}}/ducks
+
+### 24. DELETE account ID 1 - also deletes duck under account 1
+DELETE {{baseUrl}}/accounts/1
+
+### 25. DELETE duck with ID 2 - will not affect account assigned to duck_id 2
+DELETE {{baseUrl}}/ducks/2
+
+### 26. GET accounts to view all accounts after deleting
+GET {{baseUrl}}/accounts
+
+### 26. GET ducks to view all ducks after deleting
+GET {{baseUrl}}/ducks

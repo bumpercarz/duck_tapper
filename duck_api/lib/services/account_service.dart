@@ -97,9 +97,9 @@ class AccountService {
   // UPDATE OPERATIONS
   // ============================================================
 
-  /// Validate author update data
+  /// Validate account update data
   Future<void> validateUpdateAccount(int id, UpdateAccountData data) async {
-    // Check author exists
+    // Check account exists
     final account = await (_db.select(_db.accounts)
           ..where((t) => t.account_id.equals(id) & t.isActive.equals(true)))
         .getSingleOrNull();
@@ -139,7 +139,7 @@ class AccountService {
     }
   }
 
-  /// Update an author (assumes data is already validated)
+  /// Update an account (assumes data is already validated)
   Future<void> updateAccount(int id, UpdateAccountData data) async {
     final now = DateTime.now();
 
@@ -167,13 +167,31 @@ class AccountService {
     }
   }
 
-  /// Soft delete an account (set isActive = false)
-  Future<void> deleteAccount(int id, {String deletedBy = 'system'}) async {
-
+  /// Soft delete
+  Future<Map<String, dynamic>> deleteAccount(int id, {String deletedBy = 'system'}) async {
+    // Check account for active ducks
+    final duckCheck = await (_db.select(_db.ducks)
+          ..where((t) => t.account_id.equals(id) & t.isActive.equals(true)))
+        .get();
+    
+    // CASCADE SOFT DELETE: Soft delete ducks under account
+    if (duckCheck.isNotEmpty) {
+      await (_db.update(_db.ducks)..where((t) => t.account_id.equals(id))).write(
+        DucksCompanion(
+          isActive: const Value(false)
+        ),
+      );
+    }
+    
+    // Soft delete an account (set isActive = false)
     await (_db.update(_db.accounts)..where((t) => t.account_id.equals(id))).write(
       AccountsCompanion(
         isActive: const Value(false)
       ),
     );
+
+    return {
+      'message': 'Account deleted successfully.'
+    };
   }
 }

@@ -73,7 +73,6 @@ class DuckService {
 
     return rows.map((row) {
       final duck = row.readTable(_db.ducks);
-      final account = row.readTableOrNull(_db.accounts);
 
       return DuckResponse(
         duck_id: duck.duck_id,
@@ -100,7 +99,6 @@ class DuckService {
     if (row == null) return null;
 
     final duck = row.readTable(_db.ducks);
-    final account = row.readTableOrNull(_db.accounts);
 
     return DuckResponse(
       duck_id: duck.duck_id,
