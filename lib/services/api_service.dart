@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
-import '../envconfig/environment.dart';
+import '../config/environment.dart';
 
 /// API Service - HTTP client wrapper for Dart Frog API
 ///

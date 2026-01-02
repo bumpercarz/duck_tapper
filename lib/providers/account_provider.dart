@@ -23,12 +23,16 @@ class AccountProvider with ChangeNotifier {
   /// Loading state - true while fetching data from API
   bool _isLoading = false;
 
+  /// Logged in account in Device
+  int _loggedAccount = 0;
+
   /// Error message - populated when API call fails
   String? _errorMessage;
 
   /// Getters for accessing state from UI
-  List<Account> get authors => _accounts;
+  List<Account> get accounts => _accounts;
   bool get isLoading => _isLoading;
+  int? get loggedAccount => _loggedAccount;
   String? get errorMessage => _errorMessage;
   bool get hasError => _errorMessage != null;
 
@@ -58,6 +62,18 @@ class AccountProvider with ChangeNotifier {
     }
   }
 
+  
+  Account getLatestAccount() {
+    List<Account> latest = _accounts.where((account) => account.id == _accounts.length).toList();
+    return latest[0];
+  }
+
+  Future<void> setLoggedAccount(int loggedAccount) async{
+    _loggedAccount = loggedAccount;
+    debugPrint('Logged $_loggedAccount');
+    notifyListeners();
+  }
+
   /// Create a new author
   ///
   /// Calls: POST http://BASE_URL/authors
@@ -66,7 +82,7 @@ class AccountProvider with ChangeNotifier {
   /// After successful creation, refreshes the author list
   ///
   /// Returns: true if successful, false if error
-  Future<bool> createAuthor(Account account) async {
+  Future<bool> createAccount(Account account) async {
     _errorMessage = null;
     notifyListeners();
 

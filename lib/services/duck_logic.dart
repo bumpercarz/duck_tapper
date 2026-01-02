@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../models/duck.dart';
 import '../providers/duck_provider.dart';
 import '../providers/account_provider.dart';
 
 class DuckLogic with ChangeNotifier {
+
   int _totalQuacks = 0;
   int _currentQuacks = 0;
   int _duckTaps = 0;
@@ -19,6 +22,20 @@ class DuckLogic with ChangeNotifier {
   int get fish => _fish;
   int get watermelon => _watermelon;
   int get pond => _pond;
+
+  void loadSavedDuck (BuildContext context, int loggedAccount){
+    final provider = context.read<DuckProvider>();
+
+    Duck _ducks = provider.getDucksByAccount(loggedAccount); 
+
+    _totalQuacks = _ducks.totalQuack;
+    _currentQuacks = _ducks.currentQuack;
+    _duckTaps = _ducks.duckTaps;
+    _moreDucks = _ducks.moreDucks;
+    _fish = _ducks.fish;
+    _watermelon = _ducks.watermelon;
+    _pond = _ducks.ponds;
+  }
 
   void addQuacks(int moreDucks, int fish, int watermelon, int pond) {
     _totalQuacks = (_totalQuacks+1) + 1*moreDucks + 10*fish + 25*watermelon + 75*pond;

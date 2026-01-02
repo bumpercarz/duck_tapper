@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 /// Environment configuration loader
@@ -43,9 +44,9 @@ class Environment {
     await dotenv.load(fileName: '.env.$env');
 
     if (enableLogging) {
-      print('🌍 Environment loaded: $env');
-      print('🔗 API Base URL: $baseUrl');
-      print('⏱️  API Timeout: ${apiTimeout}s');
+      debugPrint('🌍 Environment loaded: $env');
+      debugPrint('🔗 API Base URL: $baseUrl');
+      debugPrint('⏱️  API Timeout: ${apiTimeout}s');
     }
   }
 }

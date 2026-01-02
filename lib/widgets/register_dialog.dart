@@ -1,4 +1,9 @@
+import 'package:duck_tapper/providers/account_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../models/account.dart';
+import '../models/duck.dart';
+import '../providers/duck_provider.dart';
 
 /// Pop Up Dialog box for Registering a new account
 /// - CREATEs an account and directs the new account to Duck Screen (UNIMPLEMENTED)
@@ -32,7 +37,7 @@ class _RegisterDialogState extends State<RegisterDialog>{
     super.dispose();
   }
 
-  void _register() {
+  void _register(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
       // Process data
       final username = _usernameController.text;
@@ -40,7 +45,29 @@ class _RegisterDialogState extends State<RegisterDialog>{
       debugPrint('Registering: $username with password $password');
       
 
-      // CREATE Account IN AccountTable (USE API SERVICE)
+      // CREATE Account (USE API SERVICE)
+      final newAccount = Account(
+        username: _usernameController.text,
+        password: _passwordController.text
+      );
+
+      await context.read<AccountProvider>().fetchAccounts();
+      await context.read<AccountProvider>().createAccount(newAccount);
+      // CREATE Duck with Account
+      Account newaccount = context.read<AccountProvider>().getLatestAccount();
+
+      final newDuck = Duck(
+        account_id: (newaccount.id!+1), 
+        currentQuack: 0, 
+        duckTaps: 0, 
+        totalQuack: 0, 
+        moreDucks: 0, 
+        fish: 0, 
+        watermelon: 0, 
+        ponds: 0
+      );
+      
+      await context.read<DuckProvider>().createDuck(newDuck);
 
       // End with print
       Navigator.of(context).pop({'Username': username});
@@ -129,7 +156,7 @@ class _RegisterDialogState extends State<RegisterDialog>{
                 ),
                 SizedBox(height: 40),
                 ElevatedButton(
-                  onPressed: _register,
+                  onPressed:() => _register(context),
                   style: ElevatedButton.styleFrom(
                     fixedSize: Size(240, 50),
                     backgroundColor: Color(0xFFCA8C35),

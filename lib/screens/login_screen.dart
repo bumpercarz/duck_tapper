@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/account_provider.dart';
 import '../widgets/register_dialog.dart';
 import '../services/login_check.dart';
+import '../services/duck_logic.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -22,7 +25,10 @@ class _LoginScreenState extends State<LoginScreen>{
     super.dispose();
   }
 
-
+  @override
+  void initState(){
+    super.initState();
+  }
 
   // Function to toggle the password visibility state.
   void _togglePasswordVisibility() {
@@ -30,8 +36,6 @@ class _LoginScreenState extends State<LoginScreen>{
       _passwordHide = !_passwordHide;
     });
   }
-
-    
 
   // Show Register Dialog on tap
   void _showRegisterDialog(BuildContext context) {
@@ -127,11 +131,21 @@ class _LoginScreenState extends State<LoginScreen>{
                 margin: EdgeInsets.only(top:50),
                 child:ElevatedButton(
 
-                  // Login Checker (CHANGE URL LATER IN login_check.dart WHEN API IS FIXED)
+                  // Login Checker
                   onPressed:() async {
-                    bool isAuthenticated = await checkInput(_usernameController.text, _passwordController.text);
-                    if (isAuthenticated) {
-                      Navigator.pushReplacementNamed(context, '/home'); 
+                    final provider = context.read<AccountProvider>();
+                    final String username = _usernameController.text;
+                    final String password = _passwordController.text;
+
+                    provider.fetchAccounts();
+                    int isAuthenticated = await checkInput(context, provider.accounts, username, password);
+                    if (isAuthenticated > 0) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                       SnackBar(content: Text('Logged in. Welcome to your duck, $username!')),
+                      );
+                      provider.setLoggedAccount(isAuthenticated);
+                      Provider.of<DuckLogic>(context, listen: false).loadSavedDuck(context, isAuthenticated);
+                      Navigator.pushReplacementNamed(context, '/game'); 
                     } else {
                       // Show an error message (e.g., using a SnackBar or an AlertDialog)
                       ScaffoldMessenger.of(context).showSnackBar(

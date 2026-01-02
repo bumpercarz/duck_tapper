@@ -1,6 +1,6 @@
 import 'package:duck_tapper/services/duck_logic.dart';
 
-import 'envconfig/environment.dart';
+import 'config/environment.dart';
 import 'providers/account_provider.dart';
 import 'providers/duck_provider.dart';
 import 'screens/nav_screen.dart';
@@ -14,8 +14,16 @@ void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   
   await Environment.load(env: 'development');
-  runApp(
-    MultiProvider(
+  runApp(const DuckTapper());
+}
+
+class DuckTapper extends StatelessWidget {
+  const DuckTapper({super.key});
+
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MultiProvider(
       providers: [
         // Author state management
         // Access with: context.read<AuthorProvider>() or context.watch<AuthorProvider>()
@@ -26,53 +34,43 @@ void main() async{
         ChangeNotifierProvider(create: (_) => DuckProvider()),
         ChangeNotifierProvider(create: (_) => DuckLogic()),
       ],
-      child: const DuckTapper()
-    )
-  );
-}
+      child: MaterialApp(
+        title: 'Ducky Quacker',
+        theme: ThemeData(
+          
+          // Material 3
+          colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFF265490)),
+          useMaterial3: true,
 
-class DuckTapper extends StatelessWidget {
-  const DuckTapper({super.key});
+          // Default Font for entire app
+          fontFamily: 'Chelsea',
+          textTheme: const TextTheme(
+            bodyMedium: TextStyle(color: Colors.white),
+          ),
 
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Ducky Quacker',
-      theme: ThemeData(
-        
-        // Material 3
-        colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFF265490)),
-        useMaterial3: true,
-
-        // Default Font for entire app
-        fontFamily: 'Chelsea',
-        textTheme: const TextTheme(
-          bodyMedium: TextStyle(color: Colors.white),
-        ),
-
-        // Consistent app bar styling
-        appBarTheme: const AppBarTheme(
-          centerTitle: true,
-          elevation: 2,
-        ),
-        scaffoldBackgroundColor: Color(0xFF265490),
-        // Upgrades Card Theme
-        cardTheme: CardThemeData(
-          elevation: 2,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+          // Consistent app bar styling
+          appBarTheme: const AppBarTheme(
+            centerTitle: true,
+            elevation: 2,
+          ),
+          scaffoldBackgroundColor: Color(0xFF265490),
+          // Upgrades Card Theme
+          cardTheme: CardThemeData(
+            elevation: 2,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
           ),
         ),
-      ),
-      
-      // Landing Page
-      home: const NavScreen(),
+        
+        // Landing Page
+        home: const LoginScreen(),
 
-      // Pages
-      routes: {
-        '/game': (context) => NavScreen()
-      },
+        // Pages
+        routes: {
+          '/game': (context) => NavScreen()
+        },
+      )
     );
   }
 }
