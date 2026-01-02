@@ -13,7 +13,7 @@ class DuckService {
   // ============================================================
 
   Future<void> validateCreateDuck(CreateDuck data) async {
-    // Foreign key validation - Author must exist and be active
+    // Foreign key validation - Account must exist and be active
     final account = await (_db.select(_db.accounts)
           ..where((t) => t.account_id.equals(data.account_id) & t.isActive.equals(true)
           ))

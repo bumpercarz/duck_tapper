@@ -1,0 +1,9 @@
+### Variables
+@baseUrl = http://localhost:8080
+
+# ============================================================
+# PHASE 1: CREATE & READ
+# ============================================================
+
+### 1. GET all authors (initially empty or seeded data) 
+GET {{baseUrl}}/accounts
