@@ -1,0 +1,54 @@
+/// Account Model Class
+///
+/// This model matches the API response structure from the Dart Frog backend.
+/// API Response comes from: duck_api/lib/types/account_types.dart (AuthorResponse class)
+class Account {
+  final int? id; // Nullable for new authors (not yet saved to API)
+  final String username;
+  final String password;
+
+  Account({
+    this.id,
+    required this.username,
+    required this.password,
+  });
+
+  /// Parse JSON response from API into Author object
+  ///
+  /// Used when receiving data from:
+  /// - GET /authors (list of authors)
+  /// - GET /authors/:id (single author)
+  ///
+  /// API Source: zoo_api/lib/services/author_service.dart → getAllAuthors()
+  factory Account.fromJson(Map<String, dynamic> json) {
+    return Account(
+      id: json['account_id'] as int,
+      username: json['username'] as String,
+      password: json['password'] as String,
+    );
+  }
+
+  /// Convert Author object to JSON for API requests
+  ///
+  /// Used when sending data to:
+  /// - POST /authors (create new author)
+  /// - PUT /authors/:id (update existing author)
+  ///
+  /// Note: Only includes fields that the API accepts for creation/update
+  /// (id, timestamps, and counts are managed by the API)
+  ///
+  /// API Validation: zoo_api/lib/services/author_service.dart
+  /// - validateCreateAuthor(): Checks email format, uniqueness, required fields
+  /// - validateUpdateAuthor(): Checks email format, uniqueness (excluding current)
+  Map<String, dynamic> toJson() {
+    return {
+      'username': username,
+      'password': password,
+    };
+  }
+
+  @override
+  String toString() {
+    return 'Account(id: $id, username: $username, password: $password)';
+  }
+}

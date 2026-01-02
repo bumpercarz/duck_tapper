@@ -1,16 +1,34 @@
-import 'package:duck_tapper/providers/duck_provider.dart';
-import 'package:duck_tapper/screens/nav_screen.dart';
+import 'package:duck_tapper/services/duck_logic.dart';
+
+import 'envconfig/environment.dart';
+import 'providers/account_provider.dart';
+import 'providers/duck_provider.dart';
+import 'screens/nav_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'screens/login_screen.dart';
 
 // Provider for duck data
-void main() {
+void main() async{
+  
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  await Environment.load(env: 'development');
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => DuckModel(),
-      child: const DuckTapper())
-    );
+    MultiProvider(
+      providers: [
+        // Author state management
+        // Access with: context.read<AuthorProvider>() or context.watch<AuthorProvider>()
+        ChangeNotifierProvider(create: (_) => AccountProvider()),
+
+        // Book state management
+        // Access with: context.read<BookProvider>() or context.watch<BookProvider>()
+        ChangeNotifierProvider(create: (_) => DuckProvider()),
+        ChangeNotifierProvider(create: (_) => DuckLogic()),
+      ],
+      child: const DuckTapper()
+    )
+  );
 }
 
 class DuckTapper extends StatelessWidget {

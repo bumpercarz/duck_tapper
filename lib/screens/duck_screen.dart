@@ -1,4 +1,5 @@
-import 'package:duck_tapper/providers/duck_provider.dart';
+import '../services/duck_logic.dart';
+import 'package:duck_tapper/services/duck_logic.dart';
 import 'package:provider/provider.dart';
 
 import '../screens/details_screen.dart';
@@ -46,7 +47,7 @@ class _DuckState extends State<DuckScreen> {
       _scale = _pressedScale; // Scale down on tap
     });
     
-    Provider.of<DuckModel>(context, listen: false).addQuacks(moreDucks, fish, watermelon, pond);
+    Provider.of<DuckLogic>(context, listen: false).addQuacks(moreDucks, fish, watermelon, pond);
 
     // Use Future.delayed to return to the original size after the animation
     Future.delayed(_duration, () {
@@ -71,13 +72,13 @@ class _DuckState extends State<DuckScreen> {
   Widget build(BuildContext context) {
     
     // Watch for changes (rebuilds the widget when data changes)
-    int totalQuacks = Provider.of<DuckModel>(context).totalQuacks;
-    int currentQuacks = Provider.of<DuckModel>(context).currentQuacks;
-    int duckTaps = Provider.of<DuckModel>(context).duckTaps;
-    int moreDucks = Provider.of<DuckModel>(context).moreDucks;
-    int fish = Provider.of<DuckModel>(context).fish;
-    int watermelon = Provider.of<DuckModel>(context).watermelon;
-    int pond = Provider.of<DuckModel>(context).pond;
+    int totalQuacks = Provider.of<DuckLogic>(context).totalQuacks;
+    int currentQuacks = Provider.of<DuckLogic>(context).currentQuacks;
+    int duckTaps = Provider.of<DuckLogic>(context).duckTaps;
+    int moreDucks = Provider.of<DuckLogic>(context).moreDucks;
+    int fish = Provider.of<DuckLogic>(context).fish;
+    int watermelon = Provider.of<DuckLogic>(context).watermelon;
+    int pond = Provider.of<DuckLogic>(context).pond;
 
     return Scaffold(
       backgroundColor: Color(0xFF2B1F14),

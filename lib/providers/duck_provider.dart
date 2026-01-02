@@ -1,51 +1,169 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+import '../models/duck.dart';
+import '../repositories/duck_repository.dart';
+import '../services/api_service.dart';
 
-class DuckModel with ChangeNotifier {
-  int _totalQuacks = 0;
-  int _currentQuacks = 0;
-  int _duckTaps = 0;
-  int _moreDucks = 0;
-  int _fish = 0;
-  int _watermelon = 0;
-  int _pond = 0;
+class DuckProvider with ChangeNotifier {
+  final DuckRepository _repository = DuckRepository();
 
-  int get totalQuacks => _totalQuacks;
-  int get currentQuacks => _currentQuacks;
-  int get duckTaps => _duckTaps;
+  /// List of books fetched from the API
+  List<Duck> _ducks = [];
 
-  int get moreDucks => _moreDucks;
-  int get fish => _fish;
-  int get watermelon => _watermelon;
-  int get pond => _pond;
+  /// Loading state - true while fetching data from API
+  bool _isLoading = false;
 
-  void addQuacks(int moreDucks, int fish, int watermelon, int pond) {
-    _totalQuacks = (_totalQuacks+1) + 1*moreDucks + 10*fish + 25*watermelon + 75*pond;
-    _currentQuacks = (_currentQuacks+1) + 1*moreDucks + 10*fish + 25*watermelon + 75*pond;
-    _duckTaps++;
-    notifyListeners(); // Notify all listening widgets
+  /// Error message - populated when API call fails
+  String? _errorMessage;
+
+  /// Getters for accessing state from UI
+  List<Duck> get ducks => _ducks;
+  bool get isLoading => _isLoading;
+  String? get errorMessage => _errorMessage;
+  bool get hasError => _errorMessage != null;
+
+  /// Fetch all books from the API
+  ///
+  /// Calls: GET http://BASE_URL/books
+  /// API: zoo_api/routes/books/index.dart → BookService.getAllBooks()
+  ///
+  /// Returns books with author names resolved via JOIN
+  ///
+  /// Updates UI automatically via notifyListeners()
+  Future<void> fetchDucks() async {
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+
+    try {
+      _ducks = await _repository.getDucks();
+      _errorMessage = null;
+    } on ApiException catch (e) {
+      _errorMessage = e.message;
+      _ducks = [];
+    } catch (e) {
+      _errorMessage = 'Unexpected error: $e';
+      _ducks = [];
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
   }
 
-  void buyMoreDucks(int price){
-    _currentQuacks = _currentQuacks - price;
-    _moreDucks++;
-    notifyListeners(); //
+  /// Create a new book
+  ///
+  /// Calls: POST http://BASE_URL/books
+  /// API: zoo_api/routes/books/index.dart → BookService.validateCreateBook() + createBook()
+  ///
+  /// API Validations:
+  /// - ISBN format (ISBN-10 or ISBN-13)
+  /// - ISBN uniqueness
+  /// - Published year (1450 to current year)
+  /// - Pages (must be positive)
+  /// - Author ID (must exist and be active)
+  ///
+  /// After successful creation, refreshes the book list
+  ///
+  /// Returns: true if successful, false if error
+  Future<bool> createDuck(Duck duck) async {
+    _errorMessage = null;
+    notifyListeners();
+
+    try {
+      await _repository.createDuck(duck);
+      await fetchDucks(); // Refresh list
+      return true;
+    } on ApiException catch (e) {
+      _errorMessage = e.message;
+      notifyListeners();
+      return false;
+    } catch (e) {
+      _errorMessage = 'Unexpected error: $e';
+      notifyListeners();
+      return false;
+    }
   }
-  
-  void buyFish(int price){
-    _currentQuacks = _currentQuacks - price;
-    _fish++;
-    notifyListeners(); //
+
+  /// Update an existing book
+  ///
+  /// Calls: PUT http://BASE_URL/books/:id
+  /// API: zoo_api/routes/books/[id].dart → BookService.validateUpdateBook() + updateBook()
+  ///
+  /// Supports partial updates - only send fields you want to change
+  /// Can also change the author by updating authorId
+  ///
+  /// After successful update, refreshes the book list
+  ///
+  /// Returns: true if successful, false if error
+  Future<bool> updateDuck(int id, Duck duck) async {
+    _errorMessage = null;
+    notifyListeners();
+
+    try {
+      await _repository.updateDuck(id, duck);
+      await fetchDucks(); // Refresh list
+      return true;
+    } on ApiException catch (e) {
+      _errorMessage = e.message;
+      notifyListeners();
+      return false;
+    } catch (e) {
+      _errorMessage = 'Unexpected error: $e';
+      notifyListeners();
+      return false;
+    }
   }
-  
-  void buyWatermelon(int price){
-    _currentQuacks = _currentQuacks - price;
-    _watermelon++;
-    notifyListeners(); //
+
+  /// Delete a book (soft delete)
+  ///
+  /// Calls: DELETE http://BASE_URL/books/:id
+  /// API: zoo_api/routes/books/[id].dart → BookService.validateDeleteBook() + deleteBook()
+  ///
+  /// Note: This is a soft delete (sets is_active = false in database)
+  /// After deletion, the author's book count will be updated automatically
+  ///
+  /// After successful deletion, refreshes the book list
+  ///
+  /// Returns: true if successful, false if error
+  Future<bool> deleteDuck(int id) async {
+    _errorMessage = null;
+    notifyListeners();
+
+    try {
+      await _repository.deleteDuck(id);
+      await fetchDucks(); // Refresh list
+      return true;
+    } on ApiException catch (e) {
+      _errorMessage = e.message;
+      notifyListeners();
+      return false;
+    } catch (e) {
+      _errorMessage = 'Unexpected error: $e';
+      notifyListeners();
+      return false;
+    }
   }
-  
-  void buyPond(int price){
-    _currentQuacks = _currentQuacks - price;
-    _pond++;
-    notifyListeners(); //
+
+  /// Get books by a specific author
+  ///
+  /// Filters the current books list by authorId
+  /// Note: If you need fresh data, call fetchBooks() first
+  List<Duck> getDucksByAccount(int accountId) {
+    return _ducks.where((duck) => duck.account_id == accountId).toList();
+  }
+
+  /// Clear error message
+  void clearError() {
+    _errorMessage = null;
+    notifyListeners();
   }
 }
+
+
+
+
+
+
+
+
+
+

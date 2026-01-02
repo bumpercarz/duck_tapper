@@ -1,7 +1,7 @@
 import 'dart:math' as math;
-import 'package:duck_tapper/providers/duck_provider.dart';
 import 'package:duck_tapper/screens/details_screen.dart';
 import 'package:duck_tapper/screens/duck_screen.dart';
+import 'package:duck_tapper/services/duck_logic.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
@@ -30,30 +30,30 @@ class _UpgradeState extends State<UpgradesScreen> {
   ];
   
   void _buyMoreDucks(price) {
-    Provider.of<DuckModel>(context, listen: false).buyMoreDucks(price);
+    Provider.of<DuckLogic>(context, listen: false).buyMoreDucks(price);
   }
   
   void _buyFish(int price) {
-    Provider.of<DuckModel>(context, listen: false).buyFish(price);
+    Provider.of<DuckLogic>(context, listen: false).buyFish(price);
   }
   
   void _buyWatermelon(int price) {
-    Provider.of<DuckModel>(context, listen: false).buyWatermelon(price);
+    Provider.of<DuckLogic>(context, listen: false).buyWatermelon(price);
   }
   
   void _buyPond(price) {
-    Provider.of<DuckModel>(context, listen: false).buyPond(price);
+    Provider.of<DuckLogic>(context, listen: false).buyPond(price);
   }
 
   @override
   Widget build(BuildContext context) {
 
     
-    int currentQuacks = Provider.of<DuckModel>(context).currentQuacks;
-    int moreDucks = Provider.of<DuckModel>(context).moreDucks;
-    int fish = Provider.of<DuckModel>(context).fish;
-    int watermelon = Provider.of<DuckModel>(context).watermelon;
-    int pond = Provider.of<DuckModel>(context).pond;
+    int currentQuacks = Provider.of<DuckLogic>(context).currentQuacks;
+    int moreDucks = Provider.of<DuckLogic>(context).moreDucks;
+    int fish = Provider.of<DuckLogic>(context).fish;
+    int watermelon = Provider.of<DuckLogic>(context).watermelon;
+    int pond = Provider.of<DuckLogic>(context).pond;
     
     List<int> priceList = [
       (10*math.pow(1.3,moreDucks)).toInt(),
