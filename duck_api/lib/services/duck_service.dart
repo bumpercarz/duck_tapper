@@ -24,6 +24,14 @@ class DuckService {
         'Account ID ${data.account_id} does not exist or is inactive',
       );
     }
+
+    if(data.totalQuack < 0 || data.currentQuack < 0 || data.duckTaps < 0
+    || data.moreDucks < 0 || data.fish < 0 || data.watermelon < 0 
+    || data.ponds < 0){
+      throw ValidationException(
+        'Duck values must not be below 0',
+      );
+    }
   }
 
   /// Create a new duck

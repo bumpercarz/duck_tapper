@@ -58,7 +58,7 @@ class AccountService {
   Future<List<AccountsResponse>> getAllAccounts() async {
     // Query: SELECT accounts.*
     //        FROM accounts
-    //        LEFT JOIN ducks ON accounts.id = books.account_id
+    //        LEFT JOIN ducks ON accounts.id = ducks.account_id
     //        WHERE accounts.is_active = true
 
     final query = _db.select(_db.accounts).join([
