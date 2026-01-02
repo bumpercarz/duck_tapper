@@ -20,7 +20,7 @@ Future<Response> onRequest(RequestContext context) async {
 }
 
 // ============================================================
-// GET - Fetch all books
+// GET - Fetch all ducks
 // ============================================================
 
 Future<Response> _fetchDucks(DuckService service) async {
