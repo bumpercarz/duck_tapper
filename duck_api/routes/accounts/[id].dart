@@ -22,6 +22,7 @@ Future<Response> onRequest(RequestContext context, String id) async {
   // Route to appropriate handler function based on HTTP method
   return switch (context.request.method) {
     HttpMethod.get => _fetchAccount(service, account_id),
+    HttpMethod.put => _updateAccount(context, service, account_id),
     HttpMethod.delete => _deleteAccount(service, account_id),
     _ => Future.value(Response(statusCode: 405)), // Method not allowed
   };

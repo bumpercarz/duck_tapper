@@ -28,13 +28,13 @@ class DuckLogic with ChangeNotifier {
 
     Duck _ducks = provider.getDucksByAccount(loggedAccount); 
 
-    _totalQuacks = _ducks.totalQuack;
-    _currentQuacks = _ducks.currentQuack;
-    _duckTaps = _ducks.duckTaps;
-    _moreDucks = _ducks.moreDucks;
-    _fish = _ducks.fish;
-    _watermelon = _ducks.watermelon;
-    _pond = _ducks.ponds;
+    _totalQuacks = _ducks.totalQuack ?? 0;
+    _currentQuacks = _ducks.currentQuack ?? 0;
+    _duckTaps = _ducks.duckTaps ?? 0;
+    _moreDucks = _ducks.moreDucks ?? 0;
+    _fish = _ducks.fish ?? 0;
+    _watermelon = _ducks.watermelon ?? 0;
+    _pond = _ducks.ponds ?? 0;
   }
 
   void addQuacks(int moreDucks, int fish, int watermelon, int pond) {

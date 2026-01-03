@@ -32,15 +32,8 @@ class $AccountsTable extends Accounts with TableInfo<$AccountsTable, Account> {
   late final GeneratedColumn<String> password = GeneratedColumn<String>(
       'password', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _isActiveMeta =
-      const VerificationMeta('isActive');
   @override
-  late final GeneratedColumn<bool> isActive = GeneratedColumn<bool>(
-      'is_active', aliasedName, false,
-      type: DriftSqlType.bool, requiredDuringInsert: true);
-  @override
-  List<GeneratedColumn> get $columns =>
-      [account_id, username, password, isActive];
+  List<GeneratedColumn> get $columns => [account_id, username, password];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -69,12 +62,6 @@ class $AccountsTable extends Accounts with TableInfo<$AccountsTable, Account> {
     } else if (isInserting) {
       context.missing(_passwordMeta);
     }
-    if (data.containsKey('is_active')) {
-      context.handle(_isActiveMeta,
-          isActive.isAcceptableOrUnknown(data['is_active']!, _isActiveMeta));
-    } else if (isInserting) {
-      context.missing(_isActiveMeta);
-    }
     return context;
   }
 
@@ -90,8 +77,6 @@ class $AccountsTable extends Accounts with TableInfo<$AccountsTable, Account> {
           .read(DriftSqlType.string, data['${effectivePrefix}username'])!,
       password: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}password'])!,
-      isActive: attachedDatabase.typeMapping
-          .read(DriftSqlType.bool, data['${effectivePrefix}is_active'])!,
     );
   }
 
@@ -105,19 +90,16 @@ class Account extends DataClass implements Insertable<Account> {
   final int account_id;
   final String username;
   final String password;
-  final bool isActive;
   const Account(
       {required this.account_id,
       required this.username,
-      required this.password,
-      required this.isActive});
+      required this.password});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['account_id'] = Variable<int>(account_id);
     map['username'] = Variable<String>(username);
     map['password'] = Variable<String>(password);
-    map['is_active'] = Variable<bool>(isActive);
     return map;
   }
 
@@ -126,7 +108,6 @@ class Account extends DataClass implements Insertable<Account> {
       account_id: Value(account_id),
       username: Value(username),
       password: Value(password),
-      isActive: Value(isActive),
     );
   }
 
@@ -137,7 +118,6 @@ class Account extends DataClass implements Insertable<Account> {
       account_id: serializer.fromJson<int>(json['account_id']),
       username: serializer.fromJson<String>(json['username']),
       password: serializer.fromJson<String>(json['password']),
-      isActive: serializer.fromJson<bool>(json['isActive']),
     );
   }
   @override
@@ -147,20 +127,14 @@ class Account extends DataClass implements Insertable<Account> {
       'account_id': serializer.toJson<int>(account_id),
       'username': serializer.toJson<String>(username),
       'password': serializer.toJson<String>(password),
-      'isActive': serializer.toJson<bool>(isActive),
     };
   }
 
-  Account copyWith(
-          {int? account_id,
-          String? username,
-          String? password,
-          bool? isActive}) =>
+  Account copyWith({int? account_id, String? username, String? password}) =>
       Account(
         account_id: account_id ?? this.account_id,
         username: username ?? this.username,
         password: password ?? this.password,
-        isActive: isActive ?? this.isActive,
       );
   Account copyWithCompanion(AccountsCompanion data) {
     return Account(
@@ -168,7 +142,6 @@ class Account extends DataClass implements Insertable<Account> {
           data.account_id.present ? data.account_id.value : this.account_id,
       username: data.username.present ? data.username.value : this.username,
       password: data.password.present ? data.password.value : this.password,
-      isActive: data.isActive.present ? data.isActive.value : this.isActive,
     );
   }
 
@@ -177,67 +150,57 @@ class Account extends DataClass implements Insertable<Account> {
     return (StringBuffer('Account(')
           ..write('account_id: $account_id, ')
           ..write('username: $username, ')
-          ..write('password: $password, ')
-          ..write('isActive: $isActive')
+          ..write('password: $password')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(account_id, username, password, isActive);
+  int get hashCode => Object.hash(account_id, username, password);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is Account &&
           other.account_id == this.account_id &&
           other.username == this.username &&
-          other.password == this.password &&
-          other.isActive == this.isActive);
+          other.password == this.password);
 }
 
 class AccountsCompanion extends UpdateCompanion<Account> {
   final Value<int> account_id;
   final Value<String> username;
   final Value<String> password;
-  final Value<bool> isActive;
   const AccountsCompanion({
     this.account_id = const Value.absent(),
     this.username = const Value.absent(),
     this.password = const Value.absent(),
-    this.isActive = const Value.absent(),
   });
   AccountsCompanion.insert({
     this.account_id = const Value.absent(),
     required String username,
     required String password,
-    required bool isActive,
   })  : username = Value(username),
-        password = Value(password),
-        isActive = Value(isActive);
+        password = Value(password);
   static Insertable<Account> custom({
     Expression<int>? account_id,
     Expression<String>? username,
     Expression<String>? password,
-    Expression<bool>? isActive,
   }) {
     return RawValuesInsertable({
       if (account_id != null) 'account_id': account_id,
       if (username != null) 'username': username,
       if (password != null) 'password': password,
-      if (isActive != null) 'is_active': isActive,
     });
   }
 
   AccountsCompanion copyWith(
       {Value<int>? account_id,
       Value<String>? username,
-      Value<String>? password,
-      Value<bool>? isActive}) {
+      Value<String>? password}) {
     return AccountsCompanion(
       account_id: account_id ?? this.account_id,
       username: username ?? this.username,
       password: password ?? this.password,
-      isActive: isActive ?? this.isActive,
     );
   }
 
@@ -253,9 +216,6 @@ class AccountsCompanion extends UpdateCompanion<Account> {
     if (password.present) {
       map['password'] = Variable<String>(password.value);
     }
-    if (isActive.present) {
-      map['is_active'] = Variable<bool>(isActive.value);
-    }
     return map;
   }
 
@@ -264,8 +224,7 @@ class AccountsCompanion extends UpdateCompanion<Account> {
     return (StringBuffer('AccountsCompanion(')
           ..write('account_id: $account_id, ')
           ..write('username: $username, ')
-          ..write('password: $password, ')
-          ..write('isActive: $isActive')
+          ..write('password: $password')
           ..write(')'))
         .toString();
   }
@@ -335,12 +294,6 @@ class $DucksTable extends Ducks with TableInfo<$DucksTable, Duck> {
       requiredDuringInsert: true,
       defaultConstraints: GeneratedColumn.constraintIsAlways(
           'REFERENCES accounts (account_id)'));
-  static const VerificationMeta _isActiveMeta =
-      const VerificationMeta('isActive');
-  @override
-  late final GeneratedColumn<bool> isActive = GeneratedColumn<bool>(
-      'is_active', aliasedName, false,
-      type: DriftSqlType.bool, requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns => [
         duck_id,
@@ -351,8 +304,7 @@ class $DucksTable extends Ducks with TableInfo<$DucksTable, Duck> {
         fish,
         watermelon,
         ponds,
-        account_id,
-        isActive
+        account_id
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -424,12 +376,6 @@ class $DucksTable extends Ducks with TableInfo<$DucksTable, Duck> {
     } else if (isInserting) {
       context.missing(_account_idMeta);
     }
-    if (data.containsKey('is_active')) {
-      context.handle(_isActiveMeta,
-          isActive.isAcceptableOrUnknown(data['is_active']!, _isActiveMeta));
-    } else if (isInserting) {
-      context.missing(_isActiveMeta);
-    }
     return context;
   }
 
@@ -457,8 +403,6 @@ class $DucksTable extends Ducks with TableInfo<$DucksTable, Duck> {
           .read(DriftSqlType.int, data['${effectivePrefix}ponds'])!,
       account_id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}account_id'])!,
-      isActive: attachedDatabase.typeMapping
-          .read(DriftSqlType.bool, data['${effectivePrefix}is_active'])!,
     );
   }
 
@@ -478,7 +422,6 @@ class Duck extends DataClass implements Insertable<Duck> {
   final int watermelon;
   final int ponds;
   final int account_id;
-  final bool isActive;
   const Duck(
       {required this.duck_id,
       required this.totalQuack,
@@ -488,8 +431,7 @@ class Duck extends DataClass implements Insertable<Duck> {
       required this.fish,
       required this.watermelon,
       required this.ponds,
-      required this.account_id,
-      required this.isActive});
+      required this.account_id});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -502,7 +444,6 @@ class Duck extends DataClass implements Insertable<Duck> {
     map['watermelon'] = Variable<int>(watermelon);
     map['ponds'] = Variable<int>(ponds);
     map['account_id'] = Variable<int>(account_id);
-    map['is_active'] = Variable<bool>(isActive);
     return map;
   }
 
@@ -517,7 +458,6 @@ class Duck extends DataClass implements Insertable<Duck> {
       watermelon: Value(watermelon),
       ponds: Value(ponds),
       account_id: Value(account_id),
-      isActive: Value(isActive),
     );
   }
 
@@ -534,7 +474,6 @@ class Duck extends DataClass implements Insertable<Duck> {
       watermelon: serializer.fromJson<int>(json['watermelon']),
       ponds: serializer.fromJson<int>(json['ponds']),
       account_id: serializer.fromJson<int>(json['account_id']),
-      isActive: serializer.fromJson<bool>(json['isActive']),
     );
   }
   @override
@@ -550,7 +489,6 @@ class Duck extends DataClass implements Insertable<Duck> {
       'watermelon': serializer.toJson<int>(watermelon),
       'ponds': serializer.toJson<int>(ponds),
       'account_id': serializer.toJson<int>(account_id),
-      'isActive': serializer.toJson<bool>(isActive),
     };
   }
 
@@ -563,8 +501,7 @@ class Duck extends DataClass implements Insertable<Duck> {
           int? fish,
           int? watermelon,
           int? ponds,
-          int? account_id,
-          bool? isActive}) =>
+          int? account_id}) =>
       Duck(
         duck_id: duck_id ?? this.duck_id,
         totalQuack: totalQuack ?? this.totalQuack,
@@ -575,7 +512,6 @@ class Duck extends DataClass implements Insertable<Duck> {
         watermelon: watermelon ?? this.watermelon,
         ponds: ponds ?? this.ponds,
         account_id: account_id ?? this.account_id,
-        isActive: isActive ?? this.isActive,
       );
   Duck copyWithCompanion(DucksCompanion data) {
     return Duck(
@@ -593,7 +529,6 @@ class Duck extends DataClass implements Insertable<Duck> {
       ponds: data.ponds.present ? data.ponds.value : this.ponds,
       account_id:
           data.account_id.present ? data.account_id.value : this.account_id,
-      isActive: data.isActive.present ? data.isActive.value : this.isActive,
     );
   }
 
@@ -608,15 +543,14 @@ class Duck extends DataClass implements Insertable<Duck> {
           ..write('fish: $fish, ')
           ..write('watermelon: $watermelon, ')
           ..write('ponds: $ponds, ')
-          ..write('account_id: $account_id, ')
-          ..write('isActive: $isActive')
+          ..write('account_id: $account_id')
           ..write(')'))
         .toString();
   }
 
   @override
   int get hashCode => Object.hash(duck_id, totalQuack, currentQuack, duckTaps,
-      moreDucks, fish, watermelon, ponds, account_id, isActive);
+      moreDucks, fish, watermelon, ponds, account_id);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -629,8 +563,7 @@ class Duck extends DataClass implements Insertable<Duck> {
           other.fish == this.fish &&
           other.watermelon == this.watermelon &&
           other.ponds == this.ponds &&
-          other.account_id == this.account_id &&
-          other.isActive == this.isActive);
+          other.account_id == this.account_id);
 }
 
 class DucksCompanion extends UpdateCompanion<Duck> {
@@ -643,7 +576,6 @@ class DucksCompanion extends UpdateCompanion<Duck> {
   final Value<int> watermelon;
   final Value<int> ponds;
   final Value<int> account_id;
-  final Value<bool> isActive;
   const DucksCompanion({
     this.duck_id = const Value.absent(),
     this.totalQuack = const Value.absent(),
@@ -654,7 +586,6 @@ class DucksCompanion extends UpdateCompanion<Duck> {
     this.watermelon = const Value.absent(),
     this.ponds = const Value.absent(),
     this.account_id = const Value.absent(),
-    this.isActive = const Value.absent(),
   });
   DucksCompanion.insert({
     this.duck_id = const Value.absent(),
@@ -666,7 +597,6 @@ class DucksCompanion extends UpdateCompanion<Duck> {
     required int watermelon,
     required int ponds,
     required int account_id,
-    required bool isActive,
   })  : totalQuack = Value(totalQuack),
         currentQuack = Value(currentQuack),
         duckTaps = Value(duckTaps),
@@ -674,8 +604,7 @@ class DucksCompanion extends UpdateCompanion<Duck> {
         fish = Value(fish),
         watermelon = Value(watermelon),
         ponds = Value(ponds),
-        account_id = Value(account_id),
-        isActive = Value(isActive);
+        account_id = Value(account_id);
   static Insertable<Duck> custom({
     Expression<int>? duck_id,
     Expression<int>? totalQuack,
@@ -686,7 +615,6 @@ class DucksCompanion extends UpdateCompanion<Duck> {
     Expression<int>? watermelon,
     Expression<int>? ponds,
     Expression<int>? account_id,
-    Expression<bool>? isActive,
   }) {
     return RawValuesInsertable({
       if (duck_id != null) 'duck_id': duck_id,
@@ -698,7 +626,6 @@ class DucksCompanion extends UpdateCompanion<Duck> {
       if (watermelon != null) 'watermelon': watermelon,
       if (ponds != null) 'ponds': ponds,
       if (account_id != null) 'account_id': account_id,
-      if (isActive != null) 'is_active': isActive,
     });
   }
 
@@ -711,8 +638,7 @@ class DucksCompanion extends UpdateCompanion<Duck> {
       Value<int>? fish,
       Value<int>? watermelon,
       Value<int>? ponds,
-      Value<int>? account_id,
-      Value<bool>? isActive}) {
+      Value<int>? account_id}) {
     return DucksCompanion(
       duck_id: duck_id ?? this.duck_id,
       totalQuack: totalQuack ?? this.totalQuack,
@@ -723,7 +649,6 @@ class DucksCompanion extends UpdateCompanion<Duck> {
       watermelon: watermelon ?? this.watermelon,
       ponds: ponds ?? this.ponds,
       account_id: account_id ?? this.account_id,
-      isActive: isActive ?? this.isActive,
     );
   }
 
@@ -757,9 +682,6 @@ class DucksCompanion extends UpdateCompanion<Duck> {
     if (account_id.present) {
       map['account_id'] = Variable<int>(account_id.value);
     }
-    if (isActive.present) {
-      map['is_active'] = Variable<bool>(isActive.value);
-    }
     return map;
   }
 
@@ -774,8 +696,7 @@ class DucksCompanion extends UpdateCompanion<Duck> {
           ..write('fish: $fish, ')
           ..write('watermelon: $watermelon, ')
           ..write('ponds: $ponds, ')
-          ..write('account_id: $account_id, ')
-          ..write('isActive: $isActive')
+          ..write('account_id: $account_id')
           ..write(')'))
         .toString();
   }
@@ -797,13 +718,11 @@ typedef $$AccountsTableCreateCompanionBuilder = AccountsCompanion Function({
   Value<int> account_id,
   required String username,
   required String password,
-  required bool isActive,
 });
 typedef $$AccountsTableUpdateCompanionBuilder = AccountsCompanion Function({
   Value<int> account_id,
   Value<String> username,
   Value<String> password,
-  Value<bool> isActive,
 });
 
 final class $$AccountsTableReferences
@@ -844,9 +763,6 @@ class $$AccountsTableFilterComposer
   ColumnFilters<String> get password => $composableBuilder(
       column: $table.password, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<bool> get isActive => $composableBuilder(
-      column: $table.isActive, builder: (column) => ColumnFilters(column));
-
   Expression<bool> ducksRefs(
       Expression<bool> Function($$DucksTableFilterComposer f) f) {
     final $$DucksTableFilterComposer composer = $composerBuilder(
@@ -886,9 +802,6 @@ class $$AccountsTableOrderingComposer
 
   ColumnOrderings<String> get password => $composableBuilder(
       column: $table.password, builder: (column) => ColumnOrderings(column));
-
-  ColumnOrderings<bool> get isActive => $composableBuilder(
-      column: $table.isActive, builder: (column) => ColumnOrderings(column));
 }
 
 class $$AccountsTableAnnotationComposer
@@ -908,9 +821,6 @@ class $$AccountsTableAnnotationComposer
 
   GeneratedColumn<String> get password =>
       $composableBuilder(column: $table.password, builder: (column) => column);
-
-  GeneratedColumn<bool> get isActive =>
-      $composableBuilder(column: $table.isActive, builder: (column) => column);
 
   Expression<T> ducksRefs<T extends Object>(
       Expression<T> Function($$DucksTableAnnotationComposer a) f) {
@@ -960,25 +870,21 @@ class $$AccountsTableTableManager extends RootTableManager<
             Value<int> account_id = const Value.absent(),
             Value<String> username = const Value.absent(),
             Value<String> password = const Value.absent(),
-            Value<bool> isActive = const Value.absent(),
           }) =>
               AccountsCompanion(
             account_id: account_id,
             username: username,
             password: password,
-            isActive: isActive,
           ),
           createCompanionCallback: ({
             Value<int> account_id = const Value.absent(),
             required String username,
             required String password,
-            required bool isActive,
           }) =>
               AccountsCompanion.insert(
             account_id: account_id,
             username: username,
             password: password,
-            isActive: isActive,
           ),
           withReferenceMapper: (p0) => p0
               .map((e) =>
@@ -1031,7 +937,6 @@ typedef $$DucksTableCreateCompanionBuilder = DucksCompanion Function({
   required int watermelon,
   required int ponds,
   required int account_id,
-  required bool isActive,
 });
 typedef $$DucksTableUpdateCompanionBuilder = DucksCompanion Function({
   Value<int> duck_id,
@@ -1043,7 +948,6 @@ typedef $$DucksTableUpdateCompanionBuilder = DucksCompanion Function({
   Value<int> watermelon,
   Value<int> ponds,
   Value<int> account_id,
-  Value<bool> isActive,
 });
 
 final class $$DucksTableReferences
@@ -1097,9 +1001,6 @@ class $$DucksTableFilterComposer extends Composer<_$AppDatabase, $DucksTable> {
 
   ColumnFilters<int> get ponds => $composableBuilder(
       column: $table.ponds, builder: (column) => ColumnFilters(column));
-
-  ColumnFilters<bool> get isActive => $composableBuilder(
-      column: $table.isActive, builder: (column) => ColumnFilters(column));
 
   $$AccountsTableFilterComposer get account_id {
     final $$AccountsTableFilterComposer composer = $composerBuilder(
@@ -1156,9 +1057,6 @@ class $$DucksTableOrderingComposer
   ColumnOrderings<int> get ponds => $composableBuilder(
       column: $table.ponds, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<bool> get isActive => $composableBuilder(
-      column: $table.isActive, builder: (column) => ColumnOrderings(column));
-
   $$AccountsTableOrderingComposer get account_id {
     final $$AccountsTableOrderingComposer composer = $composerBuilder(
         composer: this,
@@ -1213,9 +1111,6 @@ class $$DucksTableAnnotationComposer
   GeneratedColumn<int> get ponds =>
       $composableBuilder(column: $table.ponds, builder: (column) => column);
 
-  GeneratedColumn<bool> get isActive =>
-      $composableBuilder(column: $table.isActive, builder: (column) => column);
-
   $$AccountsTableAnnotationComposer get account_id {
     final $$AccountsTableAnnotationComposer composer = $composerBuilder(
         composer: this,
@@ -1269,7 +1164,6 @@ class $$DucksTableTableManager extends RootTableManager<
             Value<int> watermelon = const Value.absent(),
             Value<int> ponds = const Value.absent(),
             Value<int> account_id = const Value.absent(),
-            Value<bool> isActive = const Value.absent(),
           }) =>
               DucksCompanion(
             duck_id: duck_id,
@@ -1281,7 +1175,6 @@ class $$DucksTableTableManager extends RootTableManager<
             watermelon: watermelon,
             ponds: ponds,
             account_id: account_id,
-            isActive: isActive,
           ),
           createCompanionCallback: ({
             Value<int> duck_id = const Value.absent(),
@@ -1293,7 +1186,6 @@ class $$DucksTableTableManager extends RootTableManager<
             required int watermelon,
             required int ponds,
             required int account_id,
-            required bool isActive,
           }) =>
               DucksCompanion.insert(
             duck_id: duck_id,
@@ -1305,7 +1197,6 @@ class $$DucksTableTableManager extends RootTableManager<
             watermelon: watermelon,
             ponds: ponds,
             account_id: account_id,
-            isActive: isActive,
           ),
           withReferenceMapper: (p0) => p0
               .map((e) =>

@@ -5,13 +5,13 @@
 class Duck {
   final int? id; // Nullable for new ducks (not yet saved to API)
   final int account_id;
-  final int totalQuack;
-  final int currentQuack;
-  final int duckTaps;
-  final int moreDucks;
-  final int fish;
-  final int watermelon;
-  final int ponds;
+  final int? totalQuack;
+  final int? currentQuack;
+  final int? duckTaps;
+  final int? moreDucks;
+  final int? fish;
+  final int? watermelon;
+  final int? ponds;
   Duck({
     this.id,
     required this.account_id,
@@ -35,13 +35,13 @@ class Duck {
     return Duck(
       id: json['duck_id'] as int,
       account_id: json['account_id'] as int,
-      totalQuack: json['totalQuack'] as int,
-      currentQuack: json['currentQuack'] as int,
-      duckTaps: json['duckTaps'] as int,
-      moreDucks: json['moreDucks'] as int,
-      fish: json['fish'] as int,
-      watermelon: json['watermelon'] as int,
-      ponds: json['ponds'] as int,
+      totalQuack: json['totalQuack'] as int? ?? 0,
+      currentQuack: json['currentQuack'] as int? ?? 0,
+      duckTaps: json['duckTaps'] as int? ?? 0,
+      moreDucks: json['moreDucks'] as int? ?? 0,
+      fish: json['fish'] as int? ?? 0,
+      watermelon: json['watermelon'] as int? ?? 0,
+      ponds: json['ponds'] as int? ?? 0,
     );
   }
 

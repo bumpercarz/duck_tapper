@@ -55,8 +55,8 @@ Content-Type: application/json
 
 {
     "account_id": 3,
-    "totalQuack": 0,
-    "currentQuack": 0,
+    "totalQuack": 999999,
+    "currentQuack": 999999,
     "duckTaps": 0,
     "moreDucks": 0,
     "fish": 0,
@@ -132,7 +132,6 @@ PUT {{baseUrl}}/accounts/1
 Content-Type: application/json
 
 {
-  "password":"newpassword"
 }
 
 ### 11. UPDATE account - Change all
@@ -250,10 +249,13 @@ Content-Type: application/json
 # ============================================================
 
 ### 38. DELETE non-existent author
-DELETE {{baseUrl}}/authors/999
+DELETE {{baseUrl}}/accounts/12
 
 ### 39. DELETE already deleted author
-DELETE {{baseUrl}}/authors/3
+DELETE {{baseUrl}}/accounts/12
 
-### 40. DELETE non-existent book
-DELETE {{baseUrl}}/books/999
+### 39. DELETE duck
+DELETE {{baseUrl}}/ducks/6
+
+### 40. DELETE non-existent duck
+DELETE {{baseUrl}}/ducks/999

@@ -15,7 +15,7 @@ class DuckService {
   Future<void> validateCreateDuck(CreateDuck data) async {
     // Foreign key validation - Account must exist and be active
     final account = await (_db.select(_db.accounts)
-          ..where((t) => t.account_id.equals(data.account_id) & t.isActive.equals(true)
+          ..where((t) => t.account_id.equals(data.account_id)
           ))
         .getSingleOrNull();
 
@@ -45,8 +45,7 @@ class DuckService {
             moreDucks: data.moreDucks,
             fish: data.fish,
             watermelon: data.watermelon,
-            ponds: data.ponds,
-            isActive: true
+            ponds: data.ponds
           ),
         );
 
@@ -66,8 +65,7 @@ class DuckService {
 
     final query = _db.select(_db.ducks).join([
       leftOuterJoin(_db.accounts, _db.accounts.account_id.equalsExp(_db.ducks.account_id)),
-    ])
-      ..where(_db.ducks.isActive.equals(true) & _db.accounts.isActive.equals(true));
+    ]);
 
     final rows = await query.get();
 
@@ -93,7 +91,7 @@ class DuckService {
     final query = _db.select(_db.ducks).join([
       leftOuterJoin(_db.accounts, _db.accounts.account_id.equalsExp(_db.ducks.account_id)),
     ])
-      ..where(_db.ducks.account_id.equals(id) & _db.ducks.isActive.equals(true));
+      ..where(_db.ducks.account_id.equals(id));
 
     final row = await query.getSingleOrNull();
     if (row == null) return null;
@@ -127,7 +125,7 @@ class DuckService {
   Future<void> validateUpdateDuck(int id, UpdateDuck data) async {
     // Check book exists
     final duck = await (_db.select(_db.ducks)
-          ..where((t) => t.duck_id.equals(id) & t.isActive.equals(true)))
+          ..where((t) => t.duck_id.equals(id)))
         .getSingleOrNull();
 
     if (duck == null) {
@@ -163,7 +161,7 @@ class DuckService {
   /// Validate duck deletion
   Future<void> validateEraseDuck(int id) async {
     final duck = await (_db.select(_db.ducks)
-          ..where((t) => t.duck_id.equals(id) & t.isActive.equals(true)))
+          ..where((t) => t.duck_id.equals(id)))
         .getSingleOrNull();
 
     if (duck == null) {
@@ -171,13 +169,9 @@ class DuckService {
     }
   }
 
-  /// Soft delete a duck - erases duck data
+  /// Delete a duck
   Future<void> eraseDuck(int id, {String deletedBy = 'system'}) async {
-    await (_db.update(_db.ducks)..where((t) => t.duck_id.equals(id))).write(
-      const DucksCompanion(
-        isActive: Value(false)
-      ),
-    );
+    await (_db.delete(_db.ducks)..where((t) => t.duck_id.equals(id))).go();
   }
   
 }

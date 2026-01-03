@@ -22,7 +22,7 @@ class AccountService {
 
     // Check username uniqueness
     final existing = await (_db.select(_db.accounts)
-          ..where((t) => t.username.equals(data.username) & t.isActive.equals(true)))
+          ..where((t) => t.username.equals(data.username)))
         .getSingleOrNull();
 
     if (existing != null) {
@@ -42,7 +42,6 @@ class AccountService {
           AccountsCompanion.insert(
             username: data.username.trim(),
             password: data.password.trim(),
-            isActive: true
           ),
         );
 
@@ -63,8 +62,7 @@ class AccountService {
 
     final query = _db.select(_db.accounts).join([
       leftOuterJoin(_db.ducks, _db.ducks.account_id.equalsExp(_db.accounts.account_id)),
-    ])
-      ..where(_db.accounts.isActive.equals(true));
+    ]);
 
     final rows = await query.get();
 
@@ -101,7 +99,7 @@ class AccountService {
   Future<void> validateUpdateAccount(int id, UpdateAccountData data) async {
     // Check account exists
     final account = await (_db.select(_db.accounts)
-          ..where((t) => t.account_id.equals(id) & t.isActive.equals(true)))
+          ..where((t) => t.account_id.equals(id)))
         .getSingleOrNull();
 
     if (account == null) {
@@ -123,8 +121,7 @@ class AccountService {
       final existing = await (_db.select(_db.accounts)
             ..where((t) =>
                 t.username.equals(data.username!) &
-                t.account_id.equals(id).not() &
-                t.isActive.equals(true)))
+                t.account_id.equals(id).not()))
           .getSingleOrNull();
 
       if (existing != null) {
@@ -141,8 +138,6 @@ class AccountService {
 
   /// Update an account (assumes data is already validated)
   Future<void> updateAccount(int id, UpdateAccountData data) async {
-    final now = DateTime.now();
-
     await (_db.update(_db.accounts)..where((t) => t.account_id.equals(id))).write(
       AccountsCompanion(
         username: data.username != null ? Value(data.username!.trim()) : const Value.absent(),
@@ -159,7 +154,7 @@ class AccountService {
   /// Validate account deletion
   Future<void> validateDeleteAccount(int id) async {
     final account = await (_db.select(_db.accounts)
-          ..where((t) => t.account_id.equals(id) & t.isActive.equals(true)))
+          ..where((t) => t.account_id.equals(id)))
         .getSingleOrNull();
 
     if (account == null) {
@@ -169,26 +164,18 @@ class AccountService {
 
   /// Soft delete
   Future<Map<String, dynamic>> deleteAccount(int id, {String deletedBy = 'system'}) async {
-    // Check account for active ducks
+    // Check account for ducks
     final duckCheck = await (_db.select(_db.ducks)
-          ..where((t) => t.account_id.equals(id) & t.isActive.equals(true)))
+          ..where((t) => t.account_id.equals(id)))
         .get();
     
-    // CASCADE SOFT DELETE: Soft delete ducks under account
+    // CASCADE DELETE: delete ducks under account
     if (duckCheck.isNotEmpty) {
-      await (_db.update(_db.ducks)..where((t) => t.account_id.equals(id))).write(
-        DucksCompanion(
-          isActive: const Value(false)
-        ),
-      );
+      await (_db.delete(_db.ducks)..where((t) => t.account_id.equals(id))).go();
     }
     
-    // Soft delete an account (set isActive = false)
-    await (_db.update(_db.accounts)..where((t) => t.account_id.equals(id))).write(
-      AccountsCompanion(
-        isActive: const Value(false)
-      ),
-    );
+    // Delete an account 
+    await (_db.delete(_db.accounts)..where((t) => t.account_id.equals(id))).go();
 
     return {
       'message': 'Account deleted successfully.'

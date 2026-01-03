@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:drift/drift.dart';
 import 'package:drift_postgres/drift_postgres.dart';
 import 'package:dotenv/dotenv.dart';
@@ -17,9 +16,7 @@ class Accounts extends Table {
 
   // Username and Password
   TextColumn get username => text().unique()(); // Unique constraint
-  TextColumn get password => text()();  
-
-  BoolColumn get isActive => boolean()();      // Soft delete flag
+  TextColumn get password => text()();       // Soft delete flag
 }
 
 /// Duck table - Child entity
@@ -38,8 +35,6 @@ class Ducks extends Table {
 
   // Foreign key - References Accounts.account_id
   IntColumn get account_id => integer().references(Accounts, #account_id)();
-
-  BoolColumn get isActive => boolean()();
 }
 
 // ============================================================
@@ -67,7 +62,6 @@ class AppDatabase extends _$AppDatabase {
   // ============================================================
 
   Future<void> seedData() async {
-    final now = DateTime.now();
 
     // Check if data already exists
     final accountCount = await (select(accounts).get()).then((rows) => rows.length);
@@ -77,8 +71,7 @@ class AppDatabase extends _$AppDatabase {
     final accountId1 = await into(accounts).insert(
       AccountsCompanion.insert(
         username: 'test',
-        password: 'password',
-        isActive: true,
+        password: 'password'
       ),
     );
 
@@ -92,8 +85,7 @@ class AppDatabase extends _$AppDatabase {
         moreDucks: 0,
         fish: 0,
         watermelon: 0,
-        ponds: 0,
-        isActive: true,
+        ponds: 0
       ),
     );
 

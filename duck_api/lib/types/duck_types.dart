@@ -77,13 +77,13 @@ class UpdateDuck {
 // just need to specify the change in condition ig because it can't be null by default
 
   bool get hasUpdates =>
-  totalQuack != null ||
-  currentQuack != null ||
-  duckTaps != null ||
-  moreDucks != null ||
-  fish != null ||
-  watermelon != null ||
-  ponds != null;
+  totalQuack != totalQuack ||
+  currentQuack != currentQuack ||
+  duckTaps != duckTaps ||
+  moreDucks != moreDucks ||
+  fish != fish ||
+  watermelon != watermelon ||
+  ponds != ponds;
 }
 
 // ============================================================
