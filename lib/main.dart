@@ -1,4 +1,3 @@
-import 'package:duck_tapper/screens/upgrade_screen.dart';
 import 'package:duck_tapper/services/duck_logic.dart';
 
 import 'config/environment.dart';

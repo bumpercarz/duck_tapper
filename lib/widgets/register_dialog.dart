@@ -54,7 +54,9 @@ class _RegisterDialogState extends State<RegisterDialog>{
       await context.read<AccountProvider>().fetchAccounts();
       await context.read<AccountProvider>().createAccount(newAccount);
       // CREATE Duck with Account
-      Account newaccount = await context.read<AccountProvider>().getLatestAccount();
+      await context.read<AccountProvider>().fetchAccounts();
+      List<Account> accounts = await context.read<AccountProvider>().accounts;
+      Account newaccount = accounts[accounts.length-1];
 
       final newDuck = Duck(
         account_id: (newaccount.id!), 

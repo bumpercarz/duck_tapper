@@ -62,12 +62,6 @@ class AccountProvider with ChangeNotifier {
     }
   }
 
-  
-  Future<Account> getLatestAccount() async {
-      _accounts = await _repository.getAccounts();
-    return _accounts[_accounts.length-1];
-  }
-
   Future<void> setLoggedAccount(int loggedAccount) async{
     _loggedAccount = loggedAccount;
     debugPrint('Logged $_loggedAccount');

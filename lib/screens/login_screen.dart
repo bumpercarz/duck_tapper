@@ -16,7 +16,6 @@ class _LoginScreenState extends State<LoginScreen>{
   // Controller Station
   final _usernameController = TextEditingController();
   final _passwordController= TextEditingController();
-  bool isLoading = false;
   bool _passwordHide = true;
 
   @override
@@ -104,6 +103,7 @@ class _LoginScreenState extends State<LoginScreen>{
               Text(
                 'Ducky Quacker',
                 textAlign: TextAlign.center,
+                key: const ValueKey('titleText'), 
                 style: TextStyle(fontSize: 39),
                 
               ),
@@ -180,11 +180,7 @@ class _LoginScreenState extends State<LoginScreen>{
                       borderRadius: BorderRadius.circular(18),
                     ),
                   ),
-                  child: isLoading
-                  ? CircularProgressIndicator(
-                      color: Colors.grey[800],
-                    )
-                  : Text(
+                  child: Text(
                       'Login',
                       style: TextStyle(fontSize: 24, color: Colors.black),
                     ),
