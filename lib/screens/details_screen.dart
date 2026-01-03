@@ -1,4 +1,5 @@
 import 'package:duck_tapper/providers/account_provider.dart';
+import 'package:duck_tapper/providers/duck_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/account.dart';
@@ -30,7 +31,8 @@ void _eraseDuck(BuildContext context) async {
   // Erase duck information in current account
   // should have a pop-up for confirmation
   
-  
+  //probably has one of this somewhere im jus dum at logic
+  //context.read<DuckProvider>().deleteDuck(id);
 }
 
 void _logout(BuildContext context) async {
