@@ -51,6 +51,8 @@ class _DuckState extends State<DuckScreen> {
   @override
   Widget build(BuildContext context) {
     
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight= MediaQuery.of(context).size.height;
     // Watch for changes (rebuilds the widget when data changes)
     int currentQuacks = Provider.of<DuckLogic>(context).currentQuacks;
     int moreDucks = Provider.of<DuckLogic>(context).moreDucks;
@@ -61,22 +63,22 @@ class _DuckState extends State<DuckScreen> {
     return Scaffold(
       backgroundColor: Color(0xFF2B1F14),
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(134.0),
+        preferredSize: Size.fromHeight(0.134*screenHeight),
         child: AppBar(
           titleSpacing: 0,
-          title: const Padding(
-            padding: EdgeInsets.only(top:100,bottom:75),
+          title: Padding(
+            padding: EdgeInsets.only(top:.1*screenHeight,bottom:.075*screenHeight),
             child: Text(
               "Ducky Quacker", 
               style: TextStyle(
-                fontSize:39, 
+                fontSize:.039*screenHeight, 
                 color: Colors.white))),
           centerTitle: true,
           backgroundColor: Color(0xFF265490),
           shape: Border(
             bottom: BorderSide(
               color: Color(0xFF734014),
-              width: 28,
+              width: .028*screenHeight,
             ),
           ),
           )
@@ -87,7 +89,7 @@ class _DuckState extends State<DuckScreen> {
           children: [
               // Use MouseRegion to detect hover events 
               Container(
-                padding: EdgeInsets.only(bottom: 110),
+                padding: EdgeInsets.only(bottom: .11*screenHeight),
                 child:MouseRegion(
                   onEnter: (_) => _onHover(true),
                   onExit: (_) => _onHover(false),
@@ -103,44 +105,44 @@ class _DuckState extends State<DuckScreen> {
                             pond > 0?
                             Image.asset(
                               'assets/images/DUCK LAKE.png', 
-                              width: 390,
-                              height: 376,
+                              width: .390*screenHeight,
+                              height: .376*screenHeight,
                             )
                             : 
                             watermelon > 0?
                             Image.asset(
                               'assets/images/DUCK MELON.png', 
-                              width: 374,
-                              height: 325,
+                              width: .374*screenHeight,
+                              height: .325*screenHeight,
                             )
                             : 
                             fish > 0?
                             Image.asset(
                               'assets/images/DUCK FISH.png', 
-                              width: 374,
-                              height: 324,
+                              width: .374*screenHeight,
+                              height: .324*screenHeight,
                             )
                             : 
                             moreDucks > 1 ? 
                             Image.asset(
                               'assets/images/DUCK GROUP.png', 
-                              width: 382,
-                              height: 270,
+                              width: .382*screenHeight,
+                              height: .270*screenHeight,
                             )
                             : 
                             moreDucks == 1 ? 
                             Image.asset(
                               'assets/images/DUCK 2.png', 
-                              width: 382,
-                              height: 270,
+                              width: .382*screenHeight,
+                              height: .270*screenHeight,
                             )
                             : 
                             Image.asset(
                               'assets/images/DUCK PNG.png', 
-                              width: 253,
-                              height: 259,
+                              width: .253*screenHeight,
+                              height: .259*screenHeight,
                             ),
-                            offset: Offset(0, 4),
+                            offset: Offset(0, 0.004*screenHeight),
                             blurRadius: 150,
                             scale: 1,
                           )
@@ -151,7 +153,7 @@ class _DuckState extends State<DuckScreen> {
 
             Container(
               width: double.infinity,
-              height: 100,
+              height: .1*screenHeight,
               decoration: BoxDecoration(color: Color(0x24947257)),
               child: Center(
                 child: currentQuacks == 1
@@ -159,13 +161,13 @@ class _DuckState extends State<DuckScreen> {
                 ?Text(
                   '$currentQuacks Quack', 
                    style: TextStyle(
-                    fontSize:32, 
+                    fontSize:.032*screenHeight, 
                     color: Colors.white)
                 )
                 :Text(
                   '$currentQuacks Quacks', 
                    style: TextStyle(
-                    fontSize:32, 
+                    fontSize:.032*screenHeight, 
                     color: Colors.white)
                 )
               ),

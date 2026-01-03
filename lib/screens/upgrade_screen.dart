@@ -47,12 +47,12 @@ class _UpgradeState extends State<UpgradesScreen> {
         preferredSize: Size.fromHeight(83.0),
         child: AppBar(
           titleSpacing: 0,
-          title: const Padding(
-            padding: EdgeInsets.only(top:100,bottom:75),
+          title: Padding(
+            padding: EdgeInsets.only(top:.1*screenHeight,bottom:.075*screenHeight),
             child: Text(
               "Ducky Quacker", 
               style: TextStyle(
-                fontSize:39, 
+                fontSize:.039*screenHeight, 
                 color: Colors.white))),
           centerTitle: true,
           backgroundColor: Color(0xFF265490),
