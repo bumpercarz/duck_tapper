@@ -1,4 +1,5 @@
 import 'package:duck_tapper/providers/account_provider.dart';
+import 'package:duck_tapper/providers/duck_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/account.dart';
@@ -30,7 +31,8 @@ void _eraseDuck(BuildContext context) async {
   // Erase duck information in current account
   // should have a pop-up for confirmation
   
-  
+  //probably has one of this somewhere im jus dum at logic
+  //context.read<DuckProvider>().deleteDuck(id);
 }
 
 void _logout(BuildContext context) async {
@@ -59,7 +61,8 @@ void _deleteAccount(BuildContext context) async {
 class _DetailState extends State<DetailsScreen> {
   @override
   Widget build(BuildContext context) {
-
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     
     int totalQuacks = Provider.of<DuckLogic>(context).totalQuacks;
     int currentQuacks = Provider.of<DuckLogic>(context).currentQuacks;
@@ -78,12 +81,12 @@ class _DetailState extends State<DetailsScreen> {
         preferredSize: Size.fromHeight(134.0),
         child: AppBar(
           titleSpacing: 0,
-          title: const Padding(
-            padding: EdgeInsets.only(top:100,bottom:75),
+          title: Padding(
+            padding: EdgeInsets.only(top:.1*screenHeight,bottom:.075*screenHeight),
             child: Text(
               "Ducky Quacker", 
               style: TextStyle(
-                fontSize:39, 
+                fontSize:.039*screenHeight, 
                 color: Colors.white))),
           centerTitle: true,
           backgroundColor: Color(0xFF265490),
@@ -108,9 +111,14 @@ class _DetailState extends State<DetailsScreen> {
             crossAxisAlignment: .start,
             mainAxisAlignment: .start,
             children:[
-              Text(
-                'totalQuacks: $totalQuacks \ncurrent Quacks: $currentQuacks \nduck taps: $duckTaps \ntotal upgrades: $totalUpgrades'
+              Padding(
+                padding: EdgeInsets.all(10.0),
+                child: Text(
+                  'totalQuacks: $totalQuacks \ncurrent Quacks: $currentQuacks \nduck taps: $duckTaps \ntotal upgrades: $totalUpgrades',
+                  style: TextStyle(fontSize: 23, color: Colors.white, height: 1.35),
+                ),
               ),
+
               Column(
                 crossAxisAlignment: .center,
                 mainAxisAlignment: .center,
@@ -119,6 +127,7 @@ class _DetailState extends State<DetailsScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children:[
+
                       // Save button
                       Container(
                         margin: EdgeInsets.only(top:20),
@@ -161,32 +170,46 @@ class _DetailState extends State<DetailsScreen> {
                        
                     ]
                   ),
-                  
-                  // Logout button
-                  Container(
-                    alignment: .center,
-                    margin: EdgeInsets.only(top:20),
-                    child:ElevatedButton(
-                      onPressed: () => _logout(context),
-                      style: ElevatedButton.styleFrom(
-                        fixedSize: Size(240, 50),
-                        backgroundColor: Color(0xFFCA8C35),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18),
-                        ),
+
+                  Column(
+                    crossAxisAlignment: .center,
+                    mainAxisAlignment: .end,
+                    children:[
+
+                      // Logout button
+                      Container(
+                        height: 0.225 * screenHeight,
+                        alignment: .bottomCenter,
+                        margin: EdgeInsets.only(top:20),
+                        child:ElevatedButton(
+                          onPressed: () => _logout(context),
+                          style: ElevatedButton.styleFrom(
+                            fixedSize: Size(240, 50),
+                            backgroundColor: Color(0xFFCA8C35),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18),
+                            ),
+                          ),
+                          child: Text(
+                            'Logout',
+                            style: TextStyle(fontSize: 24, color: Colors.black),
+                          ),
+                        )
                       ),
-                      child: Text(
-                        'Logout',
-                        style: TextStyle(fontSize: 24, color: Colors.black),
-                      ),
-                    )
+
+                      // Delete account button
+                      TextButton(
+                        onPressed: () => _deleteAccount(context), 
+                        child: Text('Delete account'),
+                        style: TextButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          textStyle: TextStyle(fontSize: 17, decoration: TextDecoration.underline)
+                        )
+                      )
+                    ]
                   ),
 
-                  // Delete account button
-                  TextButton(
-                    onPressed: () => _deleteAccount(context), 
-                    child: Text('Delete account', style: TextStyle(fontSize: 17, decoration: TextDecoration.underline, color: Colors.white),)
-                  )
+                  
                 ]
               )
             ]
