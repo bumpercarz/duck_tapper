@@ -146,3 +146,12 @@ duck_tapper/
 ├── .env
 └── README.md
 ```
+
+### AI USAGE ACKNOWLEDGEMENT
+
+AI was used sparingly within the App and API. Here are the only parts where AI has been utilized:
+
+* Duck pressing animations
+* Alternative Provider usage (DuckLogic chassis, everything within DuckLogic is typewritten and trial tested)
+* Alternative Provider troubleshooting 
+* Register Dialog Widget
