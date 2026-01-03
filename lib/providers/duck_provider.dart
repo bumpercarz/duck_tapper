@@ -147,7 +147,8 @@ class DuckProvider with ChangeNotifier {
   ///
   /// Filters the current books list by authorId
   /// Note: If you need fresh data, call fetchBooks() first
-  Duck getDucksByAccount(int accountId) {
+  Future<Duck> getDucksByAccount(int accountId) async {
+      _ducks = await _repository.getDucks();
     List<Duck> foundDuck = _ducks.where((duck) => duck.account_id == accountId).toList();
     return foundDuck[0];
   }

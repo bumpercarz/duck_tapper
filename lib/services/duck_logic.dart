@@ -23,10 +23,10 @@ class DuckLogic with ChangeNotifier {
   int get watermelon => _watermelon;
   int get pond => _pond;
 
-  void loadSavedDuck (BuildContext context, int loggedAccount){
+  Future<void> loadSavedDuck (BuildContext context, int loggedAccount) async {
     final provider = context.read<DuckProvider>();
 
-    Duck _ducks = provider.getDucksByAccount(loggedAccount); 
+    Duck _ducks = await provider.getDucksByAccount(loggedAccount); 
 
     _totalQuacks = _ducks.totalQuack ?? 0;
     _currentQuacks = _ducks.currentQuack ?? 0;

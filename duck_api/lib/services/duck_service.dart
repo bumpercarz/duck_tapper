@@ -21,7 +21,7 @@ class DuckService {
 
     if (account == null) {
       throw ValidationException(
-        'Account ID ${data.account_id} does not exist or is inactive',
+        'Account ID ${data.account_id} does not exist',
       );
     }
 

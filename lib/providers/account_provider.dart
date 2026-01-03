@@ -63,9 +63,9 @@ class AccountProvider with ChangeNotifier {
   }
 
   
-  Account getLatestAccount() {
-    List<Account> latest = _accounts.where((account) => account.id == _accounts.length).toList();
-    return latest[0];
+  Future<Account> getLatestAccount() async {
+      _accounts = await _repository.getAccounts();
+    return _accounts[_accounts.length-1];
   }
 
   Future<void> setLoggedAccount(int loggedAccount) async{
