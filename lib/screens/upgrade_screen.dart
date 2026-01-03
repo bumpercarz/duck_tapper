@@ -22,7 +22,8 @@ class _UpgradeState extends State<UpgradesScreen> {
   @override 
   Widget build(BuildContext context) {
 
-    
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight= MediaQuery.of(context).size.height;
     int currentQuacks = Provider.of<DuckLogic>(context).currentQuacks;
     int moreDucks = Provider.of<DuckLogic>(context).moreDucks;
     int fish = Provider.of<DuckLogic>(context).fish;
@@ -72,37 +73,37 @@ class _UpgradeState extends State<UpgradesScreen> {
               ),
             Card(
               color: Color(0xFF66A2B8),
-              margin: EdgeInsets.only(top:10),
+              margin: EdgeInsets.only(top:.010*screenHeight),
               elevation: 0.0,
                 shape: RoundedRectangleBorder(
                   borderRadius: .zero
                 ),
               child:  Container(
-                height: 135,
+                height: 0.135*screenHeight,
                 alignment: .center,
                 child: Padding(
-                  padding: EdgeInsets.only(left: 20, right: 10,top: 10,bottom: 10),
+                  padding: EdgeInsets.only(left: .020*screenHeight, right: .010*screenHeight,top: .010*screenHeight,bottom: .010*screenHeight),
                   child:Row(
                     crossAxisAlignment: .start,
-                    spacing: 20,
+                    spacing: 0.02*screenHeight,
                     children: [
                       Center(
                         child: SizedBox(
-                        width: 90,
-                        height: 90,
+                        width: .20*screenWidth,
+                        height: .090*screenHeight,
                         child: Image.asset('assets/images/Flying Duck.png')
                             )
                       ),
                       SizedBox(
-                        width: 195,
-                        height: 128,
+                        width: .44*screenWidth,
+                        height: .128*screenHeight,
                         child:  Column(
                           crossAxisAlignment:  .start,
                           children:[
                             Text(
                               'More Ducks', 
                               style: TextStyle(
-                                fontSize: 24)
+                                fontSize: 0.024*screenHeight)
                             ),
                             Column(
                               mainAxisAlignment: .start,
@@ -114,14 +115,14 @@ class _UpgradeState extends State<UpgradesScreen> {
                                     : exponentPrice(priceList[0]),
                                   style: TextStyle(
                                     color: Color(0xFFFFD940),
-                                    fontSize: 15)
+                                    fontSize: .015*screenHeight)
                                 ),
-                                SizedBox(height:5),
+                                SizedBox(height:0.005*screenHeight),
                                 Text(
                                   'Adds 1 Quack/s per tap per duck',
                                   style: TextStyle(
                                     color: Color(0xFF77EC25),
-                                    fontSize: 15)
+                                    fontSize: .015*screenHeight)
                                 ),
                               ]
                             )
@@ -133,10 +134,10 @@ class _UpgradeState extends State<UpgradesScreen> {
                         children: [
                           Container(
                             alignment: .topRight,
-                            width: 90,
+                            width: 0.2*screenWidth,
                             child: Text(
                               'x$moreDucks',
-                              style: TextStyle(fontSize:32)  
+                              style: TextStyle(fontSize:.032*screenHeight)  
                             )
                           ),
                           ElevatedButton(
@@ -147,7 +148,7 @@ class _UpgradeState extends State<UpgradesScreen> {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15),
                               ),
-                              fixedSize: Size(91,68),
+                              fixedSize: Size(.2*screenWidth,.068*screenHeight),
                             ),
                             onPressed: currentQuacks >= priceList[0] 
                             ? () => Provider.of<DuckLogic>(context, listen: false).buyMoreDucks(priceList[0])
@@ -164,37 +165,37 @@ class _UpgradeState extends State<UpgradesScreen> {
             moreDucks > 0 ?
             Card(
               color: Color(0xFF66A2B8),
-              margin: EdgeInsets.only(top:10),
+              margin: EdgeInsets.only(top:.010*screenHeight),
               elevation: 0.0,
                 shape: RoundedRectangleBorder(
                   borderRadius: .zero
                 ),
               child:  Container(
-                height: 135,
+                height: .135*screenHeight,
                 alignment: .center,
                 child: Padding(
-                  padding: EdgeInsets.only(left: 20, right: 10,top: 10,bottom: 10),
+                  padding: EdgeInsets.only(left: .020*screenHeight, right: .010*screenHeight,top: .010*screenHeight,bottom: .010*screenHeight),
                   child:Row(
                     crossAxisAlignment: .start,
-                    spacing: 20,
+                    spacing: 0.02*screenHeight,
                     children: [
                       Center(
                         child: SizedBox(
-                        width: 90,
-                        height: 90,
+                        width: .20*screenWidth,
+                        height: .090*screenHeight,
                         child: Image.asset('assets/images/Fish Food.png')
                             )
                       ),
                       SizedBox(
-                        width:195,
-                        height: 128,
+                        width: .44*screenWidth,
+                        height: .128*screenHeight,
                         child:  Column(
                           crossAxisAlignment:  .start,
                           children:[
                             Text(
                               'Fish', 
                               style: TextStyle(
-                                fontSize: 24)
+                                fontSize: 0.024*screenHeight)
                             ),
                             Column(
                               mainAxisAlignment: .start,
@@ -206,14 +207,14 @@ class _UpgradeState extends State<UpgradesScreen> {
                                     : exponentPrice(priceList[1]),
                                   style: TextStyle(
                                     color: Color(0xFFFFD940),
-                                    fontSize: 15)
+                                    fontSize: 0.015*screenHeight)
                                 ),
-                                SizedBox(height:5),
+                                SizedBox(height:0.005*screenHeight),
                                 Text(
                                   'Adds 10 Quack/s per tap per duck',
                                   style: TextStyle(
                                     color: Color(0xFF77EC25),
-                                    fontSize: 15)
+                                    fontSize: 0.015*screenHeight)
                                 ),
                               ]
                             )
@@ -225,10 +226,10 @@ class _UpgradeState extends State<UpgradesScreen> {
                         children: [
                           Container(
                             alignment: .topRight,
-                            width: 90,
+                            width: .20*screenWidth,
                             child: Text(
                               'x$fish',
-                              style: TextStyle(fontSize:32)  
+                              style: TextStyle(fontSize:0.032*screenHeight)  
                             )
                           ),
                           ElevatedButton(
@@ -239,7 +240,7 @@ class _UpgradeState extends State<UpgradesScreen> {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15),
                               ),
-                              fixedSize: Size(91,68),
+                              fixedSize: Size(.2*screenWidth,.068*screenHeight),
                             ),
                             onPressed: currentQuacks >= priceList[1] 
                             ? () => Provider.of<DuckLogic>(context, listen: false).buyFish(priceList[1])
@@ -256,37 +257,37 @@ class _UpgradeState extends State<UpgradesScreen> {
             fish > 0?
             Card(
               color: Color(0xFF66A2B8),
-              margin: EdgeInsets.only(top:10),
+              margin: EdgeInsets.only(top:.010*screenHeight),
               elevation: 0.0,
                 shape: RoundedRectangleBorder(
                   borderRadius: .zero
                 ),
               child:  Container(
-                height: 135,
+                height: .135*screenHeight,
                 alignment: .center,
                 child: Padding(
-                  padding: EdgeInsets.only(left: 20, right: 10,top: 10,bottom: 10),
+                  padding: EdgeInsets.only(left: .020*screenHeight, right: .010*screenHeight,top: .010*screenHeight,bottom: .010*screenHeight),
                   child:Row(
                     crossAxisAlignment: .start,
-                    spacing: 20,
+                    spacing: 0.02*screenHeight,
                     children: [
                       Center(
                         child: SizedBox(
-                        width: 90,
-                        height: 90,
+                        width: .20*screenWidth,
+                        height: .090*screenHeight,
                         child: Image.asset('assets/images/Watermelon.png')
                             )
                       ),
                       SizedBox(
-                        width:195,
-                        height: 128,
+                        width: .44*screenWidth,
+                        height: .128*screenHeight,
                         child:  Column(
                           crossAxisAlignment:  .start,
                           children:[
                             Text(
                               'Watermelon', 
                               style: TextStyle(
-                                fontSize: 24)
+                                fontSize: 0.024*screenHeight)
                             ),
                             Column(
                               mainAxisAlignment: .start,
@@ -298,14 +299,14 @@ class _UpgradeState extends State<UpgradesScreen> {
                                     : exponentPrice(priceList[2]),
                                   style: TextStyle(
                                     color: Color(0xFFFFD940),
-                                    fontSize: 15)
+                                    fontSize: 0.015*screenHeight)
                                 ),
-                                SizedBox(height:5),
+                                SizedBox(height:0.005*screenHeight),
                                 Text(
                                   'Adds 25 Quack/s per tap per duck',
                                   style: TextStyle(
                                     color: Color(0xFF77EC25),
-                                    fontSize: 15)
+                                    fontSize: 0.015*screenHeight)
                                 ),
                               ]
                             )
@@ -317,10 +318,10 @@ class _UpgradeState extends State<UpgradesScreen> {
                         children: [
                           Container(
                             alignment: .topRight,
-                            width: 90,
+                            width: .20*screenWidth,
                             child: Text(
                               'x$watermelon',
-                              style: TextStyle(fontSize:32)  
+                              style: TextStyle(fontSize:0.032*screenHeight)
                             )
                           ),
                           ElevatedButton(
@@ -331,7 +332,7 @@ class _UpgradeState extends State<UpgradesScreen> {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15),
                               ),
-                              fixedSize: Size(91,68),
+                              fixedSize: Size(.2*screenWidth,.068*screenHeight),
                             ),
                             onPressed: currentQuacks >= priceList[2] 
                             ? () => Provider.of<DuckLogic>(context, listen: false).buyWatermelon(priceList[2])
@@ -348,37 +349,37 @@ class _UpgradeState extends State<UpgradesScreen> {
             watermelon > 0?
             Card(
               color: Color(0xFF66A2B8),
-              margin: EdgeInsets.only(top:10),
+              margin: EdgeInsets.only(top:.010*screenHeight),
               elevation: 0.0,
                 shape: RoundedRectangleBorder(
                   borderRadius: .zero
                 ),
               child:  Container(
-                height: 135,
+                height: .135*screenHeight,
                 alignment: .center,
                 child: Padding(
-                  padding: EdgeInsets.only(left: 20, right: 10,top: 10,bottom: 10),
+                  padding: EdgeInsets.only(left: .020*screenHeight, right: .010*screenHeight,top: .010*screenHeight,bottom: .010*screenHeight),
                   child:Row(
                     crossAxisAlignment: .start,
-                    spacing: 20,
+                    spacing: 0.02*screenHeight,
                     children: [
                       Center(
                         child: SizedBox(
-                        width: 90,
-                        height: 90,
+                        width: .20*screenWidth,
+                        height: .090*screenHeight,
                         child: Image.asset('assets/images/Lake.png')
                             )
                       ),
                       SizedBox(
-                        width:195,
-                        height: 128,
+                        width: .44*screenWidth,
+                        height: .128*screenHeight,
                         child:  Column(
                           crossAxisAlignment:  .start,
                           children:[
                             Text(
                               'Pond', 
                               style: TextStyle(
-                                fontSize: 24)
+                                fontSize: 0.024*screenHeight)
                             ),
                             Column(
                               mainAxisAlignment: .start,
@@ -390,14 +391,14 @@ class _UpgradeState extends State<UpgradesScreen> {
                                     : exponentPrice(priceList[3]),
                                   style: TextStyle(
                                     color: Color(0xFFFFD940),
-                                    fontSize: 15)
+                                    fontSize: 0.015*screenHeight)
                                 ),
-                                SizedBox(height:5),
+                                SizedBox(height:0.005*screenHeight),
                                 Text(
                                   'Adds 75 Quack/s per tap per duck',
                                   style: TextStyle(
                                     color: Color(0xFF77EC25),
-                                    fontSize: 15)
+                                    fontSize: 0.015*screenHeight)
                                 ),
                               ]
                             )
@@ -409,10 +410,10 @@ class _UpgradeState extends State<UpgradesScreen> {
                         children: [
                           Container(
                             alignment: .topRight,
-                            width: 90,
+                            width: .20*screenWidth,
                             child: Text(
                               'x$pond',
-                              style: TextStyle(fontSize:32)  
+                              style: TextStyle(fontSize:0.032*screenHeight)
                             )
                           ),
                           ElevatedButton(
@@ -423,7 +424,7 @@ class _UpgradeState extends State<UpgradesScreen> {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15),
                               ),
-                              fixedSize: Size(91,68),
+                              fixedSize: Size(.2*screenWidth,.068*screenHeight),
                             ),
                             onPressed: currentQuacks >= priceList[3] 
                             ? () => Provider.of<DuckLogic>(context, listen: false).buyPond(priceList[3])

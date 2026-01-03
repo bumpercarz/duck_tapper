@@ -40,9 +40,9 @@ class _LoginScreenState extends State<LoginScreen>{
 
   void _login(BuildContext context, String username, String password, List<Account> accounts) {
 
+    // Search for inputted account
     int accountToLog = 0;
     int i = 0;
-    // DUCK/accounts CHANGE LINK HERE IMPORTANT
     while(i < accounts.length){
       if(accounts[i].username == username && accounts[i].password == password) 
       {
@@ -52,11 +52,13 @@ class _LoginScreenState extends State<LoginScreen>{
       i++;
     }
     
+    // Check value of account to be logged
     if (accountToLog > 0) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Logged in. Welcome to your duck, $username!')),
       );
       context.read<AccountProvider>().setLoggedAccount(accountToLog);
+      
       Provider.of<DuckLogic>(context, listen: false).loadSavedDuck(context, accountToLog);
       Navigator.pushReplacementNamed(context, '/game'); 
     } else {

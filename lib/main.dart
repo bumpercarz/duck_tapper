@@ -1,3 +1,4 @@
+import 'package:duck_tapper/screens/upgrade_screen.dart';
 import 'package:duck_tapper/services/duck_logic.dart';
 
 import 'config/environment.dart';
@@ -64,7 +65,7 @@ class DuckTapper extends StatelessWidget {
         ),
         
         // Landing Page
-        home: const LoginScreen(),
+        home: const NavScreen(),
 
         // Pages
         routes: {
