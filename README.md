@@ -27,6 +27,7 @@ Modify the `.env.development` file in the root directory of your Flutter project
 BASE_URL=http://10.0.2.2:8080
 ```
 
+For **iOS Simulator** or **physical devices**, use your computer's local IP.
 Make sure to load the `.env` file in your app configuration (e.g., using the `flutter_dotenv` package).
 
 ### 3. Run the App
@@ -41,6 +42,7 @@ flutter run
 * **Duck Upgrades**: Treat your duck right and give it the love it deserves. Feed your duck with upgrades and it might just give you more quacks.
 * **Dynamic Duck**: Every upgrade you buy gives the duck you quack some friends and food. Buy unique upgrades to make it happier!
 * **Duck Sync**: Every owner has their own ducks saved in the duck server. If the owner disappears, so does the duck tied to it!
+* **Incrementing Quacks**: The more Upgrades the more quacks! Get as many quacks as you can!
 
 ## 📸 Screenshots
 
@@ -90,10 +92,16 @@ Here are the endpoints available on the Dart Frog server:
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| GET | `/accounts` | Fetches all accounts |
-| GET | `/accounts/[id]` | Fetches a specific account by ID |
-| GET | `/ducks` | Fetches all ducks |
-| GET | `/ducks/[id]` | Fetches a specific duck by ID |
+| GET    | `/accounts` | Fetches all accounts |
+| GET    | `/accounts/[id]` | Fetches a specific account by ID |
+| GET    | `/ducks` | Fetches all ducks |
+| GET    | `/ducks/[id]` | Fetches a specific duck by ID |
+| POST   | `/accounts` | Adds a new Account |
+| POST   | `/ducks` | Adds a new duck |
+| PUT    | `/accounts/[id]` | Updates an existing Account |
+| PUT    | `/ducks/[id]` | Updates an existing duck |
+| DELETE | `/accounts/[id]` | Deletes an existing Account |
+| DELETE | `/ducks/[id]` | Deletes an existing duck |
 
 ## 📁 Project Structure
 ```
@@ -120,9 +128,14 @@ duck_tapper/
 │ │ └── Watermelon.png
 ├── lib/
 │ ├── models/
+│ │ ├── account.dart
+│ │ └── duck.dart
 │ ├── providers/
+│ │ ├── account_provider.dart
 │ │ └── duck_provider.dart
 │ ├── repositories/
+│ │ ├── account_repository.dart
+│ │ └── duck_repository.dart
 │ ├── screens/
 │ │ ├── details_screen.dart
 │ │ ├── duck_screen.dart
@@ -130,20 +143,26 @@ duck_tapper/
 │ │ ├── nav_screen.dart
 │ │ └── upgrade_screen.dart
 │ └── main.dart
-│ ├── screens/
+│ ├── services/
 │ │ ├── api_service.dart
-│ │ └── login_check.dart
+│ │ └── duck_logic.dart
 │ ├── widgets/
 │ │ └── register_dialog.dart
 ├── screenshots/
-│ ├── home_screen.png
-│ ├── add_task.png
+│ ├── duck_screen.png
+│ ├── dynamic_duck.png
+│ ├── login_screen.png
+│ ├── register_dialog.png
+│ ├── upgrades_screen_more.png
+│ ├── upgrades_screen.png
 │ └── task_complete.png
 ├── test/
-│ ├── unit_test.dart
-│ ├── widget_test.dart
-│ └── http_test.http
-├── .env
+│ ├── api_test.dart
+│ ├── models_test.dart
+│ └── widget_test.dart
+├── .env.development
+├── .env.production
+├── .env.staging
 └── README.md
 ```
 
