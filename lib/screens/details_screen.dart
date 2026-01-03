@@ -1,5 +1,7 @@
+import 'package:duck_tapper/providers/account_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../models/account.dart';
 import '../models/duck.dart';
 import '../services/duck_logic.dart';
 
@@ -17,6 +19,42 @@ class DetailsScreen extends StatefulWidget {
   @override
   _DetailState createState() => _DetailState();
 }
+
+void _saveDuck(BuildContext context) async {
+  // Update duck information in current account
+  
+  
+}
+
+void _eraseDuck(BuildContext context) async {
+  // Erase duck information in current account
+  // should have a pop-up for confirmation
+  
+  
+}
+
+void _logout(BuildContext context) async {
+  // Logs out of account and brings user back to login_screen
+  // should have a pop-up for confirmation
+  
+  // Set Logged account to 0
+  context.read<AccountProvider>().setLoggedAccount(0);
+  // Navigate back to home and remove all routes
+  Navigator.pushNamedAndRemoveUntil(
+      context, 
+      '/', 
+      (route) => false
+  );
+  
+}
+
+void _deleteAccount(BuildContext context) async {
+  // Deletes account and brings user back to login_screen
+  // should have a pop-up for confirmation
+  
+  
+}
+
 
 class _DetailState extends State<DetailsScreen> {
   @override
@@ -72,6 +110,84 @@ class _DetailState extends State<DetailsScreen> {
             children:[
               Text(
                 'totalQuacks: $totalQuacks \ncurrent Quacks: $currentQuacks \nduck taps: $duckTaps \ntotal upgrades: $totalUpgrades'
+              ),
+              Column(
+                crossAxisAlignment: .center,
+                mainAxisAlignment: .center,
+                children:[
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children:[
+                      // Save button
+                      Container(
+                        margin: EdgeInsets.only(top:20),
+                        child:ElevatedButton(
+                          onPressed: () => _saveDuck(context),
+                          style: ElevatedButton.styleFrom(
+                            fixedSize: Size(169, 36),
+                            backgroundColor: Color(0xFF64C91E),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18),
+                            ),
+                          ),
+                          child: Text(
+                            'Save',
+                            style: TextStyle(fontSize: 24, color: Colors.black),
+                            textAlign: TextAlign.center
+                          ),
+                        )
+                      ),
+
+                      // Erase data button
+                      Container(
+                        margin: EdgeInsets.only(top:20),
+                        child:ElevatedButton(
+                          onPressed: () => _eraseDuck(context),
+                          style: ElevatedButton.styleFrom(
+                            fixedSize: Size(169, 36),
+                            backgroundColor: Color(0xFFE24C15),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18),
+                            ),
+                          ),
+                          child: Text(
+                            'Erase data ',
+                            style: TextStyle(fontSize: 24, color: Colors.black),
+                            textAlign: TextAlign.center
+                          ),
+                        )
+                      ),
+                       
+                    ]
+                  ),
+                  
+                  // Logout button
+                  Container(
+                    alignment: .center,
+                    margin: EdgeInsets.only(top:20),
+                    child:ElevatedButton(
+                      onPressed: () => _logout(context),
+                      style: ElevatedButton.styleFrom(
+                        fixedSize: Size(240, 50),
+                        backgroundColor: Color(0xFFCA8C35),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18),
+                        ),
+                      ),
+                      child: Text(
+                        'Logout',
+                        style: TextStyle(fontSize: 24, color: Colors.black),
+                      ),
+                    )
+                  ),
+
+                  // Delete account button
+                  TextButton(
+                    onPressed: () => _deleteAccount(context), 
+                    child: Text('Delete account', style: TextStyle(fontSize: 17, decoration: TextDecoration.underline, color: Colors.white),)
+                  )
+                ]
               )
             ]
           )
