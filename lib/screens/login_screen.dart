@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../models/account.dart';
 import '../providers/account_provider.dart';
 import '../widgets/register_dialog.dart';
-import '../services/login_check.dart';
 import '../services/duck_logic.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -16,6 +16,7 @@ class _LoginScreenState extends State<LoginScreen>{
   // Controller Station
   final _usernameController = TextEditingController();
   final _passwordController= TextEditingController();
+  bool isLoading = false;
   bool _passwordHide = true;
 
   @override
@@ -37,6 +38,35 @@ class _LoginScreenState extends State<LoginScreen>{
     });
   }
 
+  void _login(BuildContext context, String username, String password, List<Account> accounts) {
+
+    int accountToLog = 0;
+    int i = 0;
+    // DUCK/accounts CHANGE LINK HERE IMPORTANT
+    while(i < accounts.length){
+      if(accounts[i].username == username && accounts[i].password == password) 
+      {
+        accountToLog = accounts[i].id ?? 0;
+        i == accounts.length;
+      }
+      i++;
+    }
+    
+    if (accountToLog > 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Logged in. Welcome to your duck, $username!')),
+      );
+      context.read<AccountProvider>().setLoggedAccount(accountToLog);
+      Provider.of<DuckLogic>(context, listen: false).loadSavedDuck(context, accountToLog);
+      Navigator.pushReplacementNamed(context, '/game'); 
+    } else {
+      // Show an error message (e.g., using a SnackBar or an AlertDialog)
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Invalid username or password')),
+      );
+    }
+    
+  }
   // Show Register Dialog on tap
   void _showRegisterDialog(BuildContext context) {
     showDialog(
@@ -50,6 +80,9 @@ class _LoginScreenState extends State<LoginScreen>{
   // Login UI
   @override
   Widget build(BuildContext context){
+    final provider = context.read<AccountProvider>();
+    provider.fetchAccounts();
+
     return Scaffold(
       body: Directionality(
         textDirection: TextDirection.ltr,
@@ -130,29 +163,14 @@ class _LoginScreenState extends State<LoginScreen>{
               Container(
                 margin: EdgeInsets.only(top:50),
                 child:ElevatedButton(
-
+                  
                   // Login Checker
-                  onPressed:() async {
-                    final provider = context.read<AccountProvider>();
-                    final String username = _usernameController.text;
-                    final String password = _passwordController.text;
-
-                    provider.fetchAccounts();
-                    int isAuthenticated = await checkInput(context, provider.accounts, username, password);
-                    if (isAuthenticated > 0) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                       SnackBar(content: Text('Logged in. Welcome to your duck, $username!')),
-                      );
-                      provider.setLoggedAccount(isAuthenticated);
-                      Provider.of<DuckLogic>(context, listen: false).loadSavedDuck(context, isAuthenticated);
-                      Navigator.pushReplacementNamed(context, '/game'); 
-                    } else {
-                      // Show an error message (e.g., using a SnackBar or an AlertDialog)
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Invalid username or password')),
-                      );
-                    }
-                  },
+                  onPressed:(){
+                    String username = _usernameController.text;
+                    String password = _passwordController.text;  
+                    List<Account> accounts = provider.accounts;
+                    _login(context, username, password, accounts);
+                    },
                   style: ElevatedButton.styleFrom(
                     fixedSize: Size(240, 50),
                     backgroundColor: Color(0xFFCA8C35),
@@ -160,10 +178,14 @@ class _LoginScreenState extends State<LoginScreen>{
                       borderRadius: BorderRadius.circular(18),
                     ),
                   ),
-                  child: Text(
-                    'Login',
-                    style: TextStyle(fontSize: 24, color: Colors.black),
-                  ),
+                  child: isLoading
+                  ? CircularProgressIndicator(
+                      color: Colors.grey[800],
+                    )
+                  : Text(
+                      'Login',
+                      style: TextStyle(fontSize: 24, color: Colors.black),
+                    ),
                 )
               ),
 

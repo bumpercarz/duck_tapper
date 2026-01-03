@@ -29,7 +29,7 @@ class _DetailState extends State<DetailsScreen> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      backgroundColor: Color(0xFF2B1F14),
+      backgroundColor: Color(0xFF453324),
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(134.0),
         child: AppBar(
@@ -53,7 +53,17 @@ class _DetailState extends State<DetailsScreen> {
         ),
       body: Column(
         children:[
-          
+          Container(
+            color: Color(0xFF2B1F14),
+            width: .infinity,
+            height: 63,
+            alignment: .center,
+            child: Text('Details', style: TextStyle(fontSize: 32))
+          ),
+          Column(
+            crossAxisAlignment: .start,
+            mainAxisAlignment: .start,
+          )
         ]
       )
     );
