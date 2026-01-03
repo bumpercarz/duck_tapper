@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import '../screens/duck_screen.dart';
-import '../screens/upgrade_screen.dart';
+import 'package:provider/provider.dart';
+import '../models/duck.dart';
+import '../services/duck_logic.dart';
 
 class DetailsScreen extends StatefulWidget {
   const DetailsScreen({super.key});
@@ -18,16 +19,21 @@ class DetailsScreen extends StatefulWidget {
 }
 
 class _DetailState extends State<DetailsScreen> {
-  int _selectedDuckIndex = 2;
-
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+
+    
+    int totalQuacks = Provider.of<DuckLogic>(context).totalQuacks;
+    int currentQuacks = Provider.of<DuckLogic>(context).currentQuacks;
+    int duckTaps = Provider.of<DuckLogic>(context).duckTaps;
+    int moreDucks = Provider.of<DuckLogic>(context).moreDucks;
+    int fish = Provider.of<DuckLogic>(context).fish;
+    int watermelon = Provider.of<DuckLogic>(context).watermelon;
+    int pond = Provider.of<DuckLogic>(context).pond;
+    int totalUpgrades = moreDucks + fish + watermelon + pond;
+
+
+
     return Scaffold(
       backgroundColor: Color(0xFF453324),
       appBar: PreferredSize(
@@ -63,6 +69,11 @@ class _DetailState extends State<DetailsScreen> {
           Column(
             crossAxisAlignment: .start,
             mainAxisAlignment: .start,
+            children:[
+              Text(
+                'totalQuacks: $totalQuacks \ncurrent Quacks: $currentQuacks \nduck taps: $duckTaps \ntotal upgrades: $totalUpgrades'
+              )
+            ]
           )
         ]
       )

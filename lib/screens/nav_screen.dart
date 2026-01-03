@@ -61,7 +61,7 @@ class _NavState extends State<NavScreen> {
   Widget build(BuildContext context) {
     
     return Scaffold(
-      backgroundColor:  _selectedDuckIndex==2? Color(0xFF453324):Color(0xFF734014),
+      backgroundColor:  _selectedDuckIndex==2? Color(0xFF453324):Color(0xFF2B1F14),
       body: screens[_selectedDuckIndex],
       bottomNavigationBar: Container(
         decoration: BoxDecoration(

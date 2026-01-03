@@ -1,6 +1,4 @@
 import 'dart:math' as math;
-import 'package:duck_tapper/screens/details_screen.dart';
-import 'package:duck_tapper/screens/duck_screen.dart';
 import 'package:duck_tapper/services/duck_logic.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
@@ -21,31 +19,7 @@ class UpgradesScreen extends StatefulWidget {
 }
 
 class _UpgradeState extends State<UpgradesScreen> {
-  int _selectedDuckIndex = 1;
-
-  List<Widget> screens = [
-    DuckScreen(),
-    UpgradesScreen(),
-    DetailsScreen(),
-  ];
-  
-  void _buyMoreDucks(price) {
-    Provider.of<DuckLogic>(context, listen: false).buyMoreDucks(price);
-  }
-  
-  void _buyFish(int price) {
-    Provider.of<DuckLogic>(context, listen: false).buyFish(price);
-  }
-  
-  void _buyWatermelon(int price) {
-    Provider.of<DuckLogic>(context, listen: false).buyWatermelon(price);
-  }
-  
-  void _buyPond(price) {
-    Provider.of<DuckLogic>(context, listen: false).buyPond(price);
-  }
-
-  @override
+  @override 
   Widget build(BuildContext context) {
 
     
@@ -176,7 +150,7 @@ class _UpgradeState extends State<UpgradesScreen> {
                               fixedSize: Size(91,68),
                             ),
                             onPressed: currentQuacks >= priceList[0] 
-                            ? () => _buyMoreDucks(priceList[0])
+                            ? () => Provider.of<DuckLogic>(context, listen: false).buyMoreDucks(priceList[0])
                             : null,
                             child: Image.asset('assets/images/Shopping Cart.png'),
                           )
@@ -268,7 +242,7 @@ class _UpgradeState extends State<UpgradesScreen> {
                               fixedSize: Size(91,68),
                             ),
                             onPressed: currentQuacks >= priceList[1] 
-                            ? () => _buyFish(priceList[1])
+                            ? () => Provider.of<DuckLogic>(context, listen: false).buyFish(priceList[1])
                             : null,
                             child: Image.asset('assets/images/Shopping Cart.png'),
                           )
@@ -360,7 +334,7 @@ class _UpgradeState extends State<UpgradesScreen> {
                               fixedSize: Size(91,68),
                             ),
                             onPressed: currentQuacks >= priceList[2] 
-                            ? () => _buyWatermelon(priceList[2])
+                            ? () => Provider.of<DuckLogic>(context, listen: false).buyWatermelon(priceList[2])
                             : null,
                             child: Image.asset('assets/images/Shopping Cart.png'),
                           )
@@ -452,7 +426,7 @@ class _UpgradeState extends State<UpgradesScreen> {
                               fixedSize: Size(91,68),
                             ),
                             onPressed: currentQuacks >= priceList[3] 
-                            ? () => _buyPond(priceList[3])
+                            ? () => Provider.of<DuckLogic>(context, listen: false).buyPond(priceList[3])
                             : null,
                             child: Image.asset('assets/images/Shopping Cart.png'),
                           )

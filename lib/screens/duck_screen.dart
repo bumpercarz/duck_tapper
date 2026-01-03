@@ -1,9 +1,5 @@
 import '../services/duck_logic.dart';
-import 'package:duck_tapper/services/duck_logic.dart';
 import 'package:provider/provider.dart';
-
-import '../screens/details_screen.dart';
-import '../screens/upgrade_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:drop_shadow_image/drop_shadow_image.dart';
 
@@ -12,27 +8,11 @@ import 'package:drop_shadow_image/drop_shadow_image.dart';
 
 class DuckScreen extends StatefulWidget {
   const DuckScreen({super.key});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   @override
   _DuckState createState() => _DuckState();
 }
 
 class _DuckState extends State<DuckScreen> {
-
-  List<Widget> screens = [
-    DuckScreen(),
-    UpgradesScreen(),
-    DetailsScreen(),
-  ];
 
     // The current scale of the image (1.0 is original size)
   double _scale = 1.0;
@@ -72,9 +52,7 @@ class _DuckState extends State<DuckScreen> {
   Widget build(BuildContext context) {
     
     // Watch for changes (rebuilds the widget when data changes)
-    int totalQuacks = Provider.of<DuckLogic>(context).totalQuacks;
     int currentQuacks = Provider.of<DuckLogic>(context).currentQuacks;
-    int duckTaps = Provider.of<DuckLogic>(context).duckTaps;
     int moreDucks = Provider.of<DuckLogic>(context).moreDucks;
     int fish = Provider.of<DuckLogic>(context).fish;
     int watermelon = Provider.of<DuckLogic>(context).watermelon;

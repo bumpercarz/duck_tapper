@@ -35,6 +35,7 @@ class DuckLogic with ChangeNotifier {
     _fish = _ducks.fish ?? 0;
     _watermelon = _ducks.watermelon ?? 0;
     _pond = _ducks.ponds ?? 0;
+    notifyListeners();
   }
 
   void addQuacks(int moreDucks, int fish, int watermelon, int pond) {
