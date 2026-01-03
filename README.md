@@ -2,7 +2,6 @@
 
 Quacky Tapper is a short game about making a Duck quack. Create and login to an account to have your own ducks to Quack! Quack more to get upgrades to quack even more!
 
-![QuickTask App Preview](https://github.com/yourusername/quicktask/blob/main/screenshots/app_preview.png?raw=true)
 
 ## 🛠️ Prerequisites
 Before running this project, ensure you have the following installed:
