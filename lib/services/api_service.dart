@@ -40,19 +40,12 @@ import '../config/environment.dart';
 
 class ApiService {
   /// Base URL loaded from environment variables (.env files)
-  final String baseUrl = Environment.baseUrl;
+  String get baseUrl => Environment.baseUrl;
 
   /// Timeout duration for API requests
-  final Duration timeout = Duration(seconds: Environment.apiTimeout);
+  Duration get timeout => Duration(seconds: Environment.apiTimeout);
 
   /// GET request to fetch data from API
-  ///
-  /// Example usage:
-  /// ```dart
-  /// final response = await apiService.get('/accounts');
-  /// // Calls: GET http://BASE_URL/authors
-  /// // Returns: List of authors with book counts
-  /// ```
   ///
   /// Throws:
   /// - ApiException: For API errors (400, 404, 500)

@@ -1,4 +1,4 @@
-import 'package:duck_tapper/providers/account_provider.dart';
+import '../providers/account_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/account.dart';

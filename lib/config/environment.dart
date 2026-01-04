@@ -19,27 +19,14 @@ class Environment {
   static String get baseUrl => dotenv.env['BASE_URL'] ?? 'http://10.0.2.2:8080';
 
   /// API request timeout in seconds
-  /// Defaults to 30 seconds if not set
   static int get apiTimeout =>
       int.parse(dotenv.env['API_TIMEOUT_SECONDS'] ?? '30');
 
   /// Enable/disable request/response logging
-  /// Useful for debugging API calls during development
   static bool get enableLogging => dotenv.env['ENABLE_LOGGING'] == 'true';
 
   /// Load environment variables from the specified .env file
   ///
-  /// Usage:
-  /// ```dart
-  /// await Environment.load(env: 'development'); // Loads .env.development
-  /// await Environment.load(env: 'staging');     // Loads .env.staging
-  /// await Environment.load(env: 'production');  // Loads .env.production
-  /// ```
-  ///
-  /// The environment should be selected based on deployment target:
-  /// - 'development' for Android Emulator / iOS Simulator
-  /// - 'staging' for physical device testing
-  /// - 'production' for release builds
   static Future<void> load({String env = 'development'}) async {
     await dotenv.load(fileName: '.env.$env');
 

@@ -28,6 +28,7 @@ class _LoginScreenState extends State<LoginScreen>{
   @override
   void initState(){
     super.initState();
+    Future.microtask(() =>context.read<AccountProvider>().fetchAccounts());
   }
 
   // Function to toggle the password visibility state.
@@ -81,9 +82,6 @@ class _LoginScreenState extends State<LoginScreen>{
   // Login UI
   @override
   Widget build(BuildContext context){
-    final provider = context.read<AccountProvider>();
-    provider.fetchAccounts();
-
     return Scaffold(
       body: Directionality(
         textDirection: TextDirection.ltr,
@@ -170,7 +168,7 @@ class _LoginScreenState extends State<LoginScreen>{
                   onPressed:(){
                     String username = _usernameController.text;
                     String password = _passwordController.text;  
-                    List<Account> accounts = provider.accounts;
+                    List<Account> accounts = context.read<AccountProvider>().accounts;
                     _login(context, username, password, accounts);
                     },
                   style: ElevatedButton.styleFrom(

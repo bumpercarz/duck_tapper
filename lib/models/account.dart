@@ -13,13 +13,8 @@ class Account {
     required this.password,
   });
 
-  /// Parse JSON response from API into Author object
+  /// Parse JSON response from API into Account object
   ///
-  /// Used when receiving data from:
-  /// - GET /authors (list of authors)
-  /// - GET /authors/:id (single author)
-  ///
-  /// API Source: zoo_api/lib/services/author_service.dart → getAllAuthors()
   factory Account.fromJson(Map<String, dynamic> json) {
     return Account(
       id: json['account_id'] as int,

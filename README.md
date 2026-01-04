@@ -172,4 +172,5 @@ AI was used sparingly within the App and API. Here are the only parts where AI h
 * Duck pressing animations
 * Alternative Provider usage (DuckLogic chassis, everything within DuckLogic is typewritten and trial tested)
 * Alternative Provider troubleshooting 
+* Provider Test Error troubleshooting 
 * Register Dialog Widget
