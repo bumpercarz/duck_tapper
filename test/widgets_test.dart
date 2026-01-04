@@ -5,17 +5,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  
-  setUpAll(() async {
-    WidgetsFlutterBinding.ensureInitialized();
-  });
   testWidgets('Quack Widget test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
     await tester.pumpWidget(const DuckTapper());
 
-    // Provider Test
-
-    // Verify that the title has loaded.
+    // Verify that the title (Quacky Tapper) has loaded.
     expect(find.byKey(const ValueKey('titleText')), findsOneWidget);
 
   });

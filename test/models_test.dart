@@ -20,7 +20,7 @@ void main() {
     });
     
     // TEST 3: Simple Logic
-    test('Email validator returns true for valid email', () {
+    test('Account validator returns true for valid account', () {
       final json = {'account_id': 1, 'username': 'Test Item', 'password': 'passwordtrue'};
       final account = Account.fromJson(json);
       final test = account.toString();
