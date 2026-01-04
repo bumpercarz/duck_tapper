@@ -8,14 +8,6 @@ import '../services/duck_logic.dart';
 
 class DetailsScreen extends StatefulWidget {
   const DetailsScreen({super.key});
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
 
   @override
   _DetailState createState() => _DetailState();
@@ -152,7 +144,31 @@ class _DetailState extends State<DetailsScreen> {
                       Container(
                         margin: EdgeInsets.only(top:20),
                         child:ElevatedButton(
-                          onPressed: () => _eraseDuck(context),
+                          onPressed: () => showDialog<String>(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                              title: const Text('Erase Duck'),
+                              content: const Text('Erase current duck? \nThis will remove all of your current progress and set all quacks to zero.', style: TextStyle(color: Colors.black, fontSize: 15)),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context, 'Cancel'), 
+                                  child: const Text('Cancel'),
+                                  style: TextButton.styleFrom(
+                                    foregroundColor: Colors.black,
+                                    textStyle: TextStyle(fontSize: 14)
+                                  )
+                                ),
+                                TextButton(
+                                  onPressed: () => _eraseDuck(context), 
+                                  child: const Text('Erase duck'),
+                                  style: TextButton.styleFrom(
+                                    foregroundColor: Color(0xFFE24C15),
+                                    textStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)
+                                  )
+                                ),    
+                              ],
+                            )
+                          ),
                           style: ElevatedButton.styleFrom(
                             fixedSize: Size(169, 36),
                             backgroundColor: Color(0xFFE24C15),
@@ -182,7 +198,31 @@ class _DetailState extends State<DetailsScreen> {
                         alignment: .bottomCenter,
                         margin: EdgeInsets.only(top:20),
                         child:ElevatedButton(
-                          onPressed: () => _logout(context),
+                          onPressed: () => showDialog<String>(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                              title: const Text('Logout'),
+                              content: const Text('Log out of account?', style: TextStyle(color: Colors.black, fontSize: 15)),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context, 'Cancel'), 
+                                  child: const Text('Cancel'),
+                                  style: TextButton.styleFrom(
+                                    foregroundColor: Colors.black,
+                                    textStyle: TextStyle(fontSize: 14)
+                                  )
+                                ),
+                                TextButton(
+                                  onPressed: () => _logout(context), 
+                                  child: const Text('Logout'),
+                                  style: TextButton.styleFrom(
+                                    foregroundColor: Color(0xFFE24C15),
+                                    textStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)
+                                  )
+                                ),    
+                              ],
+                            )
+                          ),
                           style: ElevatedButton.styleFrom(
                             fixedSize: Size(240, 50),
                             backgroundColor: Color(0xFFCA8C35),
@@ -199,7 +239,31 @@ class _DetailState extends State<DetailsScreen> {
 
                       // Delete account button
                       TextButton(
-                        onPressed: () => _deleteAccount(context), 
+                        onPressed: () => showDialog<String>(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            title: const Text('Delete Account'),
+                            content: const Text('Are you sure? This will log you out and delete this account, along with any duck-related data it has!', style: TextStyle(color: Colors.black, fontSize: 15)),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () => Navigator.pop(context, 'Cancel'), 
+                                child: const Text('Cancel'),
+                                style: TextButton.styleFrom(
+                                  foregroundColor: Colors.black,
+                                  textStyle: TextStyle(fontSize: 14)
+                                )
+                              ),
+                              TextButton(
+                                onPressed: () => _eraseDuck(context), 
+                                child: const Text('Delete'),
+                                style: TextButton.styleFrom(
+                                  foregroundColor: Color(0xFFE24C15),
+                                  textStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)
+                                )
+                              ),    
+                            ],
+                          )
+                        ),
                         child: Text('Delete account'),
                         style: TextButton.styleFrom(
                           foregroundColor: Colors.white,
