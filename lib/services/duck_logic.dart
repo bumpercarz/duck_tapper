@@ -38,6 +38,10 @@ class DuckLogic with ChangeNotifier {
     notifyListeners();
   }
 
+  void refreshQuacks(){
+    notifyListeners();
+  }
+
   void addQuacks(int moreDucks, int fish, int watermelon, int pond) {
     _totalQuacks = (_totalQuacks+1) + 1*moreDucks + 10*fish + 25*watermelon + 75*pond;
     _currentQuacks = (_currentQuacks+1) + 1*moreDucks + 10*fish + 25*watermelon + 75*pond;

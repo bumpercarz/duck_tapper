@@ -121,20 +121,15 @@ class DuckService {
   // UPDATE OPERATIONS
   // ============================================================
 
-  /// Validate book update data
+  /// Validate duck update data
   Future<void> validateUpdateDuck(int id, UpdateDuck data) async {
-    // Check book exists
+    // Check duck exists
     final duck = await (_db.select(_db.ducks)
           ..where((t) => t.duck_id.equals(id)))
         .getSingleOrNull();
 
     if (duck == null) {
       throw ValidationException('Duck ID $id does not exist or is inactive');
-    }
-
-    // Check if any updates provided
-    if (!data.hasUpdates) {
-      throw ValidationException('No updates identifed');
     }
   }
 

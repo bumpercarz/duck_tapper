@@ -13,57 +13,124 @@ class DetailsScreen extends StatefulWidget {
   _DetailState createState() => _DetailState();
 }
 
-void _saveDuck(BuildContext context) async {
-  // Update duck information in current account
-  
-  
-}
-
-void _eraseDuck(BuildContext context) async {
-  // Erase duck information in current account
-  // should have a pop-up for confirmation
-  
-  //probably has one of this somewhere im jus dum at logic
-  //context.read<DuckProvider>().deleteDuck(id);
-}
-
-void _logout(BuildContext context) async {
-  // Logs out of account and brings user back to login_screen
-  // should have a pop-up for confirmation
-  
-  // Set Logged account to 0
-  context.read<AccountProvider>().setLoggedAccount(0);
-  // Navigate back to home and remove all routes
-  Navigator.pushNamedAndRemoveUntil(
-      context, 
-      '/', 
-      (route) => false
-  );
-  
-}
-
-void _deleteAccount(BuildContext context) async {
-  // Deletes account and brings user back to login_screen
-  // should have a pop-up for confirmation
-  
-  
-}
-
 
 class _DetailState extends State<DetailsScreen> {
+
+  @override
+  void initState(){
+    super.initState();
+    
+    Future.microtask(() {
+      context.read<AccountProvider>().fetchAccounts();
+      context.read<DuckProvider>().fetchDucks();
+      }
+    );
+  }
+  
+    int _totalQuacks = 0;
+    int _currentQuacks = 0;
+    int _duckTaps = 0;
+    int _moreDucks = 0;
+    int _fish = 0;
+    int _watermelon = 0;
+    int _pond = 0;
+    late int totalUpgrades = _moreDucks + _fish + _watermelon + _pond;
+
+  void _saveDuck(BuildContext context) async {
+
+    int loggedAccount = context.read<AccountProvider>().loggedAccount ?? 0;
+    // Update duck information in current account
+    Duck updateDuck = Duck (
+      account_id: loggedAccount, 
+      totalQuack: _totalQuacks, 
+      currentQuack: _currentQuacks, 
+      duckTaps: _duckTaps, 
+      moreDucks: _moreDucks, 
+      fish: _fish, 
+      watermelon: _watermelon, 
+      ponds: _pond
+    );
+
+    Duck oldDuck =await context.read<DuckProvider>().getDucksByAccount(loggedAccount);
+
+    context.read<DuckProvider>().updateDuck(oldDuck.id ?? 0, updateDuck);
+    
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Duck Saved!')),
+    );
+  }
+
+  void _eraseDuck(BuildContext context) async {
+    // Erase duck information in current account
+    // should have a pop-up for confirmation
+
+    int loggedAccount = context.read<AccountProvider>().loggedAccount ?? 0;
+
+    Duck newDuck = Duck (
+      account_id: loggedAccount, 
+      totalQuack: 0, 
+      currentQuack: 0, 
+      duckTaps: 0, 
+      moreDucks: 0, 
+      fish: 0, 
+      watermelon: 0, 
+      ponds: 0
+    );
+
+    Duck oldDuck =await context.read<DuckProvider>().getDucksByAccount(loggedAccount);
+    context.read<DuckProvider>().deleteDuck(oldDuck.id ?? 0);
+    context.read<DuckProvider>().createDuck(newDuck);
+    Provider.of<DuckLogic>(context, listen: false).loadSavedDuck(context, loggedAccount);
+    setState(() {
+      _totalQuacks = 0;
+      _currentQuacks = 0;
+      _duckTaps = 0;
+      _moreDucks = 0;
+      _fish = 0;
+      _watermelon = 0;
+      _pond = 0;
+      totalUpgrades = 0;
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('This duck is gone :( but it was replaced by another, new duck!')),
+    );
+  }
+
+    // Logs out of account and brings user back to login_screen
+  void _logout(BuildContext context) async {
+
+    // Set Logged account to 0
+    context.read<AccountProvider>().setLoggedAccount(0);
+    // Navigate back to home and remove all routes
+    Navigator.pushNamedAndRemoveUntil(
+        context, 
+        '/', 
+        (route) => false
+    );
+    
+  }
+
+    // Deletes account and brings user back to login_screen
+  void _deleteAccount(BuildContext context) async {
+    
+    int loggedAccount = context.read<AccountProvider>().loggedAccount ?? 0;
+    context.read<AccountProvider>().deleteAccount(loggedAccount);
+    context.read<AccountProvider>().setLoggedAccount(0);
+    
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Account deleted. Register to create a new one!')),
+    );
+    _logout(context);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     
-    int totalQuacks = Provider.of<DuckLogic>(context).totalQuacks;
-    int currentQuacks = Provider.of<DuckLogic>(context).currentQuacks;
-    int duckTaps = Provider.of<DuckLogic>(context).duckTaps;
-    int moreDucks = Provider.of<DuckLogic>(context).moreDucks;
-    int fish = Provider.of<DuckLogic>(context).fish;
-    int watermelon = Provider.of<DuckLogic>(context).watermelon;
-    int pond = Provider.of<DuckLogic>(context).pond;
-    int totalUpgrades = moreDucks + fish + watermelon + pond;
+    final duckLogic = context.watch<DuckLogic>();
+
+    int totalUpgrades = duckLogic.moreDucks + duckLogic.fish + duckLogic.watermelon + duckLogic.pond;
 
 
 
@@ -106,9 +173,12 @@ class _DetailState extends State<DetailsScreen> {
               Padding(
                 padding: EdgeInsets.all(10.0),
                 child: Text(
-                  'totalQuacks: $totalQuacks \ncurrent Quacks: $currentQuacks \nduck taps: $duckTaps \ntotal upgrades: $totalUpgrades',
-                  style: TextStyle(fontSize: 23, color: Colors.white, height: 1.35),
-                ),
+                  'totalQuacks: ${duckLogic.totalQuacks} \n'
+                  'current Quacks: ${duckLogic.currentQuacks} \n'
+                  'duck taps: ${duckLogic.duckTaps} \n'
+                  'total upgrades: $totalUpgrades',
+                style: TextStyle(fontSize: 23, color: Colors.white, height: 1.35),
+          ),
               ),
 
               Column(
@@ -254,7 +324,7 @@ class _DetailState extends State<DetailsScreen> {
                                 )
                               ),
                               TextButton(
-                                onPressed: () => _eraseDuck(context), 
+                                onPressed: () => _deleteAccount(context), 
                                 child: const Text('Delete'),
                                 style: TextButton.styleFrom(
                                   foregroundColor: Color(0xFFE24C15),
