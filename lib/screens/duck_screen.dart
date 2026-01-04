@@ -54,11 +54,13 @@ class _DuckState extends State<DuckScreen> {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight= MediaQuery.of(context).size.height;
     // Watch for changes (rebuilds the widget when data changes)
-    int currentQuacks = Provider.of<DuckLogic>(context).currentQuacks;
-    int moreDucks = Provider.of<DuckLogic>(context).moreDucks;
-    int fish = Provider.of<DuckLogic>(context).fish;
-    int watermelon = Provider.of<DuckLogic>(context).watermelon;
-    int pond = Provider.of<DuckLogic>(context).pond;
+    final duck = context.watch<DuckLogic>();
+
+    int currentQuacks = duck.currentQuacks;
+    int moreDucks = duck.moreDucks;
+    int fish = duck.fish;
+    int watermelon = duck.watermelon;
+    int pond = duck.pond;
 
     return Scaffold(
       backgroundColor: Color(0xFF2B1F14),

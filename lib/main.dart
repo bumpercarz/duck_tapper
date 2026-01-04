@@ -28,11 +28,10 @@ class DuckTapper extends StatelessWidget {
         // Author state management
         // Access with: context.read<AuthorProvider>() or context.watch<AuthorProvider>()
         ChangeNotifierProvider(create: (_) => AccountProvider()),
-
+        ChangeNotifierProvider(create: (_) => DuckLogic()),
         // Book state management
         // Access with: context.read<BookProvider>() or context.watch<BookProvider>()
         ChangeNotifierProvider(create: (_) => DuckProvider()),
-        ChangeNotifierProvider(create: (_) => DuckLogic()),
       ],
       child: MaterialApp(
         title: 'Ducky Quacker',

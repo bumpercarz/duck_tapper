@@ -28,7 +28,9 @@ class _LoginScreenState extends State<LoginScreen>{
   @override
   void initState(){
     super.initState();
-    Future.microtask(() =>context.read<AccountProvider>().fetchAccounts());
+    Future.microtask(() {if (context.read<AccountProvider>().accounts.isEmpty) {
+  context.read<AccountProvider>().fetchAccounts();
+}});
   }
 
   // Function to toggle the password visibility state.
@@ -43,14 +45,14 @@ class _LoginScreenState extends State<LoginScreen>{
     // Search for inputted account
     int accountToLog = 0;
     int i = 0;
-    while(i < accounts.length){
-      if(accounts[i].username == username && accounts[i].password == password) 
-      {
-        accountToLog = accounts[i].id ?? 0;
-        i == accounts.length;
-      }
-      i++;
-    }
+while (i < accounts.length) {
+  if (accounts[i].username == username &&
+      accounts[i].password == password) {
+    accountToLog = accounts[i].id ?? 0;
+    break;
+  }
+  i++;
+}
     
     // Check value of account to be logged
     if (accountToLog > 0) {

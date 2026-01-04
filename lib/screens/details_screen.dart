@@ -26,40 +26,31 @@ class _DetailState extends State<DetailsScreen> {
       }
     );
   }
-  
-    int _totalQuacks = 0;
-    int _currentQuacks = 0;
-    int _duckTaps = 0;
-    int _moreDucks = 0;
-    int _fish = 0;
-    int _watermelon = 0;
-    int _pond = 0;
-    late int totalUpgrades = _moreDucks + _fish + _watermelon + _pond;
 
   void _saveDuck(BuildContext context) async {
+  final duckLogic = context.read<DuckLogic>();
+  int loggedAccount = context.read<AccountProvider>().loggedAccount ?? 0;
 
-    int loggedAccount = context.read<AccountProvider>().loggedAccount ?? 0;
-    // Update duck information in current account
-    Duck updateDuck = Duck (
-      account_id: loggedAccount, 
-      totalQuack: _totalQuacks, 
-      currentQuack: _currentQuacks, 
-      duckTaps: _duckTaps, 
-      moreDucks: _moreDucks, 
-      fish: _fish, 
-      watermelon: _watermelon, 
-      ponds: _pond
-    );
+  Duck updateDuck = Duck(
+    account_id: loggedAccount,
+    totalQuack: duckLogic.totalQuacks,
+    currentQuack: duckLogic.currentQuacks,
+    duckTaps: duckLogic.duckTaps,
+    moreDucks: duckLogic.moreDucks,
+    fish: duckLogic.fish,
+    watermelon: duckLogic.watermelon,
+    ponds: duckLogic.pond,
+  );
 
-    Duck oldDuck =await context.read<DuckProvider>().getDucksByAccount(loggedAccount);
 
-    context.read<DuckProvider>().updateDuck(oldDuck.id ?? 0, updateDuck);
-    
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Duck Saved!')),
-    );
-  }
+  Duck oldDuck = await context.read<DuckProvider>().getDucksByAccount(loggedAccount);
 
+  context.read<DuckProvider>().updateDuck(oldDuck.id ?? 0, updateDuck);
+
+  ScaffoldMessenger.of(context).showSnackBar(
+    const SnackBar(content: Text('Duck Saved!')),
+  );
+}
   void _eraseDuck(BuildContext context) async {
     // Erase duck information in current account
     // should have a pop-up for confirmation
@@ -81,16 +72,6 @@ class _DetailState extends State<DetailsScreen> {
     context.read<DuckProvider>().deleteDuck(oldDuck.id ?? 0);
     context.read<DuckProvider>().createDuck(newDuck);
     Provider.of<DuckLogic>(context, listen: false).loadSavedDuck(context, loggedAccount);
-    setState(() {
-      _totalQuacks = 0;
-      _currentQuacks = 0;
-      _duckTaps = 0;
-      _moreDucks = 0;
-      _fish = 0;
-      _watermelon = 0;
-      _pond = 0;
-      totalUpgrades = 0;
-    });
 
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('This duck is gone :( but it was replaced by another, new duck!')),
