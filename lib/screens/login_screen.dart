@@ -82,6 +82,7 @@ class _LoginScreenState extends State<LoginScreen>{
   // Login UI
   @override
   Widget build(BuildContext context){
+    double screenHeight= MediaQuery.of(context).size.height;
     return Scaffold(
       body: Directionality(
         textDirection: TextDirection.ltr,
@@ -92,9 +93,9 @@ class _LoginScreenState extends State<LoginScreen>{
             children: [
 
               Container(
-                margin: EdgeInsets.only(top:100),
-                width:80,
-                height:80,
+                margin: EdgeInsets.only(top:.1*screenHeight),
+                width:.08*screenHeight,
+                height:.08*screenHeight,
                 child: Image.asset('assets/images/Duck.png', fit: BoxFit.contain),
               ),
 
@@ -102,19 +103,19 @@ class _LoginScreenState extends State<LoginScreen>{
                 'Ducky Quacker',
                 textAlign: TextAlign.center,
                 key: const ValueKey('titleText'), 
-                style: TextStyle(fontSize: 39),
+                style: TextStyle(fontSize: .039*screenHeight),
                 
               ),
 
               Container(
-                margin: EdgeInsets.only(top:50),
+                margin: EdgeInsets.only(top:.050*screenHeight),
                 child:Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Username', style: TextStyle(fontSize: 24)),
+                    Text('Username', style: TextStyle(fontSize: .024*screenHeight)),
                     Container(
-                      width: 305,
-                      height: 45,
+                      width: .305*screenHeight,
+                      height: .045*screenHeight,
                       child: TextField(
                         controller: _usernameController,
                         decoration: InputDecoration(
@@ -131,12 +132,12 @@ class _LoginScreenState extends State<LoginScreen>{
                     ),
 
                     Container(
-                      margin: EdgeInsets.only(top:5),
-                      child: Text('Password', style: TextStyle(fontSize: 24)),
+                      margin: EdgeInsets.only(top:.005*screenHeight),
+                      child: Text('Password', style: TextStyle(fontSize: .024*screenHeight)),
                     ),
                     Container(
-                      width: 305,
-                      height: 45,
+                      width: .305*screenHeight,
+                      height: .045*screenHeight,
                       child: TextField(
                         controller: _passwordController,
                         obscureText: _passwordHide,
@@ -165,7 +166,7 @@ class _LoginScreenState extends State<LoginScreen>{
               
 
               Container(
-                margin: EdgeInsets.only(top:50),
+                margin: EdgeInsets.only(top:.050*screenHeight),
                 child:ElevatedButton(
                   
                   // Login Checker
@@ -176,7 +177,7 @@ class _LoginScreenState extends State<LoginScreen>{
                     _login(context, username, password, accounts);
                     },
                   style: ElevatedButton.styleFrom(
-                    fixedSize: Size(240, 50),
+                    fixedSize: Size(.240*screenHeight, .050*screenHeight),
                     backgroundColor: Color(0xFFCA8C35),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(18),
@@ -184,18 +185,18 @@ class _LoginScreenState extends State<LoginScreen>{
                   ),
                   child: Text(
                       'Login',
-                      style: TextStyle(fontSize: 24, color: Colors.black),
+                      style: TextStyle(fontSize: .024*screenHeight, color: Colors.black),
                     ),
                 )
               ),
 
               // Register Button - Shows a dialog box that prompts the user for registration. (UNIMPLEMENTED)
               Container(
-                margin: EdgeInsets.only(top:20),
+                margin: EdgeInsets.only(top:.020*screenHeight),
                 child:ElevatedButton(
                   onPressed: () => _showRegisterDialog(context),
                   style: ElevatedButton.styleFrom(
-                    fixedSize: Size(240, 50),
+                    fixedSize: Size(.240*screenHeight, .050*screenHeight),
                     backgroundColor: Color(0xFFCA8C35),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(18),
@@ -203,7 +204,7 @@ class _LoginScreenState extends State<LoginScreen>{
                   ),
                   child: Text(
                     'Register',
-                    style: TextStyle(fontSize: 24, color: Colors.black),
+                    style: TextStyle(fontSize: .024*screenHeight, color: Colors.black),
                   ),
                 )
               )
