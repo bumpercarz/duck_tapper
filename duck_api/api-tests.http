@@ -174,7 +174,7 @@ Content-Type: application/json
 GET {{baseUrl}}/ducks
 
 ### 24. DELETE account ID 1 - also deletes duck under account 1
-DELETE {{baseUrl}}/accounts/3
+DELETE {{baseUrl}}/accounts/1
 
 ### 25. DELETE duck with ID 2 - will not affect account assigned to duck_id 2
 DELETE {{baseUrl}}/ducks/2
