@@ -72,6 +72,7 @@ class _DetailState extends State<DetailsScreen> {
     context.read<DuckProvider>().deleteDuck(oldDuck.id ?? 0);
     context.read<DuckProvider>().createDuck(newDuck);
     Provider.of<DuckLogic>(context, listen: false).loadSavedDuck(context, loggedAccount);
+    Provider.of<DuckLogic>(context, listen: false).refreshQuacks();
 
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('This duck is gone :( but it was replaced by another, new duck!')),
