@@ -113,52 +113,56 @@ class _LoginScreenState extends State<LoginScreen>{
                   children: [
                     Text('Username', style: TextStyle(fontSize: 24)),
                     Container(
-                    width: 305,
-                    height: 45,
-                    child: TextField(
-                      controller: _usernameController,
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Color(0xFFD9D9D9),
-                        hintText: 'Enter your username',
-                        hintStyle: TextStyle(color: Color(0xFFA7A7A7)),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(0.0),
-                          borderSide: BorderSide.none,
+                      width: 305,
+                      height: 45,
+                      child: TextField(
+                        controller: _usernameController,
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Color(0xFFD9D9D9),
+                          hintText: 'Enter your username',
+                          hintStyle: TextStyle(color: Color(0xFFA7A7A7)),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(0.0),
+                            borderSide: BorderSide.none,
+                          ),
                         ),
-                      ),
-                    )
-                    )
+                      )
+                    ),
+
+                    Container(
+                      margin: EdgeInsets.only(top:5),
+                      child: Text('Password', style: TextStyle(fontSize: 24)),
+                    ),
+                    Container(
+                      width: 305,
+                      height: 45,
+                      child: TextField(
+                        controller: _passwordController,
+                        obscureText: _passwordHide,
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Color(0xFFD9D9D9),
+                          hintText: 'Enter your Password',
+                          hintStyle: TextStyle(color: Color(0xFFA7A7A7)),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _passwordHide ? Icons.visibility_off : Icons.visibility,
+                              semanticLabel: _passwordHide ? 'Hide password' : 'Show password',
+                            ),
+                            onPressed: _togglePasswordVisibility, 
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(0.0),
+                            borderSide: BorderSide.none,
+                          ),
+                        ),
+                      )
+                    ),
                   ],
                 )
               ),
               
-              Container(
-                margin: EdgeInsets.only(top:20),
-                width: 305,
-                height: 45,
-                child: TextField(
-                  controller: _passwordController,
-                  obscureText: _passwordHide,
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Color(0xFFD9D9D9),
-                    hintText: 'Enter your Password',
-                    hintStyle: TextStyle(color: Color(0xFFA7A7A7)),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _passwordHide ? Icons.visibility_off : Icons.visibility,
-                        semanticLabel: _passwordHide ? 'Hide password' : 'Show password',
-                      ),
-                      onPressed: _togglePasswordVisibility, 
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(0.0),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
-                )
-              ),
 
               Container(
                 margin: EdgeInsets.only(top:50),
