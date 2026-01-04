@@ -81,7 +81,6 @@ class UpdateDuck {
 // ============================================================
 
 /// Type class for book responses
-/// Includes resolved author name from JOIN
 class DuckResponse {
   final int duck_id;
   final int account_id;

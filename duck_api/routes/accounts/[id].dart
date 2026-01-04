@@ -29,7 +29,7 @@ Future<Response> onRequest(RequestContext context, String id) async {
 }
 
 // ============================================================
-// GET - Fetch single author by ID
+// GET - Fetch single account by ID
 // ============================================================
 
 Future<Response> _fetchAccount(AccountService service, int account_id) async {
@@ -94,7 +94,7 @@ Future<Response> _updateAccount(
 
 
 // ============================================================
-// DELETE - Soft delete author
+// DELETE - Soft delete account
 // Pattern: Validate → Execute
 // ============================================================
 

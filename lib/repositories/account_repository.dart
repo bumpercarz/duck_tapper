@@ -1,7 +1,7 @@
 import '../services/api_service.dart';
 import '../models/account.dart';
 
-/// Author Repository
+/// Account Repository
 ///
 /// Repository pattern abstracts API calls from the UI layer.
 /// Each method maps to a specific API endpoint from the Dart Frog backend.
@@ -34,13 +34,13 @@ class AccountRepository {
     return response['account_id'] as int;
   }
 
-  /// Update an existing author
+  /// Update an existing account
   ///
   Future<void> updateAccount(int id, Account account) async {
     await _apiService.put('/accounts/$id', account.toJson());
   }
 
-  /// Delete an author 
+  /// Delete an account 
   ///
   /// Throws:
   /// - ApiException(400): Validation error

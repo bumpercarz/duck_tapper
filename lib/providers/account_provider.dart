@@ -3,21 +3,21 @@ import '../models/account.dart';
 import '../repositories/account_repository.dart';
 import '../services/api_service.dart';
 
-/// Author Provider - State management for authors
+/// Account Provider - State management for accounts
 ///
-/// Uses Provider package (ChangeNotifier pattern) to manage author state
+/// Uses Provider package (ChangeNotifier pattern) to manage account state
 /// and notify UI widgets when data changes.
 ///
 /// Flow: UI → Provider (this file) → Repository → API Service → Dart Frog API
 ///
 /// State managed:
-/// - List of authors (from GET /authors)
+/// - List of accounts (from GET /accounts)
 /// - Loading status (while fetching data)
 /// - Error messages (from API or network errors)
 class AccountProvider with ChangeNotifier {
   final AccountRepository _repository = AccountRepository();
 
-  /// List of authors fetched from the API
+  /// List of accounts fetched from the API
   List<Account> _accounts = [];
 
   /// Loading state - true while fetching data from API
@@ -36,10 +36,10 @@ class AccountProvider with ChangeNotifier {
   String? get errorMessage => _errorMessage;
   bool get hasError => _errorMessage != null;
 
-  /// Fetch all authors from the API
+  /// Fetch all accounts from the API
   ///
-  /// Calls: GET http://BASE_URL/authors
-  /// API: zoo_api/routes/authors/index.dart → AuthorService.getAllAuthors()
+  /// Calls: GET http://BASE_URL/accounts
+  /// API: duck_api/routes/accounts/index.dart → AccountService.getAllAccounts()
   ///
   /// Updates UI automatically via notifyListeners()
   Future<void> fetchAccounts() async {
@@ -74,12 +74,12 @@ class AccountProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  /// Create a new author
+  /// Create a new account
   ///
-  /// Calls: POST http://BASE_URL/authors
-  /// API: zoo_api/routes/authors/index.dart → AuthorService.validateCreateAuthor() + createAuthor()
+  /// Calls: POST http://BASE_URL/accounts
+  /// API: duck_api/routes/accounts/index.dart → AccountService.validateCreateAccount() + createAccount()
   ///
-  /// After successful creation, refreshes the author list
+  /// After successful creation, refreshes the account list
   ///
   /// Returns: true if successful, false if error
   Future<bool> createAccount(Account account) async {
@@ -101,10 +101,10 @@ class AccountProvider with ChangeNotifier {
     }
   }
 
-  /// Update an existing author
+  /// Update an existing account
   ///
-  /// Calls: PUT http://BASE_URL/authors/:id
-  /// API: zoo_api/routes/authors/[id].dart → AuthorService.validateUpdateAuthor() + updateAuthor()
+  /// Calls: PUT http://BASE_URL/accounts/:id
+  /// API: duck_api/routes/accounts/[id].dart → AccountService.validateUpdateAccount() + updateAccount()
   ///
   /// After successful update, refreshes the author list
   ///
@@ -128,14 +128,14 @@ class AccountProvider with ChangeNotifier {
     }
   }
 
-  /// Delete an author (soft delete)
+  /// Delete an account 
   ///
-  /// Calls: DELETE http://BASE_URL/authors/:id
-  /// API: zoo_api/routes/authors/[id].dart → AuthorService.validateDeleteAuthor() + deleteAuthor()
+  /// Calls: DELETE http://BASE_URL/accounts/:id
+  /// API: duck_api/routes/accounts/[id].dart → AccountService.validateDeleteAccount() + deleteAccount()
   ///
-  /// Note: API prevents deleting authors with active books
+  /// Note: API prevents deleting accounts with active books
   ///
-  /// After successful deletion, refreshes the author list
+  /// After successful deletion, refreshes the account list
   ///
   /// Returns: true if successful, false if error
   Future<bool> deleteAccount(int id) async {

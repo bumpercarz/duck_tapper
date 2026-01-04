@@ -6,7 +6,7 @@ import '../services/api_service.dart';
 class DuckProvider with ChangeNotifier {
   final DuckRepository _repository = DuckRepository();
 
-  /// List of books fetched from the API
+  /// List of ducks fetched from the API
   List<Duck> _ducks = [];
 
   /// Loading state - true while fetching data from API
@@ -21,12 +21,12 @@ class DuckProvider with ChangeNotifier {
   String? get errorMessage => _errorMessage;
   bool get hasError => _errorMessage != null;
 
-  /// Fetch all books from the API
+  /// Fetch all ducks from the API
   ///
-  /// Calls: GET http://BASE_URL/books
-  /// API: zoo_api/routes/books/index.dart → BookService.getAllBooks()
+  /// Calls: GET http://BASE_URL/ducks
+  /// API: duck_api/routes/ducks/index.dart → DuckService.getAllDucks()
   ///
-  /// Returns books with author names resolved via JOIN
+  /// Returns ducks with account names resolved via JOIN
   ///
   /// Updates UI automatically via notifyListeners()
   Future<void> fetchDucks() async {
@@ -49,19 +49,15 @@ class DuckProvider with ChangeNotifier {
     }
   }
 
-  /// Create a new book
+  /// Create a new duck
   ///
-  /// Calls: POST http://BASE_URL/books
-  /// API: zoo_api/routes/books/index.dart → BookService.validateCreateBook() + createBook()
+  /// Calls: POST http://BASE_URL/ducks
+  /// API: duck_api/routes/ducks/index.dart → DuckService.validateCreateDuck() + createDuck()
   ///
   /// API Validations:
-  /// - ISBN format (ISBN-10 or ISBN-13)
-  /// - ISBN uniqueness
-  /// - Published year (1450 to current year)
-  /// - Pages (must be positive)
-  /// - Author ID (must exist and be active)
+  /// - Account ID (must exist)
   ///
-  /// After successful creation, refreshes the book list
+  /// After successful creation, refreshes the duck list
   ///
   /// Returns: true if successful, false if error
   Future<bool> createDuck(Duck duck) async {
@@ -83,15 +79,15 @@ class DuckProvider with ChangeNotifier {
     }
   }
 
-  /// Update an existing book
+  /// Update an existing duck
   ///
-  /// Calls: PUT http://BASE_URL/books/:id
-  /// API: zoo_api/routes/books/[id].dart → BookService.validateUpdateBook() + updateBook()
+  /// Calls: PUT http://BASE_URL/ducks/:id
+  /// API: duck_api/routes/ducks/[id].dart → DuckService.validateUpdateDuck() + updateDuck()
   ///
   /// Supports partial updates - only send fields you want to change
-  /// Can also change the author by updating authorId
+  /// Can also change the account by updating accountId
   ///
-  /// After successful update, refreshes the book list
+  /// After successful update, refreshes the duck list
   ///
   /// Returns: true if successful, false if error
   Future<bool> updateDuck(int id, Duck duck) async {
@@ -113,15 +109,13 @@ class DuckProvider with ChangeNotifier {
     }
   }
 
-  /// Delete a book (soft delete)
+  /// Delete a duck
   ///
-  /// Calls: DELETE http://BASE_URL/books/:id
-  /// API: zoo_api/routes/books/[id].dart → BookService.validateDeleteBook() + deleteBook()
+  /// Calls: DELETE http://BASE_URL/ducks/:id
+  /// API: duck_api/routes/ducks/[id].dart → DuckService.validateDeleteDuck() + deleteDuck()
   ///
-  /// Note: This is a soft delete (sets is_active = false in database)
-  /// After deletion, the author's book count will be updated automatically
   ///
-  /// After successful deletion, refreshes the book list
+  /// After successful deletion, refreshes the duck list
   ///
   /// Returns: true if successful, false if error
   Future<bool> deleteDuck(int id) async {
@@ -143,10 +137,10 @@ class DuckProvider with ChangeNotifier {
     }
   }
 
-  /// Get books by a specific author
+  /// Get duck in a specific account
   ///
-  /// Filters the current books list by authorId
-  /// Note: If you need fresh data, call fetchBooks() first
+  /// Filters the current duck list by accountId
+  /// Note: If you need fresh data, call fetchDucks() first
   Future<Duck> getDucksByAccount(int accountId) async {
       _ducks = await _repository.getDucks();
     List<Duck> foundDuck = _ducks.where((duck) => duck.account_id == accountId).toList();

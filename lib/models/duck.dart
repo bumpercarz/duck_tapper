@@ -24,13 +24,13 @@ class Duck {
     required this.ponds
   });
 
-  /// Parse JSON response from API into Book object
+  /// Parse JSON response from API into Duck object
   ///
   /// Used when receiving data from:
-  /// - GET /books (list of books)
-  /// - GET /books/:id (single book)
+  /// - GET /ducks (list of books)
+  /// - GET /ducks/:id (single book)
   ///
-  /// API Source: zoo_api/lib/services/book_service.dart → getAllBooks()
+  /// API Source: duck_api/lib/services/duck_service.dart → getAllDucks()
   factory Duck.fromJson(Map<String, dynamic> json) {
     return Duck(
       id: json['duck_id'] as int,
@@ -48,23 +48,16 @@ class Duck {
   /// Convert Book object to JSON for API requests
   ///
   /// Used when sending data to:
-  /// - POST /books (create new book)
-  /// - PUT /books/:id (update existing book)
+  /// - POST /ducks (create new book)
+  /// - PUT /ducks/:id (update existing book)
   ///
   /// Note: Only includes fields that the API accepts for creation/update
   /// (id, timestamps, and authorName are managed by the API)
   ///
-  /// API Validation: zoo_api/lib/services/book_service.dart
-  /// - validateCreateBook():
-  ///   * Checks ISBN format (ISBN-10 or ISBN-13)
-  ///   * Checks ISBN uniqueness
-  ///   * Validates publishedYear (1450 to current year)
-  ///   * Validates pages (must be positive)
-  ///   * Validates authorId (must exist and be active)
+  /// API Validation: duck_api/lib/services/duck_service.dart
+  /// - validateCreateDuck():
+  ///   * Validates accountId (must exist)
   ///
-  /// - validateUpdateBook():
-  ///   * Same validations as create, but only for provided fields
-  ///   * Checks book exists and is active
   Map<String, dynamic> toJson() {
     return {
       'account_id': account_id,
@@ -78,8 +71,8 @@ class Duck {
     };
   }
 
-  /// Create a copy of this Book with updated fields
-  /// Useful for updating book data in the UI
+  /// Create a copy of this Duck with updated fields
+  /// Useful for updating duck data in the UI
   Duck copyWith({
     int? account_id,
     int? totalQuack,

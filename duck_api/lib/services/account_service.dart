@@ -35,7 +35,7 @@ class AccountService {
     }
   }
 
-  /// Create a new author (assumes data is already validated)
+  /// Create a new account (assumes data is already validated)
   /// Returns the new account ID
   Future<int> createAccount(CreateAccountData data) async {
     final id = await _db.into(_db.accounts).insert(
